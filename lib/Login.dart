@@ -6,10 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:raktkhoj/Constants.dart';
+import 'package:raktkhoj/components/input_container.dart';
+import 'package:raktkhoj/components/register_button.dart';
 import 'package:raktkhoj/components/rounded_button.dart';
 import 'package:raktkhoj/components/rounded_input.dart';
 import 'package:raktkhoj/components/rounded_password_input.dart';
 import 'Colors.dart';
+import 'components/login_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -150,13 +153,42 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
                         SizedBox(height: 40),
 
-                        RoundedInput(icon: Icons.person,hint:'Username',),
+                        InputContainer(
+                          child: TextField(
+                            onChanged: (value) {
+                              email=value;
+                            },
+                            cursorColor: kMainRed,
+                            decoration: InputDecoration(
+                                icon: Icon(Icons.mail , color: kMainRed,),
+                                hintText: 'Email',
+                                border: InputBorder.none
+                            ),
+                          ),
+                        ),
 
-                        RoundedPasswordInput(hint:'Password'),
+                       // RoundedInput(icon: Icons.person,hint:'Username',),
+
+                        InputContainer(
+                          child: TextField(
+                            cursorColor: kMainRed,
+                            obscureText: true,
+                            onChanged: (value){
+                              password=value;
+                            },
+                            decoration: InputDecoration(
+                                icon: Icon(Icons.lock , color: kMainRed,),
+                                hintText: 'Password',
+                                border: InputBorder.none
+                            ),
+                          ),
+                        ),
+
+                        //RoundedPasswordInput(hint:'Password'),
 
                         SizedBox(height: 10,),
 
-                        RoundedButton(title: 'LOGIN'),
+                        LoginButton(title: 'LOGIN',userEmail : email , userPassword : password),
 
                       ],
 
@@ -217,11 +249,64 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
                           SizedBox(height: 5),
 
-                          RoundedInput(icon: Icons.person,hint:'Username',),
+                          InputContainer(
+                            child: TextField(
+                              onChanged: (value) {
+                                userName=value;
+                              },
+                              cursorColor: kMainRed,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.person , color: kMainRed,),
+                                  hintText: 'Username',
+                                  border: InputBorder.none
+                              ),
+                            ),
+                          ),
 
-                          RoundedInput(icon: Icons.mail,hint:'Email',),
+                          //RoundedInput(icon: Icons.person,hint:'Username',),
+                          InputContainer(
+                            child: TextField(
+                              onChanged: (value) {
+                                email=value;
+                              },
+                              cursorColor: kMainRed,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.mail , color: kMainRed,),
+                                  hintText: 'Email',
+                                  border: InputBorder.none
+                              ),
+                            ),
+                          ),
 
-                          RoundedPasswordInput(hint:'Password'),
+                          /*TextField(
+                            onChanged: (value) {
+                              email=value;
+                            },
+                            cursorColor: kMainRed,
+                            decoration: InputDecoration(
+                                icon: Icon(Icons.mail , color: kMainRed,),
+                                hintText: 'Email',
+                                border: InputBorder.none
+                            ),
+                          ),*/
+                          //RoundedInput(icon: Icons.mail,hint:'Email',),
+                          InputContainer(
+                            child: TextField(
+                              cursorColor: kMainRed,
+                              obscureText: true,
+                              onChanged: (value){
+                                password=value;
+                              },
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.lock , color: kMainRed,),
+                                  hintText: 'Password',
+                                  border: InputBorder.none
+                              ),
+                            ),
+                          ),
+
+
+                          //RoundedPasswordInput(hint:'Password'),
                           Container(
                         margin: EdgeInsets.symmetric(vertical: 10),
                         padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
@@ -247,8 +332,9 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       ),
 
                           SizedBox(height: 10,),
-
-                          RoundedButton(title: 'SIGNUP'),
+                           RegisterButton(title: 'SIGNUP' , userEmail:email ,
+                               userUserName: userName,userBloodGroup: bloodGroup,
+                               userPassword: password),
 
                         ],
 
@@ -301,7 +387,13 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
 }
 
+ String email="";
+String password="";
+ String userName="";
+ String bloodGroup="";
 String selectGroup="";
+
+
 final bgroup=TextEditingController();
 //creating a list of blood groups
 
