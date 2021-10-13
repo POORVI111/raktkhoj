@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:raktkhoj/Colors.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'Login.dart';
 
 
 class OnBoarding extends StatefulWidget {
@@ -90,10 +90,10 @@ class _OnBoardingState extends State<OnBoarding> {
                           child: InkWell(
                             onTap: (){
 
-                             /* Navigator.push(
+                             Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Login()),
-                              );*/
+                                MaterialPageRoute(builder: (context) => LoginScreen()),
+                              );
                             },
                             child: Container(
                                 height: 48,

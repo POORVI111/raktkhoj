@@ -43,6 +43,8 @@ dependencies:
   firebase_database: any
   modal_progress_hud: ^0.1.3
   pinput: ^0.2.6
+  flutter_svg: ^0.22.0
+  dropdownfield: ^1.0.3
 
 dev_dependencies:
   flutter_test:
