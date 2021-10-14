@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-
-//import 'phone_login_page.dart';
+import 'screens/home/Home_screen.dart';
 import 'splash_screen.dart';
-import 'home_page.dart';
+
 
 /*void main() {
   runApp(MyApp());
@@ -22,7 +20,7 @@ final _auth = FirebaseAuth.instance;
 
 Future<User> getCurrentUser() async {
   User currentUser;
-  currentUser = (await _auth.currentUser)!;
+  currentUser = (await _auth.currentUser);
   return currentUser;
 }
 class MyApp extends StatelessWidget {
