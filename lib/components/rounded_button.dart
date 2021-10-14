@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:raktkhoj/Colors.dart';
 
 class RoundedButton extends StatelessWidget {
-  const RoundedButton({Key? key , required this.title}) : super(key: key);
+  const RoundedButton({Key key , this.title}) : super(key: key);
   final String title;
 
 

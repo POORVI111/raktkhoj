@@ -5,8 +5,8 @@ import 'input_container.dart';
 
 class RoundedPasswordInput extends StatelessWidget {
   const RoundedPasswordInput(
-      { Key? key,
-        required this.hint,
+      { Key key,
+         this.hint,
       }) : super(key: key);
 
   //final Size size;

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -10,11 +11,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class RegisterButton extends StatelessWidget {
-  const RegisterButton({Key? key, required this.title,
-    required this.userEmail,
-    required this.userPassword,
-    required this.userUserName,
-    required this.userBloodGroup}) : super(key: key);
+   RegisterButton({key, this.title,
+     this.userEmail,
+     this.userPassword,
+     this.userUserName,
+     this.userBloodGroup}) : super(key: key);
 
   final String title;
 
@@ -23,6 +24,9 @@ class RegisterButton extends StatelessWidget {
   final String userPassword;
   final String userUserName;
   final String userBloodGroup;
+
+
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery
@@ -36,21 +40,22 @@ class RegisterButton extends StatelessWidget {
             final newUser = await _auth.createUserWithEmailAndPassword(
                   email: userEmail, password: userPassword);
               if (newUser != null) {
-                User? user = newUser.user;
-                user!.sendEmailVerification();
+                User user = newUser.user;
+               await user.sendEmailVerification();
                 await user
                     .updateProfile(
                   displayName: userName,
                 )
                     .then((value) {
-                  FirebaseDatabase.instance
-                      .reference()
-                      .child('User/${user.uid}')
-                      .update({
+                  FirebaseFirestore.instance
+                      .collection('User Details')
+                      .doc(user.uid)
+                      .set({
                     'Email': userEmail,
                     'Name': userName,
                     'DefaultAdd': null,
-                    'BloodGroup':userBloodGroup
+                    'BloodGroup':userBloodGroup,
+                    'Uid': user.uid
                 });
               });
             }

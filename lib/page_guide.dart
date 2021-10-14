@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PageGuide extends StatefulWidget {
-  const PageGuide({Key? key}) : super(key: key);
+  const PageGuide({Key key}) : super(key: key);
 
   @override
   _PageGuideState createState() => _PageGuideState();

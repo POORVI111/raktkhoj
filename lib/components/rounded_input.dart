@@ -5,9 +5,9 @@ import 'input_container.dart';
 
 class RoundedInput extends StatelessWidget {
   const RoundedInput(
-      { Key? key,
+      { Key key,
         //required this.size,
-        required this.icon, required this.hint
+         this.icon, this.hint
         //required this.hint
       }) : super(key: key);
 

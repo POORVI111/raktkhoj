@@ -5,17 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:raktkhoj/Constants.dart';
 import 'package:raktkhoj/components/input_container.dart';
 import 'package:raktkhoj/components/register_button.dart';
-import 'package:raktkhoj/components/rounded_button.dart';
-import 'package:raktkhoj/components/rounded_input.dart';
-import 'package:raktkhoj/components/rounded_password_input.dart';
 import 'Colors.dart';
 import 'components/login_button.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key key}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -23,8 +19,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
   bool isLogin=true;
-  late Animation<double> containerSize;
-  late AnimationController animationController;
+   Animation<double> containerSize;
+   AnimationController animationController;
   Duration animationDuration=Duration(milliseconds: 270);
 
   @override
@@ -108,10 +104,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
                   child: IconButton(
                     icon:Icon(Icons.close),
-                    onPressed: isLogin ? null : (){ //returning null to disable the button
+                    onPressed: (){ //returning null to disable the button
                       animationController.reverse();
                       setState(() {
-                        isLogin = !isLogin;
+                        isLogin = true;
                       });
                     },
                     color: kMainRed,
@@ -324,6 +320,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               enabled: true,
                             items: bloodGroups,
                             onValueChanged: (value){
+                                bloodGroup=value;
                                 setState(() {
                                   selectGroup=value;
                                 });

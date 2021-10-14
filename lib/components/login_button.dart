@@ -5,13 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:raktkhoj/Login.dart';
 
 import '../Colors.dart';
+import '../screens/home/Home_screen.dart';
 import '../page_guide.dart';
 
 class LoginButton extends StatelessWidget {
-  const LoginButton({Key? key ,
-    required this.title,
-    required this.userEmail,
-    required this.userPassword,}) : super(key: key);
+   LoginButton({Key key ,
+     this.title,
+     this.userEmail,
+     this.userPassword,}) : super(key: key);
 
   final String title;
 
@@ -31,7 +32,7 @@ class LoginButton extends StatelessWidget {
           if (user != null) {
             print("Success");
             print(userEmail+userPassword);
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PageGuide()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
           }
 
         } catch (e) {
