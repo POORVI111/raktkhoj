@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:raktkhoj/Login.dart';
 import 'package:raktkhoj/screens/home/Home_screen.dart';
-import 'package:raktkhoj/trial_basis/page_guide.dart';
-import 'package:raktkhoj/trial_basis/profile.dart';
+import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
+import 'package:raktkhoj/user_oriented_pages/profile.dart';
 
 import '../Colors.dart';
 //import '../page_guide.dart';

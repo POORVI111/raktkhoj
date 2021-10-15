@@ -8,6 +8,7 @@ import 'package:raktkhoj/components/ripple_indicator.dart';
 import 'package:raktkhoj/screens/home/map_view.dart';
 import 'package:raktkhoj/screens/nearby_hospitals/nearby_hospital_screen.dart';
 import 'package:raktkhoj/services/localization_service.dart';
+import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
 
 import '../../Colors.dart';
 
@@ -168,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     onPressed: () {
                                       //_changelanguage(language);
-                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> HomePage()));
+                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> PageGuide()));
                                     }),
                               )
                             ]));
@@ -212,7 +213,7 @@ class _HomePageState extends State<HomePage> {
               ),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage()));
+                    MaterialPageRoute(builder: (context) => PageGuide()));
               },
             ),
             ListTile(

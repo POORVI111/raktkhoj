@@ -1,6 +1,11 @@
+import 'dart:html';
+import 'package:raktkhoj/helpers/path_helper.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 //import 'package:redlink/compatability.dart';
 //import 'package:redlink/home_page.dart';
 import 'package:raktkhoj/Constants.dart';
@@ -39,6 +44,12 @@ class _ProfileState extends State<Profile> {
   int weight = 58;
   String name;
   bool showSpinner = false;
+
+  DateTime selectedDate = DateTime.now();
+  var formattedDate;
+  int flag = 0;
+
+
 
   final _auth = FirebaseAuth.instance;
   User loggedInUser;
@@ -108,6 +119,42 @@ class _ProfileState extends State<Profile> {
   void dispose() {
     super.dispose();
     isActive = false;
+  }
+
+
+  String getDOB(){
+    final firestoreInstance =  FirebaseFirestore.instance;
+
+    var firebaseUser =  FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("User Details").doc(firebaseUser.uid).get().then((value) {
+      //print(value.data());
+      this.setState(() {
+        dob = value.data()["Dob"].toString();
+      });
+    });
+    return dob;
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+       initialDate: selectedDate,
+        firstDate: DateTime(1975),
+        lastDate: DateTime(2022),);
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        flag = 1;
+      });
+    var date = DateTime.parse(selectedDate.toString());
+    formattedDate = "${date.day}-${date.month}-${date.year}";
+    //changing to database
+    final firestoreInstance =  FirebaseFirestore.instance;
+
+    var firebaseUser =  FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("User Details").doc(firebaseUser.uid).
+    update({"Dob":formattedDate});
+
   }
 
 
@@ -272,26 +319,28 @@ class _ProfileState extends State<Profile> {
                                     children: <Widget>[
                                       Row(
                                         children: <Widget>[
-                                          SizedBox(width: 15,),
+                                          //SizedBox(width: 15,),
                                           Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Icon(
-                                              Icons.calendar_today,
+                                            padding: const EdgeInsets.all(1.0),
+                                            child: IconButton(
+                                              onPressed: () => _selectDate(context),
+                                              icon: Icon(Icons.calendar_today,size: 20,),
+
                                               color: Color(0xFFBC002D),
-                                              size: 20,
+
                                             ),
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.all(5.0),
+                                            padding: const EdgeInsets.all(1.0),
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  'Date of Birth',
+                                                  'DOB',
                                                   style: kLabelTextStyle,
                                                 ),
                                                 SizedBox(height: 3,),
-                                                Text(dob!='null'?dob:'--',
+                                                Text(getDOB(),
                                                   style: kNumberTextStyle,
                                                 ),
                                               ],
@@ -891,6 +940,15 @@ class _ProfileState extends State<Profile> {
           ),
         ));
   }
+
+
+
+
+
+
+
+
+
 
 
 

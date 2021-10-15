@@ -34,6 +34,14 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Raktkhoj',
+        theme: ThemeData(
+        //...
+        // CUSTOMIZE showDatePicker Colors
+        colorScheme: ColorScheme.light(primary: const Color(0xFFed1e25)),
+        //buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+    //
+    //...
+    ),
       translations: LocalizationService(), // your translations
       locale: LocalizationService().getCurrentLocale(), // translations will be displayed in that locale
       fallbackLocale: Locale(
