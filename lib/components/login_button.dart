@@ -3,16 +3,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:raktkhoj/Login.dart';
+import 'package:raktkhoj/screens/home/Home_screen.dart';
+import 'package:raktkhoj/trial_basis/page_guide.dart';
+import 'package:raktkhoj/trial_basis/profile.dart';
 
 import '../Colors.dart';
-import '../screens/home/Home_screen.dart';
-import '../page_guide.dart';
+//import '../page_guide.dart';
 
 class LoginButton extends StatelessWidget {
    LoginButton({Key key ,
      this.title,
-     this.userEmail,
-     this.userPassword,}) : super(key: key);
+    this.userEmail,
+    this.userPassword,}) : super(key: key);
 
   final String title;
 
@@ -32,7 +34,8 @@ class LoginButton extends StatelessWidget {
           if (user != null) {
             print("Success");
             print(userEmail+userPassword);
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PageGuide()));
+
           }
 
         } catch (e) {

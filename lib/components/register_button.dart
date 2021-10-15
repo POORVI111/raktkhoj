@@ -52,10 +52,16 @@ class RegisterButton extends StatelessWidget {
                       .doc(user.uid)
                       .set({
                     'Email': userEmail,
-                    'Name': userName,
+                    'Name': userUserName,
                     'DefaultAdd': null,
                     'BloodGroup':userBloodGroup,
-                    'Uid': user.uid
+                    'Uid': user.uid,
+                    'Dob':null,
+                    'Condition':"normal",
+                    'Contact':null,
+                    'Height':125,
+                    'Weight':50,
+                    'Age':25
                 });
               });
             }
