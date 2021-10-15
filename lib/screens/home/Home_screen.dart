@@ -1,11 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/components/ripple_indicator.dart';
 import 'package:raktkhoj/screens/home/map_view.dart';
+import 'package:raktkhoj/screens/nearby_hospitals/nearby_hospital_screen.dart';
 import 'package:raktkhoj/services/localization_service.dart';
 
 import '../../Colors.dart';
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, //top bar color
-      systemNavigationBarColor: Colors.black, //bottom bar color
+      systemNavigationBarColor: Colors.white, //bottom bar color
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
     return _child;
@@ -236,14 +237,14 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              title: Text(""),
+              title: Text("Nearby Hospitals".tr),
               leading: Icon(
-                FontAwesomeIcons.ribbon,
+                FontAwesomeIcons.hospital,
                 color: kMainRed,
               ),
               onTap: () {
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => CampaignsPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => NearbyHospitalPage()));
               },
             ),
             ListTile(

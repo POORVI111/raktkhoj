@@ -31,6 +31,7 @@ const Map<String, String> enUS = {
    'Create Account':'Create Account',
    'Sign In':'Sign In',
    'Get started now': 'Get started now',
+   "Nearby Hospitals":"Nearby Hospitals",
 
 
 

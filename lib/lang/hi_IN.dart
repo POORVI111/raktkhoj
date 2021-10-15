@@ -31,4 +31,5 @@ const Map<String, String> hiIN = {
   'Create Account':'खाता बनाएं',
   'Sign In':'साइन इन',
   'Get started now': 'आरंभ करें',
+  "Nearby Hospitals":"आस-पास के अस्पताल",
 };
