@@ -1,9 +1,10 @@
 import 'package:dropdownfield/dropdownfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 import '../../Colors.dart';
 import 'Home_screen.dart';
@@ -91,8 +92,8 @@ class _RequestBloodState extends State<RequestBlood> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Success'),
-            content: Text('Blood Request Submitted'),
+            title: Text('Success'.tr),
+            content: Text('Blood Request Submitted'.tr),
             actions: <Widget>[
               FlatButton(
                 onPressed: () {
@@ -130,7 +131,7 @@ class _RequestBloodState extends State<RequestBlood> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         title: Text(
-          "Request Blood",
+          "Request Blood".tr,
           style: TextStyle(
             fontSize: 20.0,
             fontFamily: "SouthernAire",
@@ -168,7 +169,7 @@ class _RequestBloodState extends State<RequestBlood> {
                               padding: EdgeInsets.only(top: 20.0),
                               child: DropdownButton(
                                 hint: Text(
-                                  'Please choose a Blood Group',
+                                  'Please choose a Blood Group'.tr,
                                   style: TextStyle(
                                     color: kMainRed,
                                   ),
@@ -206,14 +207,14 @@ class _RequestBloodState extends State<RequestBlood> {
                         padding: const EdgeInsets.all(18.0),
                         child: TextFormField(
                           decoration: InputDecoration(
-                            hintText: 'Quantity(L)',
+                            hintText: 'Quantity(L)'.tr,
                             icon: Icon(
                               FontAwesomeIcons.prescriptionBottle,
                               color: kMainRed,
                             ),
                           ),
                           validator: (value) => value.isEmpty
-                              ? "Quantity field can't be empty"
+                              ? "Quantity field can't be empty".tr
                               : null,
                           onSaved: (value) => _qty = value,
                           keyboardType: TextInputType.number,
@@ -230,7 +231,7 @@ class _RequestBloodState extends State<RequestBlood> {
                             ),
                             flag == 0
                                 ? Text(
-                              "<< Pick up a Due Date",
+                              "<< Pick up a Due Date".tr,
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 15.0),
                             )
@@ -244,7 +245,7 @@ class _RequestBloodState extends State<RequestBlood> {
                           controller: TextEditingController(),
                           itemsVisibleInDropdown: 2,
                           icon: Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,),
-                          hintText: "Patient Condition",
+                          hintText: "Patient Condition".tr,
                           hintStyle: TextStyle(color: Colors.black54, fontSize: 15.0),
                           enabled: true,
                           items:_condition,
@@ -258,14 +259,14 @@ class _RequestBloodState extends State<RequestBlood> {
                         padding: const EdgeInsets.all(18.0),
                         child: TextFormField(
                           decoration: InputDecoration(
-                            hintText: 'Phone Number',
+                            hintText: 'Phone Number'.tr,
                             icon: Icon(
                               FontAwesomeIcons.mobile,
                               color: kMainRed,
                             ),
                           ),
                           validator: (value) => value.isEmpty
-                              ? "Phone Number field can't be empty"
+                              ? "Phone Number field can't be empty".tr
                               : null,
                           onSaved: (value) => _phone = value,
                           maxLength: 10,
@@ -282,7 +283,7 @@ class _RequestBloodState extends State<RequestBlood> {
                               color: kMainRed,
                             ),
                             Text(
-                              "<< Add a valid medical report",
+                              "<< Add a valid medical report".tr,
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 15.0),
                             )
@@ -316,7 +317,7 @@ class _RequestBloodState extends State<RequestBlood> {
                         textColor: Colors.white,
                         padding: EdgeInsets.only(left: 5.0, right: 5.0),
                         color: kMainRed,
-                        child: Text("SUBMIT"),
+                        child: Text("SUBMIT".tr),
                         shape: new RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(30.0)),
                       ),

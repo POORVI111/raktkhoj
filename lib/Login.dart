@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/components/input_container.dart';
 import 'package:raktkhoj/components/register_button.dart';
 import 'Colors.dart';
@@ -132,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
                       children: [
                         Text(
-                          "Welcome back!",
+                          "Welcome back!".tr,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24
@@ -157,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             cursorColor: kMainRed,
                             decoration: InputDecoration(
                                 icon: Icon(Icons.mail , color: kMainRed,),
-                                hintText: 'Email',
+                                hintText: 'Email'.tr,
                                 border: InputBorder.none
                             ),
                           ),
@@ -174,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             },
                             decoration: InputDecoration(
                                 icon: Icon(Icons.lock , color: kMainRed,),
-                                hintText: 'Password',
+                                hintText: 'Password'.tr,
                                 border: InputBorder.none
                             ),
                           ),
@@ -184,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
                         SizedBox(height: 10,),
 
-                        LoginButton(title: 'LOGIN',userEmail : email , userPassword : password),
+                        LoginButton(title: 'LOGIN'.tr,userEmail : email , userPassword : password),
 
                       ],
 
@@ -228,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
                         children: [
                           Text(
-                            "Welcome !",
+                            "Welcome !".tr,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24
@@ -253,7 +254,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               cursorColor: kMainRed,
                               decoration: InputDecoration(
                                   icon: Icon(Icons.person , color: kMainRed,),
-                                  hintText: 'Username',
+                                  hintText: 'Username'.tr,
                                   border: InputBorder.none
                               ),
                             ),
@@ -268,7 +269,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               cursorColor: kMainRed,
                               decoration: InputDecoration(
                                   icon: Icon(Icons.mail , color: kMainRed,),
-                                  hintText: 'Email',
+                                  hintText: 'Email'.tr,
                                   border: InputBorder.none
                               ),
                             ),
@@ -295,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               },
                               decoration: InputDecoration(
                                   icon: Icon(Icons.lock , color: kMainRed,),
-                                  hintText: 'Password',
+                                  hintText: 'Password'.tr,
                                   border: InputBorder.none
                               ),
                             ),
@@ -315,7 +316,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                               controller: bgroup,
                               itemsVisibleInDropdown: 1,
                               icon: Icon(Icons.bloodtype,color: kMainRed,),
-                              hintText: "Blood Group",
+                              hintText: "Blood Group".tr,
                               hintStyle: TextStyle(color: kDarkerGrey , fontSize: 10, ),
                               enabled: true,
                             items: bloodGroups,
@@ -329,7 +330,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                       ),
 
                           SizedBox(height: 10,),
-                           RegisterButton(title: 'SIGNUP' , userEmail:email ,
+                           RegisterButton(title: 'SIGNUP'.tr , userEmail:email ,
                                userUserName: userName,userBloodGroup: bloodGroup,
                                userPassword: password),
 
@@ -371,7 +372,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
             });
           },
           child: isLogin ? Text(
-            "Don't have an account? Sign up",
+            "Don't have an account? Sign up".tr,
             style: TextStyle(
               color: kMainRed,
               fontSize: 18,
