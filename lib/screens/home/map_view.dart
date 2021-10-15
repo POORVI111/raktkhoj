@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
@@ -123,12 +124,12 @@ class _MapViewState extends State<MapView> {
                                     fontSize: 18.0, color: Colors.black87),
                               ),
                               Text(
-                                "Quantity: " + request['quantity'] + " L",
+                                "Quantity: ".tr + request['quantity'] + " L",
                                 style: TextStyle(
                                     fontSize: 14.0, color: Colors.black87),
                               ),
                               Text(
-                                "Due Date: " + request['dueDate'],
+                                "Due Date: ".tr + request['dueDate'],
                                 style: TextStyle(
                                     fontSize: 14.0, color: Colors.red),
                               ),
@@ -280,7 +281,7 @@ class _MapViewState extends State<MapView> {
                             currentPosition.latitude, currentPosition.longitude)));
               },
               icon: Icon(FontAwesomeIcons.burn),
-              label: Text("Request Blood"),
+              label: Text("Request Blood".tr),
             ),
           ),
         )

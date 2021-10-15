@@ -3,8 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/components/ripple_indicator.dart';
 import 'package:raktkhoj/screens/home/map_view.dart';
+import 'package:raktkhoj/services/localization_service.dart';
 
 import '../../Colors.dart';
 
@@ -18,6 +20,8 @@ class _HomePageState extends State<HomePage> {
   User currentUser;
   String _name, _bloodgrp, _email;
   Widget _child;
+  List<String> _languages = ["English","हिंदी"];
+  String language;
 
   Future<Null> _fetchUserInfo() async {
     Map<String, dynamic> _userInfo;
@@ -50,10 +54,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Future<void> initState() {
-    _child = RippleIndicator("Fetching Map");
+    _child = RippleIndicator("");
      _loadCurrentUser();
     _fetchUserInfo();
-    super.initState();
+     super.initState();
+     language = LocalizationService().getCurrentLang();
   }
   @override
   Widget build(BuildContext context) {
@@ -72,13 +77,104 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         title: Text(
-          "Home",
+          'Home'.tr,
           style: TextStyle(
             fontSize: 20.0,
             fontFamily: "SouthernAire",
             color: Colors.white,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              FontAwesomeIcons.globe,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20))),
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 1.5,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Please Select Your Language",
+                                    style: TextStyle(
+                                        color: kMainRed,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15)),
+                              ),
+                              Text("कृपया अपनी भाषा चुनें",
+                                  style: TextStyle(
+                                      color: kMainRed,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15)),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.height /
+                                    2.5,
+                                child: ListView.builder(
+                                    itemCount: _languages.length,
+                                    itemBuilder: (context, index) {
+                                      return Column(
+                                        children: [
+                                          ListTile(
+                                            focusColor: Colors.blue,
+                                            hoverColor: Colors.blue,
+                                            onTap: () {
+                                              setState(()  {
+                                                language = _languages[index];
+                                                 LocalizationService().changeLocale(language);
+                                                language = LocalizationService().getCurrentLang();
+                                              });
+                                            },
+                                            title: Center(
+                                                child: Text(_languages[index],
+                                                  style:  TextStyle(color: language== _languages[index] ? kMainRed: Colors.black),
+                                                  )),
+                                          ),
+                                          Divider()
+                                        ],
+                                      );
+                                    }),
+                              ),
+                              SizedBox(
+                                height:
+                                MediaQuery.of(context).size.height / 40,
+                              ),
+                              SizedBox(
+                                width: 100,
+                                height: 50,
+                                child: RaisedButton(
+                                    color: kMainRed,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(30)),
+                                    child: Center(
+                                      child: Text(
+                                        "Ok".tr,
+                                        style:
+                                        TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      //_changelanguage(language);
+                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> HomePage()));
+                                    }),
+                              )
+                            ]));
+                  });
+            },
+          ),
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -108,7 +204,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              title: Text("Home"),
+              title: Text("Home".tr),
               leading: Icon(
                 FontAwesomeIcons.home,
                 color: kMainRed,
@@ -119,7 +215,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              title: Text("Blood Donors"),
+              title: Text("Blood Donors".tr),
               leading: Icon(
                 FontAwesomeIcons.handshake,
                 color: kMainRed,
@@ -130,7 +226,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              title: Text("Blood Requests"),
+              title: Text("Blood Requests".tr),
               leading: Icon(
                 FontAwesomeIcons.burn,
                 color: kMainRed,
@@ -140,7 +236,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              title: Text("Campaigns"),
+              title: Text(""),
               leading: Icon(
                 FontAwesomeIcons.ribbon,
                 color: kMainRed,
@@ -151,7 +247,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              title: Text("Logout"),
+              title: Text("Logout".tr),
               leading: Icon(
                 FontAwesomeIcons.signOutAlt,
                 color: kMainRed,

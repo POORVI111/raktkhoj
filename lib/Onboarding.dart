@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/Colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'Login.dart';
@@ -73,7 +74,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     height: 29,
                   ),
                   Text(
-                    'Get started now',
+                    'Get started now'.tr,
                     style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
@@ -104,7 +105,7 @@ class _OnBoardingState extends State<OnBoarding> {
                                     Border.all(width: 1, color: kMainRed),
                                     color: Colors.transparent),
                                 child: Center(
-                                  child: Text('Sign In',
+                                  child: Text('Sign In'.tr,
                                       style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14,
@@ -130,7 +131,7 @@ class _OnBoardingState extends State<OnBoarding> {
                                   color: kMainRed,
                                 ),
                                 child: Center(
-                                  child: Text('Create Account',
+                                  child: Text('Create Account'.tr,
                                       style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14,
