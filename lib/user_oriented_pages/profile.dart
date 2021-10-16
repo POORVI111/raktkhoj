@@ -1,21 +1,18 @@
-import 'dart:html';
-import 'package:raktkhoj/helpers/path_helper.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-//import 'package:redlink/compatability.dart';
-//import 'package:redlink/home_page.dart';
+import 'package:provider/provider.dart';
 import 'package:raktkhoj/Constants.dart';
-//import 'page_guide.dart';
 import 'package:raktkhoj/Colors.dart';
-import 'package:clay_containers/clay_containers.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:raktkhoj/components/cached_image.dart';
+import 'package:raktkhoj/components/image_upload_provider.dart';
+import 'package:raktkhoj/provider/storage_method.dart';
 import 'package:raktkhoj/screens/home/Home_screen.dart';
 
 import 'package:raktkhoj/user_oriented_pages/faq.dart';
@@ -24,6 +21,8 @@ import 'package:raktkhoj/user_oriented_pages/faq.dart';
 var _firebaseref = FirebaseDatabase().reference().child('User');
 
 class Profile extends StatefulWidget {
+
+
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -42,7 +41,7 @@ class _ProfileState extends State<Profile> {
   int height = 173;
   int age = 20;
   int weight = 58;
-  String name;
+  String name, profilePhoto;
   bool showSpinner = false;
 
   DateTime selectedDate = DateTime.now();
@@ -50,8 +49,9 @@ class _ProfileState extends State<Profile> {
   int flag = 0;
 
 
-
+  ImageUploadProvider _imageUploadProvider;
   final _auth = FirebaseAuth.instance;
+  final StorageMethods _storageMethods = StorageMethods();
   User loggedInUser;
   bool isActive = false;
   @override
@@ -89,6 +89,7 @@ class _ProfileState extends State<Profile> {
         mc=value.data()["Condition"].toString();
         contact=value.data()["Contact"].toString();
         height=value.data()["Height"];
+        profilePhoto=value.data()['ProfilePhoto'];
 
         weight=value.data()["Weight"] ;
 
@@ -156,12 +157,37 @@ class _ProfileState extends State<Profile> {
     update({"Dob":formattedDate});
 
   }
+  static Future<PickedFile> _pickImage({@required ImageSource source}) async {
+    final _picker = ImagePicker();
+    PickedFile selectedImage = await _picker.getImage(source: source);
+    return selectedImage;
+  }
+
+  void UploadImage({@required ImageSource source}) async {
+    PickedFile selectedImage = await _pickImage(source: source);
+    final firestoreInstance =  FirebaseFirestore.instance;
+    var firebaseUser =  FirebaseAuth.instance.currentUser;
+     _storageMethods.uploadProfileImage(
+        image: File(selectedImage.path),
+        userId: firebaseUser.uid,
+        imageUploadProvider: _imageUploadProvider);
+
+
+    firestoreInstance.collection("User Details").doc(firebaseUser.uid).get().then((value) {
+      //print(value.data());
+      this.setState(() {
+        profilePhoto=value.data()['ProfilePhoto'];
+      });
+    });
+  }
 
 
   @override
   Widget build(BuildContext context) {
+    _imageUploadProvider = Provider.of<ImageUploadProvider>(context);
     return Scaffold(
         backgroundColor: Colors.white,
+
         body: Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -176,6 +202,7 @@ class _ProfileState extends State<Profile> {
 
             ),
           ),
+
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,9 +228,10 @@ class _ProfileState extends State<Profile> {
                                       color: Colors.white.withOpacity(0.2), width: 2)),
                               padding: EdgeInsets.all(5.5),
                               //color: kBackgroundColor,
-                              child: CircleAvatar(
-                                radius: 45.0,
-                                backgroundImage: AssetImage('images/logo.png'),
+                              child: CachedImage(
+                                profilePhoto,
+                                radius: 45,
+                                isRound: true,
                               ),
                             ),
                             Column(
@@ -229,9 +257,11 @@ class _ProfileState extends State<Profile> {
                             SizedBox(width: 75,),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: RoundIconButton(icon: Icons.mode_edit, onPressed: (){
-                                displayOverlay(context);
+                              child: RoundIconButton(icon: FontAwesomeIcons.camera, onPressed: (){
                                 //EDIT PROFILE
+                                //displayOverlay(context);
+                                      UploadImage(source: ImageSource.gallery);
+
                               }),
                             )
                           ],

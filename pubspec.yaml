@@ -58,6 +58,9 @@ dependencies:
   url_launcher:
   google_maps_flutter:
   geolocator: ^5.1.2
+  emoji_picker_flutter:
+  provider:
+  emoji_picker:
 
 dev_dependencies:
   flutter_test:

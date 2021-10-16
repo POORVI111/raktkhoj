@@ -3,7 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:raktkhoj/services/localization_service.dart';
+import 'components/image_upload_provider.dart';
 import 'screens/home/Home_screen.dart';
 import 'splash_screen.dart';
 
@@ -31,7 +33,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ImageUploadProvider()),
+        ],
+    child: GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Raktkhoj',
         theme: ThemeData(
@@ -59,6 +65,7 @@ class MyApp extends StatelessWidget {
           }
         },
       ),
+    )
     );
   }
 }

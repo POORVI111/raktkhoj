@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/components/ripple_indicator.dart';
+import 'package:raktkhoj/screens/Chat/chat_list_screen.dart';
 import 'package:raktkhoj/screens/home/map_view.dart';
 import 'package:raktkhoj/screens/nearby_hospitals/nearby_hospital_screen.dart';
 import 'package:raktkhoj/services/localization_service.dart';
@@ -148,29 +149,28 @@ class _HomePageState extends State<HomePage> {
                                       );
                                     }),
                               ),
-                              SizedBox(
-                                height:
-                                MediaQuery.of(context).size.height / 40,
-                              ),
-                              SizedBox(
-                                width: 100,
-                                height: 50,
-                                child: RaisedButton(
-                                    color: kMainRed,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(30)),
-                                    child: Center(
-                                      child: Text(
-                                        "Ok".tr,
-                                        style:
-                                        TextStyle(color: Colors.white),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SizedBox(
+                                  width: 100,
+                                  height: 50,
+                                  child: RaisedButton(
+                                      color: kMainRed,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(30)),
+                                      child: Center(
+                                        child: Text(
+                                          "Ok".tr,
+                                          style:
+                                          TextStyle(color: Colors.white),
+                                        ),
                                       ),
-                                    ),
-                                    onPressed: () {
-                                      //_changelanguage(language);
-                                    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> PageGuide()));
-                                    }),
+                                      onPressed: () {
+                                        //_changelanguage(language);
+                                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> PageGuide()));
+                                      }),
+                                ),
                               )
                             ]));
                   });
@@ -246,6 +246,17 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => NearbyHospitalPage()));
+              },
+            ),
+            ListTile(
+              title: Text("Chats".tr),
+              leading: Icon(
+                FontAwesomeIcons.comments,
+                color: kMainRed,
+              ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) =>ChatListPage()));
               },
             ),
             ListTile(

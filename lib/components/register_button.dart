@@ -61,7 +61,8 @@ class RegisterButton extends StatelessWidget {
                     'Contact':null,
                     'Height':125,
                     'Weight':50,
-                    'Age':25
+                    'Age':25,
+                    'ProfilePhoto':'',
                 });
               });
             }
