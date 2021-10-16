@@ -136,12 +136,27 @@ class _ProfileState extends State<Profile> {
     return dob;
   }
 
+
+  String getImageUrl(){
+    final firestoreInstance =  FirebaseFirestore.instance;
+
+    var firebaseUser =  FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("User Details").doc(firebaseUser.uid).get().then((value) {
+      //print(value.data());
+      this.setState(() {
+        profilePhoto=value.data()['ProfilePhoto'];
+        //dob = value.data()["Dob"].toString();
+      });
+    });
+    return profilePhoto;
+  }
+
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-        context: context,
-       initialDate: selectedDate,
-        firstDate: DateTime(1975),
-        lastDate: DateTime(2022),);
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(1975),
+      lastDate: DateTime(2022),);
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
@@ -167,7 +182,7 @@ class _ProfileState extends State<Profile> {
     PickedFile selectedImage = await _pickImage(source: source);
     final firestoreInstance =  FirebaseFirestore.instance;
     var firebaseUser =  FirebaseAuth.instance.currentUser;
-     _storageMethods.uploadProfileImage(
+    _storageMethods.uploadProfileImage(
         image: File(selectedImage.path),
         userId: firebaseUser.uid,
         imageUploadProvider: _imageUploadProvider);
@@ -229,7 +244,7 @@ class _ProfileState extends State<Profile> {
                               padding: EdgeInsets.all(5.5),
                               //color: kBackgroundColor,
                               child: CachedImage(
-                                profilePhoto,
+                                getImageUrl(),
                                 radius: 45,
                                 isRound: true,
                               ),
@@ -260,7 +275,7 @@ class _ProfileState extends State<Profile> {
                               child: RoundIconButton(icon: FontAwesomeIcons.camera, onPressed: (){
                                 //EDIT PROFILE
                                 //displayOverlay(context);
-                                      UploadImage(source: ImageSource.gallery);
+                                UploadImage(source: ImageSource.gallery);
 
                               }),
                             )
@@ -489,7 +504,7 @@ class _ProfileState extends State<Profile> {
                                     style: kLabelTextStyle,
                                   ),
                                   Text(
-                                      //height!='null'?height:'--',
+                                    //height!='null'?height:'--',
                                     height.toString(),
                                     style: kNumberTextStyle,
                                   ),
