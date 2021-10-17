@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:dropdownfield/dropdownfield.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:path/path.dart';
+import 'package:raktkhoj/provider/storage_method.dart';
 
 import '../../Colors.dart';
 import 'Home_screen.dart';
@@ -17,11 +23,15 @@ class RequestBlood extends StatefulWidget {
 }
 
 class _RequestBloodState extends State<RequestBlood> {
+  final StorageMethods _storageMethods = StorageMethods();
   final formkey = new GlobalKey<FormState>();
   List<String> _bloodGroup = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+  UploadTask task;
+  File file;
   List<String> _condition=['critical', 'normal'];
   String _selected = '';
   String _qty;
+  String _docURL;
   String _phone;
   String _address;
   String _patientCondition;
@@ -85,6 +95,32 @@ class _RequestBloodState extends State<RequestBlood> {
     var date = DateTime.parse(selectedDate.toString());
     formattedDate = "${date.day}-${date.month}-${date.year}";
   }
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    if (result == null) return;
+    final path = result.files.single.path;
+
+    setState(() => file = File(path));
+  }
+
+  Future<String> uploadFile() async {
+    if (file == null) return null;
+
+    final fileName = basename(file.path);
+    final destination = 'RequestBloodDocs/$fileName';
+
+    task = _storageMethods.uploadFile(destination, file);
+    setState(() {});
+
+    if (task == null) return null;
+
+    final snapshot = await task.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+
+    print('Download-Link: $urlDownload');
+    return urlDownload;
+  }
 
   Future<bool> dialogTrigger(BuildContext context) async {
     return showDialog(
@@ -124,6 +160,7 @@ class _RequestBloodState extends State<RequestBlood> {
 
   @override
   Widget build(BuildContext context) {
+    final fileName = file != null ? basename(file.path) : '<< Add a valid medical report';
     return Scaffold(
       backgroundColor: kMainRed,
       appBar: AppBar(
@@ -275,29 +312,39 @@ class _RequestBloodState extends State<RequestBlood> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: <Widget>[
-                            IconButton(
-                              onPressed: null,
-                              icon: Icon(FontAwesomeIcons.paperclip),
-                              color: kMainRed,
+                        child: Column(
+                          children: [
+                            Row(
+                              children: <Widget>[
+
+                                IconButton(
+                                  onPressed: selectFile,
+                                  icon: Icon(FontAwesomeIcons.paperclip),
+                                  color: kMainRed,
+
+                                ),
+                                Text(
+                                  fileName,
+                                  style: TextStyle(
+                                      color: Colors.black54, fontSize: 15.0),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "<< Add a valid medical report".tr,
-                              style: TextStyle(
-                                  color: Colors.black54, fontSize: 15.0),
-                            )
-                            
-                          ],
-                        ),
+
+                            SizedBox(height: 20),
+                            task != null ? buildUploadStatus(task) : Container(),
+                         ],
+                      ),
                       ),
                       SizedBox(
                         height: 30.0,
                       ),
                       RaisedButton(
-                        onPressed: () {
+                        onPressed: () async {
+
                           if (!formkey.currentState.validate()) return;
                           formkey.currentState.save();
+                         _docURL = await uploadFile();
                           final Map<String, dynamic> BloodRequestDetails = {
                             'uid': _userID,
                             'bloodGroup': _selected,
@@ -306,13 +353,16 @@ class _RequestBloodState extends State<RequestBlood> {
                             'phone': _phone,
                             'location': new GeoPoint(widget._lat, widget._lng),
                             'address': _address,
-                            'patientCondition': _patientCondition
+                            'patientCondition': _patientCondition,
+                            'docURL': _docURL
                           };
                           addData(BloodRequestDetails).then((result) {
                             dialogTrigger(context);
                           }).catchError((e) {
                             print(e);
                           });
+
+
                         },
                         textColor: Colors.white,
                         padding: EdgeInsets.only(left: 5.0, right: 5.0),
@@ -331,4 +381,22 @@ class _RequestBloodState extends State<RequestBlood> {
       ),
     );
   }
+
+  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
+    stream: task.snapshotEvents,
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        final snap = snapshot.data;
+        final progress = snap.bytesTransferred / snap.totalBytes;
+        final percentage = (progress * 100).toStringAsFixed(2);
+
+        return Text(
+          '$percentage %',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        );
+      } else {
+        return Container();
+      }
+    },
+  );
 }
