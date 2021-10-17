@@ -129,69 +129,69 @@ class _SearchScreenState extends State<SearchScreen> {
         : [];
 
     return ListView.builder(
-    itemCount: suggestionList.length,
-    itemBuilder: ((context, index) {
-    UserModel searchedUser = UserModel(
-    uid: suggestionList[index].uid,
-    profilePhoto: suggestionList[index].profilePhoto,
-    name: suggestionList[index].name,
-    email: suggestionList[index].email);
+      itemCount: suggestionList.length,
+      itemBuilder: ((context, index) {
+      UserModel searchedUser = UserModel(
+      uid: suggestionList[index].uid,
+      profilePhoto: suggestionList[index].profilePhoto,
+      name: suggestionList[index].name,
+      email: suggestionList[index].email);
 
 
-    return GestureDetector(
-     onTap: () { Navigator.push(context,
-    MaterialPageRoute(
-    builder: (context) => ChatScreen(receiver: searchedUser,)));
-     },
-    child: Container(
-    padding: EdgeInsets.symmetric(horizontal: false ? 10 : 0),
-    child: Row(
-    children: <Widget>[
-    CachedImage(
-    searchedUser.profilePhoto,
-    radius: 35,
-    isRound: true,
-    ),
-    Expanded(
-    child: Container(
-    margin: EdgeInsets.only(left: false ? 10 : 15),
-    padding: EdgeInsets.symmetric(vertical: false ? 3 : 15),
-    decoration: BoxDecoration(
-    border: Border(
-    bottom: BorderSide(
-    width: 1,
-    color:Colors.grey))),
-    child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: <Widget>[
-    Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-    Text(searchedUser.email, style: TextStyle(color: Colors.grey,
-    fontWeight: FontWeight.bold,
-    ),
-    ),
-    SizedBox(height: 5),
-    Row(
-    children: <Widget>[
-    Text(
-    searchedUser.name,
-    style: TextStyle(color: Colors.black),
-    ),
-    ],)
-    ],),
+      return GestureDetector(
+         onTap: () { Navigator.push(context,
+        MaterialPageRoute(
+        builder: (context) => ChatScreen(receiver: searchedUser,)));
+         },
+        child: Container(
+        padding: EdgeInsets.symmetric(horizontal: false ? 10 : 0),
+          child: Row(
+          children: <Widget>[
+            CachedImage(
+            searchedUser.profilePhoto,
+            radius: 35,
+            isRound: true,
+            ),
+            Expanded(
+              child: Container(
+              margin: EdgeInsets.only(left: false ? 10 : 15),
+              padding: EdgeInsets.symmetric(vertical: false ? 3 : 15),
+              decoration: BoxDecoration(
+              border: Border(
+              bottom: BorderSide(
+              width: 1,
+              color:Colors.grey))),
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(searchedUser.email, style: TextStyle(color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                    ),
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                    children: <Widget>[
+                      Text(
+                      searchedUser.name,
+                      style: TextStyle(color: Colors.black),
+                      ),
+                    ],)
+                  ],),
 
-    ],
-    ),
-    ),
-    )
-    ],
-    ),
-    ),
+            ],
+            ),
+            ),
+            )
+        ],
+        ),
+        ),
 
 
-    );
-    })
+        );
+      })
     );
   }
 
