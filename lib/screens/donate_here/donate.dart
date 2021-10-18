@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:raktkhoj/Colors.dart';
 import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/screens/donate_here/percentage_widget.dart';
+import 'package:raktkhoj/screens/donate_here/single_request_screen.dart';
 
 
 class Donate extends StatefulWidget {
@@ -41,7 +42,7 @@ class _DonateState extends State<Donate> {
       setState(() {
         //print(value.data()['Name'].toString());
         name=value.data()["Name"].toString();
-        print('NAme $name');
+       // print('NAme $name');
 
       });
     });
@@ -340,7 +341,11 @@ class _DonateState extends State<Donate> {
                                 Row(
                                   children:[
                                     SizedBox(width:175),
-                                    IconButton(onPressed: (){}, icon:
+                                    IconButton(onPressed: (){
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (_) => SingleRequestScreen(request: _req,name: name,),
+                                      ));
+                                    }, icon:
                                         Icon(Icons.east_outlined,color: kMainRed,)),],
                                 ),
 
@@ -584,10 +589,8 @@ class _DonateState extends State<Donate> {
       height: bannerHeight,
       alignment: Alignment.topCenter,
       decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            const Color.fromARGB(1000, 157, 37, 24),
-            const Color.fromARGB(1000, 212, 47, 33),
-          ])),
+        color: kMainRed,
+      )
     );
   }
 

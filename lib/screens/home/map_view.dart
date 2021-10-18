@@ -81,7 +81,7 @@ class _MapViewState extends State<MapView> {
         LatLng(request['location'].latitude, request['location'].longitude),
         onTap: () async {
           CustomDialogs.progressDialog(context: context, message: 'Fetching');
-          await _fetchrequestName(request['raiserid']);
+          await _fetchrequestName(request['raiserUid']);
           Navigator.pop(context);
           return showModalBottomSheet(
               backgroundColor: Colors.transparent,
