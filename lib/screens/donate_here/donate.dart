@@ -21,6 +21,7 @@ class Donate extends StatefulWidget {
 class _DonateState extends State<Donate> {
   double bannerHeight, listHeight, listPaddingTop;
   double cardContainerHeight, cardContainerTopPadding;
+  String name="";
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -32,7 +33,23 @@ class _DonateState extends State<Donate> {
     return currentUser;
   }
 
-  Future<List<RequestModel>> fetchAllUsers(User currentUser)  async {
+  Future<Null> getRaiserName(RequestModel req) async
+  {
+    final firestoreInstance =  FirebaseFirestore.instance;
+    firestoreInstance.collection("User Details").doc(req.raiserUid).get().then((value) {
+
+      setState(() {
+        //print(value.data()['Name'].toString());
+        name=value.data()["Name"].toString();
+        print('NAme $name');
+
+      });
+    });
+
+
+  }
+
+  Future<List<RequestModel>> fetchAllRequests()  async {
     List<RequestModel> requestList = <RequestModel>[];
 
     QuerySnapshot querySnapshot =
@@ -54,13 +71,11 @@ class _DonateState extends State<Donate> {
 
     //requestList=_firestore.collection("Blood Request Details").snapshots() as List<RequestModel>;
 
-    getCurrentUser().then((User user) {
-      fetchAllUsers(user).then((List<RequestModel> list) {
+      fetchAllRequests().then((List<RequestModel> list) {
         setState(() {
           requestList = list;
         });
       });
-    });
 
     }
 
@@ -69,6 +84,7 @@ class _DonateState extends State<Donate> {
     bannerHeight = MediaQuery.of(context).size.height * .25;
     listHeight = MediaQuery.of(context).size.height * .75;
     cardContainerHeight = 200;
+
     cardContainerTopPadding = bannerHeight / 2;
     listPaddingTop = cardContainerHeight - (bannerHeight / 2);
     return Scaffold(
@@ -97,14 +113,14 @@ class _DonateState extends State<Donate> {
       child: Column(
         children: <Widget>[
           rowRecentUpdates(),
-          Expanded(child: requests())
+          Expanded(child: requests(context))
         ],
       ),
     );
   }
 
 
-  Widget requests() {
+  Widget requests(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("Blood Request Details").snapshots(),
@@ -122,7 +138,7 @@ class _DonateState extends State<Donate> {
           itemCount: snapshot.data.docs.length,
           itemBuilder: (context, index) {
             //String name=
-            return RequestItem(snapshot.data.docs[index]);
+            return RequestItem(snapshot.data.docs[index], context);
           },
         );
       },
@@ -130,44 +146,29 @@ class _DonateState extends State<Donate> {
   }
 
 
-  String getRaiserName(RequestModel req)
-  {
-    String name="";
-    final firestoreInstance =  FirebaseFirestore.instance;
-
-    var firebaseUser =  FirebaseAuth.instance.currentUser;
-    firestoreInstance.collection("User Details").doc(req.raiserUid).get().then((value) {
-
-      setState(() {
-        //print(value.data()['Name'].toString());
-        name=value.data()["Name"].toString();
-        //print(name);
-
-      });
-    });
-
-    return name;
-  }
 
 
 
-  Widget RequestItem(DocumentSnapshot snapshot) {
+
+  Widget RequestItem(DocumentSnapshot snapshot, BuildContext context){
     //Message _message = Message.fromMap(snapshot.data());
     RequestModel _req=RequestModel.fromMap(snapshot.data());
-    String name="";
-    FirebaseFirestore.instance.collection("User Details").doc(_req.raiserUid).get().then((value){
-      this.setState(() {
-        name=value["Name"].toString();
-        print(name);
-      });
-    });
+    getRaiserName(_req);
+    //String name="";
+    //print('Reqid: ${_req.raiserUid.toString()}');
+    // FirebaseFirestore.instance.collection("User Details").doc(_req.raiserUid).get().then((value){
+    //   setState(() {
+    //   name=value.data()["Name"].toString();
+    //     print(name);
+    // });
+    // });
     return Column(
       children: [
         GestureDetector(
           onTap: () {
-            setState(() {
-
-            });
+            // setState(() {
+            //
+            // });
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -239,6 +240,7 @@ class _DonateState extends State<Donate> {
                             SizedBox(
                               width: 5,
                             ),
+                            Expanded(child:
                             Column(
                               crossAxisAlignment:
                               CrossAxisAlignment.start,
@@ -248,9 +250,8 @@ class _DonateState extends State<Donate> {
 
                                 SizedBox(height: 5,),
                                 //                                     SizedBox(height: 12,),
-                                Text(
-                                  name,
-                                  //getRaiserName(_req),
+                                Text(name,
+                                //  getRaiserName(_req),
                                   style: TextStyle(
                                       fontSize: 12.5,
                                       fontFamily: 'nunito',
@@ -285,25 +286,26 @@ class _DonateState extends State<Donate> {
                                       ),
                                     ]
                                 ),
+                                Expanded(child:
                                 Row(
                                     children : <Widget>[
-                                      Icon(Icons.location_on_sharp,color: kMainRed,size: 12,),
-                                      SizedBox(width: 3,),
+                                      Icon(Icons.location_on_sharp,color: kMainRed, size: 12),
+                                      SizedBox(width:3,),
+                                      Expanded(child:
                                       Text(
-                                      '${_req
-                                          .address
-                                          .toString()}',
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                      softWrap: false,
+                                      '${_req.address}',
+                                       overflow: TextOverflow.ellipsis,
+                                       // maxLines: 2,
+                                      //softWrap: false,
                                       style: TextStyle(
                                       fontSize: 12.5,
                                       fontFamily: 'nunito',
                                       color: Colors.black),
 
                                       ),
-
+                                      ),
                                     ]
+                                ),
                                 ),
 
 
@@ -359,7 +361,7 @@ class _DonateState extends State<Donate> {
                                 //                                      ),
                               ],
                             ),
-
+                            ),
 
                           ],
                         ),

@@ -1,5 +1,5 @@
 /*
-this is for uploading image to firebase storage
+this is for uploading docs to firebase storage
  */
 
 
