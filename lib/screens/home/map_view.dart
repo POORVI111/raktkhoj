@@ -36,17 +36,17 @@ class _MapViewState extends State<MapView> {
   @override
   void initState() {
     _child = RippleIndicator("Getting Location");
-    getIcon();
+   // getIcon();
     getCurrentLocation();
     populateClients();
     super.initState();
   }
 
-  Future<Null> _fetchrequestName(requestId) async {
+  Future<Null> _fetchrequestName(userId) async {
     Map<String, dynamic> _userInfo;
     DocumentSnapshot _snapshot = await FirebaseFirestore.instance
         .collection('User Details')
-        .doc(requestId)
+        .doc(userId)
         .get();
 
     _userInfo = _snapshot.data();
@@ -81,7 +81,7 @@ class _MapViewState extends State<MapView> {
         LatLng(request['location'].latitude, request['location'].longitude),
         onTap: () async {
           CustomDialogs.progressDialog(context: context, message: 'Fetching');
-          await _fetchrequestName(requestId);
+          await _fetchrequestName(request['raiserUid']);
           Navigator.pop(context);
           return showModalBottomSheet(
               backgroundColor: Colors.transparent,
@@ -246,7 +246,7 @@ class _MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     if (isMapCreated) {
-      getJsonFile('assets/customStyle.json').then(setmapstyle);
+     //getJsonFile('Assets/customStyle').then(setmapstyle);
     }
     return _child;
   }
@@ -264,7 +264,7 @@ class _MapViewState extends State<MapView> {
           onMapCreated: (GoogleMapController controller) {
             _controller = controller;
             isMapCreated = true;
-            getJsonFile('assets/customStyle.json').then(setmapstyle);
+           // getJsonFile('Assets/customStyle').then(setmapstyle);
           },
         ),
         Align(

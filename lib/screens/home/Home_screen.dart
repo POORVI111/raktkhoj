@@ -57,10 +57,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Future<void> initState() {
+     super.initState();
     _child = RippleIndicator("");
      _loadCurrentUser();
     _fetchUserInfo();
-     super.initState();
+
      language = LocalizationService().getCurrentLang();
   }
   @override

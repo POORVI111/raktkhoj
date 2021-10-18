@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:raktkhoj/screens/donate_here/single_request_screen.dart';
 import 'package:raktkhoj/services/localization_service.dart';
+import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
 import 'components/image_upload_provider.dart';
 import 'screens/home/Home_screen.dart';
 import 'splash_screen.dart';
@@ -59,7 +61,7 @@ class MyApp extends StatelessWidget {
         future: getCurrentUser(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return SplashScreen();
+            return PageGuide();
           } else {
             return SplashScreen();
           }

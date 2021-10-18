@@ -4,6 +4,7 @@ import 'package:dropdownfield/dropdownfield.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +12,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:path/path.dart';
 import 'package:raktkhoj/provider/storage_method.dart';
+import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
 
 import '../../Colors.dart';
 import 'Home_screen.dart';
@@ -57,17 +59,19 @@ class _RequestBloodState extends State<RequestBlood> {
     }
   }
 
-  Future<void> addData(_user) async {
+  Future<void> addData(_request, key) async {
+
     if (isLoggedIn()) {
+
       FirebaseFirestore.instance
           .collection('Blood Request Details')
-          .doc(_user['uid'])
-          .set(_user)
+          .doc(key)
+          .set(_request)
           .catchError((e) {
         print(e);
       });
     } else {
-      print('You need to be logged In');
+      print('Can not add data');
     }
   }
 
@@ -118,7 +122,7 @@ class _RequestBloodState extends State<RequestBlood> {
     final snapshot = await task.whenComplete(() {});
     final urlDownload = await snapshot.ref.getDownloadURL();
 
-    print('Download-Link: $urlDownload');
+    //print('Download-Link: $urlDownload');
     return urlDownload;
   }
 
@@ -136,7 +140,7 @@ class _RequestBloodState extends State<RequestBlood> {
                   formkey.currentState.reset();
                   Navigator.pop(context);
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => HomePage()));
+                      MaterialPageRoute(builder: (context) => PageGuide()));
                 },
                 child: Icon(
                   Icons.arrow_forward,
@@ -323,10 +327,17 @@ class _RequestBloodState extends State<RequestBlood> {
                                   color: kMainRed,
 
                                 ),
-                                Text(
+
+                                //used expanded scroll view to avoid overflow
+                                Expanded(child:
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                    child: Text(
                                   fileName,
                                   style: TextStyle(
                                       color: Colors.black54, fontSize: 15.0),
+                                ),
+                                ),
                                 ),
                               ],
                             ),
@@ -345,8 +356,10 @@ class _RequestBloodState extends State<RequestBlood> {
                           if (!formkey.currentState.validate()) return;
                           formkey.currentState.save();
                          _docURL = await uploadFile();
+                          var time = DateTime.now().millisecondsSinceEpoch;
+                          String key = time.toString();
                           final Map<String, dynamic> BloodRequestDetails = {
-                            'uid': _userID,
+                            'raiserUid': _userID,
                             'bloodGroup': _selected,
                             'quantity': _qty,
                             'dueDate': formattedDate,
@@ -354,9 +367,14 @@ class _RequestBloodState extends State<RequestBlood> {
                             'location': new GeoPoint(widget._lat, widget._lng),
                             'address': _address,
                             'patientCondition': _patientCondition,
-                            'docURL': _docURL
+                            'docURL': _docURL,
+                            'permission':false,
+                            'active': true,
+                            'donorUid': '',
+                            'reqid': key,
+
                           };
-                          addData(BloodRequestDetails).then((result) {
+                          addData(BloodRequestDetails, key).then((result) {
                             dialogTrigger(context);
                           }).catchError((e) {
                             print(e);
@@ -382,6 +400,7 @@ class _RequestBloodState extends State<RequestBlood> {
     );
   }
 
+  //to show percentage doc uploaded
   Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
     stream: task.snapshotEvents,
     builder: (context, snapshot) {
