@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         //...
         // CUSTOMIZE showDatePicker Colors
         colorScheme: ColorScheme.light(primary: const Color(0xFFed1e25)),
-        //buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+        buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
     //
     //...
     ),

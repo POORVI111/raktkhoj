@@ -119,8 +119,11 @@ class _DonateState extends State<Donate> {
 
   Widget requests(BuildContext context) {
     return StreamBuilder(
-      // stream: FirebaseFirestore.instance
-      //     .collection("Blood Request Details").snapshots(),
+
+      /*stream: FirebaseFirestore.instance
+          .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
+          .where('active',isEqualTo:true)
+          .orderBy('dueDate').snapshots(),*/
       stream: getQuery().snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.data == null) {
@@ -153,6 +156,7 @@ class _DonateState extends State<Donate> {
 
   Widget RequestItem(DocumentSnapshot snapshot, BuildContext context){
 
+
     String name="";
     RequestModel _req = RequestModel.fromMap(snapshot.data());
     return StreamBuilder(
@@ -179,17 +183,6 @@ class _DonateState extends State<Donate> {
         }catch(e){
           name= 'Loading';
         }
-
-
-
-    //String name="";
-    //print('Reqid: ${_req.raiserUid.toString()}');
-    // FirebaseFirestore.instance.collection("User Details").doc(_req.raiserUid).get().then((value){
-    //   setState(() {
-    //   name=value.data()["Name"].toString();
-    //     print(name);
-    // });
-    // });
     return Column(
       children: [
         GestureDetector(
@@ -278,6 +271,7 @@ class _DonateState extends State<Donate> {
 
                                 SizedBox(height: 8),
                                 //                                     SizedBox(height: 12,),
+
                                 Row(
                                     children : <Widget>[
                                       Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,size: 12,),
@@ -290,6 +284,7 @@ class _DonateState extends State<Donate> {
                                             color: Colors.black),
                                       ),
                                     ]
+                   
                                 ),
                                 SizedBox(height: 5,),
                                 Row(
