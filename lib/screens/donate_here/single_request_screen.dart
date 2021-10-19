@@ -203,7 +203,7 @@ class SingleRequestScreen extends StatelessWidget {
                                     ],
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal:30,vertical: 0),
+                                    padding: const EdgeInsets.only(right: 10),
                                     child: Icon(
                                       Icons.directions,
                                       color: Colors.blue,
@@ -340,7 +340,7 @@ class SingleRequestScreen extends StatelessWidget {
     );
   }
 
-
+ //to return potential donor bloodGroups for a request
     List<String> possibleDonors(String s) {
       switch (s) {
         case 'A+':

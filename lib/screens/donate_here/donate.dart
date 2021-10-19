@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:raktkhoj/Colors.dart';
 import 'package:raktkhoj/model/request.dart';
+import 'package:raktkhoj/model/user.dart';
 import 'package:raktkhoj/screens/donate_here/percentage_widget.dart';
 import 'package:raktkhoj/screens/donate_here/single_request_screen.dart';
 
@@ -22,33 +23,26 @@ class Donate extends StatefulWidget {
 class _DonateState extends State<Donate> {
   double bannerHeight, listHeight, listPaddingTop;
   double cardContainerHeight, cardContainerTopPadding;
-  String name="";
+  //String name="";
+  int selectedSort;
+  List<String> requestConditonList=["normal","critical"];
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-
-  Future<User> getCurrentUser() async {
-    User currentUser;
-    currentUser = await _auth.currentUser;
-    return currentUser;
-  }
-
-  Future<Null> getRaiserName(RequestModel req) async
-  {
-    final firestoreInstance =  FirebaseFirestore.instance;
-    firestoreInstance.collection("User Details").doc(req.raiserUid).get().then((value) {
-
-      setState(() {
-        //print(value.data()['Name'].toString());
-        name=value.data()["Name"].toString();
-       // print('NAme $name');
-
-      });
-    });
-
-
-  }
+  // Future<Null> getRaiserName(RequestModel req) async
+  // {
+  //   final firestoreInstance =  FirebaseFirestore.instance;
+  //   firestoreInstance.collection("User Details").doc(req.raiserUid).get().then((value) {
+  //
+  //     setState(() {
+  //       //print(value.data()['Name'].toString());
+  //       name=value.data()["Name"].toString();
+  //      // print('NAme $name');
+  //
+  //     });
+  //   });
+  //
+  //
+  // }
 
   Future<List<RequestModel>> fetchAllRequests()  async {
     List<RequestModel> requestList = <RequestModel>[];
@@ -69,6 +63,7 @@ class _DonateState extends State<Donate> {
   @override
   void initState()  {
     super.initState();
+    selectedSort=0;
 
     //requestList=_firestore.collection("Blood Request Details").snapshots() as List<RequestModel>;
 
@@ -113,6 +108,7 @@ class _DonateState extends State<Donate> {
       new EdgeInsets.only(top: listPaddingTop, right: 10.0, left: 10.0),
       child: Column(
         children: <Widget>[
+          getScrollView(),
           rowRecentUpdates(),
           Expanded(child: requests(context))
         ],
@@ -123,18 +119,22 @@ class _DonateState extends State<Donate> {
 
   Widget requests(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection("Blood Request Details").snapshots(),
+      // stream: FirebaseFirestore.instance
+      //     .collection("Blood Request Details").snapshots(),
+      stream: getQuery().snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.data == null) {
+
           return Center(child: CircularProgressIndicator());
         }
+
 
 
         return ListView.builder(
 
           padding: EdgeInsets.all(10),
           //reverse: true,
+
 
           itemCount: snapshot.data.docs.length,
           itemBuilder: (context, index) {
@@ -152,9 +152,36 @@ class _DonateState extends State<Donate> {
 
 
   Widget RequestItem(DocumentSnapshot snapshot, BuildContext context){
-    //Message _message = Message.fromMap(snapshot.data());
-    RequestModel _req=RequestModel.fromMap(snapshot.data());
-    getRaiserName(_req);
+
+    String name="";
+    RequestModel _req = RequestModel.fromMap(snapshot.data());
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('User Details').doc(_req.raiserUid).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData)
+          return Padding(
+              padding: EdgeInsets.only(top: 50),
+              child: Row(
+                children: <Widget>[
+                  CircularProgressIndicator(
+                    valueColor:
+                    new AlwaysStoppedAnimation<Color>(
+                        kMainRed),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text('Loading Requests...')
+                ],
+              ));
+        try {
+          name = snapshot.data['Name'];
+        }catch(e){
+          name= 'Loading';
+        }
+
+
+
     //String name="";
     //print('Reqid: ${_req.raiserUid.toString()}');
     // FirebaseFirestore.instance.collection("User Details").doc(_req.raiserUid).get().then((value){
@@ -173,9 +200,9 @@ class _DonateState extends State<Donate> {
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(
-                vertical: 8.0, horizontal: 5),
+                vertical: 10.0, horizontal: 5),
             child: Container(
-                height: 150,
+                height: 160,
                 width: MediaQuery
                     .of(context)
                     .size
@@ -249,15 +276,22 @@ class _DonateState extends State<Donate> {
                               MainAxisAlignment.center,
                               children: <Widget>[
 
-                                SizedBox(height: 5,),
+                                SizedBox(height: 8),
                                 //                                     SizedBox(height: 12,),
-                                Text(name,
-                                //  getRaiserName(_req),
-                                  style: TextStyle(
-                                      fontSize: 12.5,
-                                      fontFamily: 'nunito',
-                                      color: Colors.black),
+                                Row(
+                                    children : <Widget>[
+                                      Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,size: 12,),
+                                      SizedBox(width: 3,),
+                                      Text(
+                                        'Name: $name',
+                                        style: TextStyle(
+                                            fontSize: 12.5,
+                                            fontFamily: 'nunito',
+                                            color: Colors.black),
+                                      ),
+                                    ]
                                 ),
+                                SizedBox(height: 5,),
                                 Row(
                                     children : <Widget>[
                                       Icon(FontAwesomeIcons.prescriptionBottle,color: kMainRed,size: 12,),
@@ -273,6 +307,7 @@ class _DonateState extends State<Donate> {
                                       ),
                                     ]
                                 ),
+                                SizedBox(height: 5,),
                                 Row(
                                     children : <Widget>[
                                       Icon(FontAwesomeIcons.clock,color: kMainRed,size: 12,),
@@ -290,7 +325,7 @@ class _DonateState extends State<Donate> {
                                 Expanded(child:
                                 Row(
                                     children : <Widget>[
-                                      Icon(Icons.location_on_sharp,color: kMainRed, size: 12),
+                                      Icon(FontAwesomeIcons.mapMarkedAlt,color: kMainRed, size: 12),
                                       SizedBox(width:3,),
                                       Expanded(child:
                                       Text(
@@ -309,19 +344,9 @@ class _DonateState extends State<Donate> {
                                 ),
                                 ),
 
-
-                                SizedBox(height: 5,),
-
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  /*width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width -250,*/
-
-                                  child: Row(
+                                  Row(
                                       children:<Widget> [
-                                        Icon(Icons.taxi_alert_sharp,color: kMainRed,size: 15,),
+                                        Icon(FontAwesomeIcons.ambulance,color: kMainRed,size: 15,),
                                         SizedBox(width: 5),
                                         Text('${_req.condition
                                             .toString()}',
@@ -336,7 +361,7 @@ class _DonateState extends State<Donate> {
                                       ]
                                   ),
 
-                                ),
+
 
                                 Row(
                                   children:[
@@ -378,7 +403,11 @@ class _DonateState extends State<Donate> {
 
       ],
     );
+      }
+
+    );
   }
+
 
   /*ListView listRecentUpdates() {
 
@@ -567,18 +596,29 @@ class _DonateState extends State<Donate> {
       crossAxisAlignment: CrossAxisAlignment.center,
       verticalDirection: VerticalDirection.down,
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Text("Recent Updates",
-              style: TextStyle(color: Colors.black87, fontSize: 17.0)),
+        InkWell(
+          onTap: (){
+            requestConditonList=["critical"];
+          },
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text("Emergencies",
+                style: TextStyle(color: kMainRed, fontSize: 17.0)),
+
+          ),
         ),
-        Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Text("View All",
-              style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0)),
+        InkWell(
+          onTap: (){
+            requestConditonList=["critical","normal"];
+          },
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text("View All",
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0)),
+          ),
         )
       ],
     );
@@ -644,4 +684,238 @@ class _DonateState extends State<Donate> {
       ),
     );
   }
+
+  Widget getScrollView(){
+    return SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.all(8),
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment:
+          MainAxisAlignment.spaceEvenly,
+          children: [
+            ChoiceChip(
+              selectedColor:
+                  kMainRed,
+              //Theme.of(context).accentColor,
+              elevation: 10,
+              onSelected: (value) {
+                setState(() {
+                  selectedSort = 0;
+                });
+              },
+              label: Text('All',
+                  style: TextStyle(
+                      color: kDarkerGrey)),
+              selected: selectedSort == 0,
+            ),
+            SizedBox(width: 5),
+            ChoiceChip(
+              selectedColor:
+                  kMainRed,
+              //Theme.of(context).accentColor,
+              elevation: 10,
+              onSelected: (value) {
+                setState(() {
+                  selectedSort = 1;
+                });
+              },
+              label: Text('A+',
+                  style: TextStyle(
+                      color:kDarkerGrey,)),
+              selected: selectedSort == 1,
+            ),
+            SizedBox(width: 5),
+            ChoiceChip(
+              selectedColor:
+              kMainRed,
+              elevation: 10,
+              onSelected: (value) {
+                setState(() {
+                  selectedSort = 2;
+                });
+              },
+              label: Text('A-',
+                  style: TextStyle(
+                      color: kDarkerGrey)),
+              selected: selectedSort == 2,
+            ),
+            SizedBox(width: 5),
+            ChoiceChip(
+              selectedColor:
+              kMainRed,
+              elevation: 10,
+              onSelected: (value) {
+                setState(() {
+                  selectedSort = 3;
+                });
+              },
+              label: Text('B+',
+                  style: TextStyle(
+                      color:kDarkerGrey)),
+              selected: selectedSort == 3,
+            ),
+            SizedBox(width: 5),
+            ChoiceChip(
+              selectedColor:
+              kMainRed,
+              elevation: 10,
+              onSelected: (value) {
+                setState(() {
+                  selectedSort = 4;
+                });
+              },
+              label: Text('B-',
+                  style: TextStyle(
+                      color:kDarkerGrey)),
+              selected: selectedSort == 4,
+            ),
+            SizedBox(width: 5),
+            ChoiceChip(
+              selectedColor:
+              kMainRed,
+              elevation: 10,
+              onSelected: (value) {
+                setState(() {
+                  selectedSort = 5;
+                });
+              },
+              label: Text('AB+',
+                  style: TextStyle(
+                      color:kDarkerGrey)),
+              selected: selectedSort == 5,
+            ),SizedBox(width: 5),
+            ChoiceChip(
+              selectedColor:
+              kMainRed,
+              elevation: 10,
+              onSelected: (value) {
+                setState(() {
+                  selectedSort = 6;
+                });
+              },
+              label: Text('AB-',
+                  style: TextStyle(
+                      color:kDarkerGrey)),
+              selected: selectedSort == 6,
+            ),SizedBox(width: 5),
+            ChoiceChip(
+              selectedColor:
+              kMainRed,
+              elevation: 10,
+              onSelected: (value) {
+                setState(() {
+                  selectedSort = 7;
+                });
+              },
+              label: Text('O+',
+                  style: TextStyle(
+                      color:kDarkerGrey)),
+              selected: selectedSort == 7,
+            ),SizedBox(width: 5),
+            ChoiceChip(
+              selectedColor:
+              kMainRed,
+              elevation: 10,
+              onSelected: (value) {
+                setState(() {
+                  selectedSort = 8;
+                });
+              },
+              label: Text('O-',
+                  style: TextStyle(
+                      color:kDarkerGrey)),
+              selected: selectedSort == 8,
+            ),
+          ],
+        ));
+  }
+
+  //get queries according to blood Group selected..
+  /*
+      0->all
+      1->A+
+      2->A-
+      3->B+
+      4->B-
+      5->AB+
+      6->AB-
+      7->O+
+      8->o-
+  */
+      //.where('bloodGroup',isEqualTo: "A+")
+
+  Query getQuery() {
+    switch (selectedSort) {
+      case 0:
+        return  FirebaseFirestore.instance
+            .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
+            .where('active',isEqualTo:true)
+            .orderBy('dueDate');
+        break;
+      case 1:
+        return FirebaseFirestore.instance
+            .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
+            .where('active',isEqualTo:true)
+            .where('bloodGroup',isEqualTo: "A+")
+            .orderBy('dueDate');
+        break;
+      case 2:
+        return FirebaseFirestore.instance
+            .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
+            .where('active',isEqualTo:true)
+            .where('bloodGroup',isEqualTo: "A-")
+            .orderBy('dueDate');
+        break;
+      case 3:
+        return FirebaseFirestore.instance
+            .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
+            .where('active',isEqualTo:true)
+            .where('bloodGroup',isEqualTo: "B+")
+            .orderBy('dueDate');
+        break;
+      case 4:
+        return FirebaseFirestore.instance
+            .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
+            .where('active',isEqualTo:true)
+            .where('bloodGroup',isEqualTo: "B-")
+            .orderBy('dueDate');
+        break;
+      case 5:
+        return FirebaseFirestore.instance
+            .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
+            .where('active',isEqualTo:true)
+            .where('bloodGroup',isEqualTo: "AB+")
+            .orderBy('dueDate');
+        break;
+      case 6:
+        return FirebaseFirestore.instance
+            .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
+            .where('active',isEqualTo:true)
+            .where('bloodGroup',isEqualTo: "AB-")
+            .orderBy('dueDate');
+        break;
+      case 7:
+        return FirebaseFirestore.instance
+            .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
+            .where('active',isEqualTo:true)
+            .where('bloodGroup',isEqualTo: "O+")
+            .orderBy('dueDate');
+        break;
+      case 8:
+        return FirebaseFirestore.instance
+            .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
+            .where('active',isEqualTo:true)
+            .where('bloodGroup',isEqualTo: "O-")
+            .orderBy('dueDate');
+        break;
+    }
+    debugPrint('Unexpected sorting selected');
+    return null;
+  }
 }
+
+
+
+
+
