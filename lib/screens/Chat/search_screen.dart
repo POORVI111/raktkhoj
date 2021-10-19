@@ -112,7 +112,7 @@ class _SearchScreenState extends State<SearchScreen> {
 //returns list view of queried users
   searchUserList(String query) {
     final List<UserModel> suggestionList = query.isEmpty
-    ? []
+    ? (userList!=null? userList:[])
     : userList != null?
     userList.where((UserModel user) {
     if (query != null || user.email != null || user.name != null) {

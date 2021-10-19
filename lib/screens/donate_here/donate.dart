@@ -23,35 +23,26 @@ class Donate extends StatefulWidget {
 class _DonateState extends State<Donate> {
   double bannerHeight, listHeight, listPaddingTop;
   double cardContainerHeight, cardContainerTopPadding;
-  String name="";
+  //String name="";
   int selectedSort;
   List<String> requestConditonList=["normal","critical"];
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-
-  Future<User> getCurrentUser() async {
-    User currentUser;
-    currentUser = await _auth.currentUser;
-    return currentUser;
-  }
-
-  Future<Null> getRaiserName(RequestModel req) async
-  {
-    final firestoreInstance =  FirebaseFirestore.instance;
-    firestoreInstance.collection("User Details").doc(req.raiserUid).get().then((value) {
-
-      setState(() {
-        //print(value.data()['Name'].toString());
-        name=value.data()["Name"].toString();
-       // print('NAme $name');
-
-      });
-    });
-
-
-  }
+  // Future<Null> getRaiserName(RequestModel req) async
+  // {
+  //   final firestoreInstance =  FirebaseFirestore.instance;
+  //   firestoreInstance.collection("User Details").doc(req.raiserUid).get().then((value) {
+  //
+  //     setState(() {
+  //       //print(value.data()['Name'].toString());
+  //       name=value.data()["Name"].toString();
+  //      // print('NAme $name');
+  //
+  //     });
+  //   });
+  //
+  //
+  // }
 
   Future<List<RequestModel>> fetchAllRequests()  async {
     List<RequestModel> requestList = <RequestModel>[];
@@ -128,6 +119,7 @@ class _DonateState extends State<Donate> {
 
   Widget requests(BuildContext context) {
     return StreamBuilder(
+
       /*stream: FirebaseFirestore.instance
           .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
           .where('active',isEqualTo:true)
@@ -163,18 +155,34 @@ class _DonateState extends State<Donate> {
 
 
   Widget RequestItem(DocumentSnapshot snapshot, BuildContext context){
-    //Message _message = Message.fromMap(snapshot.data());
-    RequestModel _req=RequestModel.fromMap(snapshot.data());
-    getRaiserName(_req);
 
-    //String name="";
-    //print('Reqid: ${_req.raiserUid.toString()}');
-    // FirebaseFirestore.instance.collection("User Details").doc(_req.raiserUid).get().then((value){
-    //   setState(() {
-    //   name=value.data()["Name"].toString();
-    //     print(name);
-    // });
-    // });
+
+    String name="";
+    RequestModel _req = RequestModel.fromMap(snapshot.data());
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('User Details').doc(_req.raiserUid).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData)
+          return Padding(
+              padding: EdgeInsets.only(top: 50),
+              child: Row(
+                children: <Widget>[
+                  CircularProgressIndicator(
+                    valueColor:
+                    new AlwaysStoppedAnimation<Color>(
+                        kMainRed),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text('Loading Requests...')
+                ],
+              ));
+        try {
+          name = snapshot.data['Name'];
+        }catch(e){
+          name= 'Loading';
+        }
     return Column(
       children: [
         GestureDetector(
@@ -185,9 +193,9 @@ class _DonateState extends State<Donate> {
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(
-                vertical: 8.0, horizontal: 5),
+                vertical: 10.0, horizontal: 5),
             child: Container(
-                height: 150,
+                height: 160,
                 width: MediaQuery
                     .of(context)
                     .size
@@ -261,15 +269,24 @@ class _DonateState extends State<Donate> {
                               MainAxisAlignment.center,
                               children: <Widget>[
 
-                                SizedBox(height: 5,),
+                                SizedBox(height: 8),
                                 //                                     SizedBox(height: 12,),
-                                Text(
-                                  name,
-                                  style: TextStyle(
-                                      fontSize: 12.5,
-                                      fontFamily: 'nunito',
-                                      color: Colors.black),
+
+                                Row(
+                                    children : <Widget>[
+                                      Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,size: 12,),
+                                      SizedBox(width: 3,),
+                                      Text(
+                                        'Name: $name',
+                                        style: TextStyle(
+                                            fontSize: 12.5,
+                                            fontFamily: 'nunito',
+                                            color: Colors.black),
+                                      ),
+                                    ]
+                   
                                 ),
+                                SizedBox(height: 5,),
                                 Row(
                                     children : <Widget>[
                                       Icon(FontAwesomeIcons.prescriptionBottle,color: kMainRed,size: 12,),
@@ -285,6 +302,7 @@ class _DonateState extends State<Donate> {
                                       ),
                                     ]
                                 ),
+                                SizedBox(height: 5,),
                                 Row(
                                     children : <Widget>[
                                       Icon(FontAwesomeIcons.clock,color: kMainRed,size: 12,),
@@ -302,7 +320,7 @@ class _DonateState extends State<Donate> {
                                 Expanded(child:
                                 Row(
                                     children : <Widget>[
-                                      Icon(Icons.location_on_sharp,color: kMainRed, size: 12),
+                                      Icon(FontAwesomeIcons.mapMarkedAlt,color: kMainRed, size: 12),
                                       SizedBox(width:3,),
                                       Expanded(child:
                                       Text(
@@ -321,19 +339,9 @@ class _DonateState extends State<Donate> {
                                 ),
                                 ),
 
-
-                                SizedBox(height: 5,),
-
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  /*width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width -250,*/
-
-                                  child: Row(
+                                  Row(
                                       children:<Widget> [
-                                        Icon(Icons.taxi_alert_sharp,color: kMainRed,size: 15,),
+                                        Icon(FontAwesomeIcons.ambulance,color: kMainRed,size: 15,),
                                         SizedBox(width: 5),
                                         Text('${_req.condition
                                             .toString()}',
@@ -348,7 +356,7 @@ class _DonateState extends State<Donate> {
                                       ]
                                   ),
 
-                                ),
+
 
                                 Row(
                                   children:[
@@ -390,7 +398,11 @@ class _DonateState extends State<Donate> {
 
       ],
     );
+      }
+
+    );
   }
+
 
   /*ListView listRecentUpdates() {
 
