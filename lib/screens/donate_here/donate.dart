@@ -8,6 +8,7 @@ import 'package:raktkhoj/Colors.dart';
 import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/model/user.dart';
 import 'package:raktkhoj/screens/donate_here/percentage_widget.dart';
+import 'package:raktkhoj/screens/donate_here/search_request.dart';
 import 'package:raktkhoj/screens/donate_here/single_request_screen.dart';
 
 
@@ -89,6 +90,7 @@ class _DonateState extends State<Donate> {
         children: <Widget>[
           new Column(
             children: <Widget>[
+              //searchButton(context),
               topBanner(context),
               Expanded(child: bodyBloodRequestList(context))
             ],
@@ -100,6 +102,17 @@ class _DonateState extends State<Donate> {
     );
   }
 
+  Widget searchButton(BuildContext context)
+  {
+
+           IconButton(icon: Icon(Icons.search),color:kMainRed,
+           onPressed:() async{
+               Navigator.of(context).push(MaterialPageRoute(
+               builder: (_) => SearchRequest(),
+               ));
+}         );
+  }
+
   Container bodyBloodRequestList(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -108,6 +121,7 @@ class _DonateState extends State<Donate> {
       new EdgeInsets.only(top: listPaddingTop, right: 10.0, left: 10.0),
       child: Column(
         children: <Widget>[
+          //searchButton(context),
           getScrollView(),
           rowRecentUpdates(),
           Expanded(child: requests(context))
@@ -141,8 +155,8 @@ class _DonateState extends State<Donate> {
 
           itemCount: snapshot.data.docs.length,
           itemBuilder: (context, index) {
-            //String name=
-            return RequestItem(snapshot.data.docs[index], context);
+
+            return RequestItem(snapshot.data.docs[index], context );
           },
         );
       },
@@ -630,14 +644,29 @@ class _DonateState extends State<Donate> {
   }
 
   Container bannerContainer() {
-    return Container(
-        alignment: Alignment.topCenter,
-        padding: EdgeInsets.only(top: 50.0, right: 20.0, left: 20.0),
-        child: Text(
-          "Blood Requests",
-          style: TextStyle(
-              color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold),
-        ));
+    return
+          Container(
+            alignment: Alignment.topCenter,
+            padding: EdgeInsets.only(top: 50.0, right: 10.0, left: 20.0),
+            child: Row(
+              children:[
+                SizedBox(width: 70,),
+                Text(
+                  "Blood Requests",
+                  style: TextStyle(
+                      color: Colors.white, fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(width:40),
+                IconButton(icon: Icon(Icons.search),color:Colors.white,
+                    onPressed:() async{
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => SearchRequest(),
+                      ));
+                    }         )
+              ]
+            ));
+
+
   }
 
   Container cardContainer(BuildContext context) {
