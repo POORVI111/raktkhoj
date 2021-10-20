@@ -33,12 +33,12 @@ class _MapViewState extends State<MapView> {
   var lng = [];
   String _name;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+
   @override
   void initState() {
     _child = RippleIndicator("Getting Location");
-   // getIcon();
+    // getIcon();
     getCurrentLocation();
-    populateClients();
     super.initState();
   }
 
@@ -57,8 +57,8 @@ class _MapViewState extends State<MapView> {
   }
 
   //get all requests from db and show in map
-  populateClients() {
-    FirebaseFirestore.instance
+  Future<Null> populateClients() async {
+   await  FirebaseFirestore.instance
         .collection('Blood Request Details')
         .get()
         .then((docs) {
@@ -71,7 +71,7 @@ class _MapViewState extends State<MapView> {
   }
 
   //marker function
-  void initMarker(request, requestId) {
+   initMarker(request, requestId) {
     var markerIdVal = requestId;
     final MarkerId markerId = MarkerId(markerIdVal);
     // creating a new MARKER
@@ -138,7 +138,7 @@ class _MapViewState extends State<MapView> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left:12.0,right: 12.0),
+                        padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                         child: Text(
                           request['address'],
                         ),
@@ -159,8 +159,9 @@ class _MapViewState extends State<MapView> {
                           ),
                           RaisedButton(
                             onPressed: () {
-                              String message="Hello $_name, I am a potential blood donor willing to help you. Reply back if you still need blood.";
-                              UrlLauncher.launch("sms:${request['phone']}?body=$message");
+                              String message = "Hello $_name, I am a potential blood donor willing to help you. Reply back if you still need blood.";
+                              UrlLauncher.launch(
+                                  "sms:${request['phone']}?body=$message");
                             },
                             textColor: Colors.white,
                             padding: EdgeInsets.only(left: 5.0, right: 5.0),
@@ -206,8 +207,8 @@ class _MapViewState extends State<MapView> {
       _child = mapWidget();
     });
 
-    print(currentPosition.latitude);
-    print(currentPosition.longitude);
+    //print(currentPosition.latitude);
+    //print(currentPosition.longitude);
   }
 
   //get icon for home marker
@@ -246,46 +247,62 @@ class _MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     if (isMapCreated) {
-     //getJsonFile('Assets/customStyle').then(setmapstyle);
+      //getJsonFile('Assets/customStyle').then(setmapstyle);
     }
     return _child;
   }
 
   Widget mapWidget() {
-    return Stack(
-      children: <Widget>[
-        GoogleMap(
-          mapType: MapType.normal,
-          initialCameraPosition: CameraPosition(
-            target: LatLng(currentPosition.latitude, currentPosition.longitude),
-            zoom: 18.0,
-          ),
-          markers: Set<Marker>.of(markers.values),
-          onMapCreated: (GoogleMapController controller) {
-            _controller = controller;
-            isMapCreated = true;
-           // getJsonFile('Assets/customStyle').then(setmapstyle);
-          },
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: FloatingActionButton.extended(
-              backgroundColor: kMainRed,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => RequestBlood(
-                            currentPosition.latitude, currentPosition.longitude)));
-              },
-              icon: Icon(FontAwesomeIcons.burn),
-              label: Text("Request Blood".tr),
-            ),
-          ),
-        )
-      ],
+    return FutureBuilder(
+        future: populateClients(),
+        builder: (context, snapshot) {
+          try {
+            return Stack(
+              children: <Widget>[
+                GoogleMap(
+                  mapType: MapType.normal,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                        currentPosition.latitude, currentPosition.longitude),
+                    zoom: 18.0,
+                  ),
+                  markers: Set<Marker>.of(markers.values),
+                  myLocationEnabled: true,
+                  zoomControlsEnabled: true,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller = controller;
+                    isMapCreated = true;
+                    // getJsonFile('Assets/customStyle').then(setmapstyle);
+                  },
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FloatingActionButton.extended(
+                      backgroundColor: kMainRed,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    RequestBlood(
+                                        currentPosition.latitude,
+                                        currentPosition.longitude)));
+                      },
+                      icon: Icon(FontAwesomeIcons.burn),
+                      label: Text("Request Blood".tr),
+                    ),
+                  ),
+                )
+              ],
+            );
+          }
+          catch(e) {
+            return RippleIndicator("");
+          }
+
+        }
     );
   }
 }

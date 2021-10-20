@@ -7,6 +7,9 @@ import 'package:raktkhoj/Colors.dart';
 import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/model/user.dart';
 import 'package:raktkhoj/screens/Chat/chat_screen.dart';
+import 'package:raktkhoj/screens/donate_here/request_direction.dart';
+import 'package:raktkhoj/user_oriented_pages/profile.dart';
+import 'package:share/share.dart';
 import '../../Constants.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
@@ -40,7 +43,15 @@ class SingleRequestScreen extends StatelessWidget {
               icon: Icon(
                 FontAwesomeIcons.shareAlt,
               ),
-              onPressed: () {},
+              onPressed: () async {
+                await Share.share(
+                  '${name} needs ${request.bloodGroup} '
+                      'blood by ${request.dueDate}.\n'
+                      'You can donate by visiting at '
+                      '${request.address}.\n\n'
+                      'Contact +91${request.phone} for more info.',
+                );
+              },
             ),
             IconButton(
               icon: Icon(
@@ -62,7 +73,7 @@ class SingleRequestScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     left: 0, right: 0, top: 20),
                 child: Container(
-                  height: MediaQuery.of(context).size.height/3,
+                  height: MediaQuery.of(context).size.height/2,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                           colors: [Color(0xFFffffff),Color(0xFFFfffff), ],
@@ -180,6 +191,70 @@ class SingleRequestScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Icon(
+                                FontAwesomeIcons.prescriptionBottle,
+                                color: Color(0xFFBC002D),
+                                size: 22,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Quantity(L)',
+                                    style: kLabelTextStyle,
+                                  ),
+                                  SizedBox(height: 6,),
+                                  Text(request.qty,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    style: kNumberTextStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            SizedBox(width: 15,),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Icon(
+                                FontAwesomeIcons.ambulance,
+                                color: Color(0xFFBC002D),
+                                size: 22,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Condition',
+                                    style: kLabelTextStyle,
+                                  ),
+                                  SizedBox(height: 6,),
+                                  Text(request.condition,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    style: kNumberTextStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            SizedBox(width: 15,),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Icon(
                                 FontAwesomeIcons.mapMarkedAlt,
                                 color: Color(0xFFBC002D),
                                 size: 22,
@@ -204,10 +279,16 @@ class SingleRequestScreen extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(right: 10),
-                                    child: Icon(
-                                      Icons.directions,
-                                      color: Colors.blue,
-                                      size: 22,
+                                    child: IconButton(
+                                        icon: Icon(Icons.directions),
+                                        color: Theme.of(context)
+                                            .primaryColor,
+                                        onPressed:() async {
+                                          await Navigator.push(context,MaterialPageRoute(
+                                              builder: (context) =>
+                                                  RequestDirection(location: request.location, address: request.address)));
+                                          }
+
                                     ),
                                   ),
                                 ],

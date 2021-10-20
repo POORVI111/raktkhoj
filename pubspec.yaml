@@ -62,6 +62,9 @@ dependencies:
   provider:
   emoji_picker:
   file_picker:
+  share:
+
+
 
 
 dev_dependencies:
