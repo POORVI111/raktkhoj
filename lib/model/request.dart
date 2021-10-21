@@ -8,6 +8,7 @@ import 'package:raktkhoj/user_oriented_pages/profile.dart';
 
 class RequestModel{
     String reqid;
+    String patientName;
     String raiserUid;
     String donorUid;
     String qty;
@@ -20,14 +21,16 @@ class RequestModel{
     bool permission;
     bool active;
 
+
     RequestModel({
-        this.raiserUid, this.qty, this.phone, this.condition,
+        this.raiserUid, this.qty, this.phone, this.condition,this.patientName,
         this.dueDate, this.location, this.bloodGroup, this.address, this.active, this.permission, this.donorUid, this.reqid
     });
 
 
     Map<String,dynamic> toMap(RequestModel requset) {
         var data = Map<String, dynamic>();
+        data['patientName'] = requset.patientName;
         data['raiserUid'] = requset.raiserUid;
         data['quantity'] = requset.qty;
         data['phone'] = requset.phone;
@@ -44,6 +47,7 @@ class RequestModel{
     }
 
     RequestModel.fromMap(Map<String, dynamic> data){
+        this.patientName=data['patientName'];
         this.raiserUid=data['raiserUid'];
         this.qty=data['quantity'] ;
         this.phone=data['phone'];

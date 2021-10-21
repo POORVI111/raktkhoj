@@ -38,6 +38,7 @@ class _RequestBloodState extends State<RequestBlood> {
   String _address;
   String _patientCondition;
   String _userID;
+  String _name;
   bool _categorySelected = false;
   DateTime selectedDate = DateTime.now();
   var formattedDate;
@@ -231,7 +232,7 @@ class _RequestBloodState extends State<RequestBlood> {
                               ),
                             ),
                             SizedBox(
-                              height: 10.0,
+                              height: 5.0,
                             ),
                             Text(
                               _selected,
@@ -245,7 +246,23 @@ class _RequestBloodState extends State<RequestBlood> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(18.0),
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            hintText: 'Patient Name'.tr,
+                            icon: Icon(
+                              FontAwesomeIcons.hospitalUser,
+                              color: kMainRed,
+                            ),
+                          ),
+                          validator: (value) => value.isEmpty
+                              ? "Name field can't be empty".tr
+                              : null,
+                          onSaved: (value) => _name = value,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           decoration: InputDecoration(
                             hintText: 'Quantity(L)'.tr,
@@ -281,11 +298,11 @@ class _RequestBloodState extends State<RequestBlood> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(18.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: DropDownField(
                           controller: TextEditingController(),
                           itemsVisibleInDropdown: 2,
-                          icon: Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,),
+                          icon: Icon(FontAwesomeIcons.ambulance,color: kMainRed,),
                           hintText: "Patient Condition".tr,
                           hintStyle: TextStyle(color: Colors.black54, fontSize: 15.0),
                           enabled: true,
@@ -297,7 +314,7 @@ class _RequestBloodState extends State<RequestBlood> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(18.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           decoration: InputDecoration(
                             hintText: 'Phone Number'.tr,
@@ -359,6 +376,7 @@ class _RequestBloodState extends State<RequestBlood> {
                           var time = DateTime.now().millisecondsSinceEpoch;
                           String key = time.toString();
                           final Map<String, dynamic> BloodRequestDetails = {
+                            'patientName': _name,
                             'raiserUid': _userID,
                             'bloodGroup': _selected,
                             'quantity': _qty,
@@ -372,6 +390,7 @@ class _RequestBloodState extends State<RequestBlood> {
                             'active': true,
                             'donorUid': '',
                             'reqid': key,
+                            'extra': '',
 
                           };
                           addData(BloodRequestDetails, key).then((result) {

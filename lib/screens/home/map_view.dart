@@ -31,7 +31,7 @@ class _MapViewState extends State<MapView> {
   Uint8List markerIcon;
   var lat = [];
   var lng = [];
-  String _name;
+  // String _name;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   @override
@@ -42,19 +42,19 @@ class _MapViewState extends State<MapView> {
     super.initState();
   }
 
-  Future<Null> _fetchrequestName(userId) async {
-    Map<String, dynamic> _userInfo;
-    DocumentSnapshot _snapshot = await FirebaseFirestore.instance
-        .collection('User Details')
-        .doc(userId)
-        .get();
-
-    _userInfo = _snapshot.data();
-
-    this.setState(() {
-      _name = _userInfo['Name'];
-    });
-  }
+  // Future<Null> _fetchrequestName(userId) async {
+  //   Map<String, dynamic> _userInfo;
+  //   DocumentSnapshot _snapshot = await FirebaseFirestore.instance
+  //       .collection('User Details')
+  //       .doc(userId)
+  //       .get();
+  //
+  //   _userInfo = _snapshot.data();
+  //
+  //   this.setState(() {
+  //     _name = _userInfo['Name'];
+  //   });
+  // }
 
   //get all requests from db and show in map
   Future<Null> populateClients() async {
@@ -81,7 +81,7 @@ class _MapViewState extends State<MapView> {
         LatLng(request['location'].latitude, request['location'].longitude),
         onTap: () async {
           CustomDialogs.progressDialog(context: context, message: 'Fetching');
-          await _fetchrequestName(request['raiserUid']);
+         // await _fetchrequestName(request['raiserUid']);
           Navigator.pop(context);
           return showModalBottomSheet(
               backgroundColor: Colors.transparent,
@@ -119,7 +119,7 @@ class _MapViewState extends State<MapView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                _name,
+                                request['patientName'],
                                 style: TextStyle(
                                     fontSize: 18.0, color: Colors.black87),
                               ),
@@ -159,7 +159,7 @@ class _MapViewState extends State<MapView> {
                           ),
                           RaisedButton(
                             onPressed: () {
-                              String message = "Hello $_name, I am a potential blood donor willing to help you. Reply back if you still need blood.";
+                              String message = "Hello ${request['patientName']}, I am a potential blood donor willing to help you. Reply back if you still need blood.";
                               UrlLauncher.launch(
                                   "sms:${request['phone']}?body=$message");
                             },

@@ -17,7 +17,6 @@ import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class SingleRequestScreen extends StatelessWidget {
   final RequestModel request;
-  final String name;
   Future<UserModel> getUserDetailsById(id) async {
     try {
       DocumentSnapshot documentSnapshot =
@@ -29,7 +28,7 @@ class SingleRequestScreen extends StatelessWidget {
       return null;
     }
   }
-  const SingleRequestScreen({Key key, this.request, this.name}) : super(key: key);
+  const SingleRequestScreen({Key key, this.request}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class SingleRequestScreen extends StatelessWidget {
               ),
               onPressed: () async {
                 await Share.share(
-                  '${name} needs ${request.bloodGroup} '
+                  '${request.patientName} needs ${request.bloodGroup} '
                       'blood by ${request.dueDate}.\n'
                       'You can donate by visiting at '
                       '${request.address}.\n\n'
@@ -114,7 +113,7 @@ class SingleRequestScreen extends StatelessWidget {
                                     style: kLabelTextStyle,
                                   ),
                                   SizedBox(height: 3,),
-                                  Text(name,
+                                  Text(request.patientName,
                                     style: kNumberTextStyle,
                                   ),
                                 ],
@@ -368,7 +367,7 @@ class SingleRequestScreen extends StatelessWidget {
                     ),
                     RaisedButton(
                       onPressed: () {
-                        String message="Hello $name, I am a potential blood donor willing to help you. Reply back if you still need blood.";
+                        String message="Hello ${request.patientName}, I am a potential blood donor willing to help you. Reply back if you still need blood.";
                         UrlLauncher.launch("sms:${request.phone}?body=$message");
                       },
                       textColor: Colors.white,

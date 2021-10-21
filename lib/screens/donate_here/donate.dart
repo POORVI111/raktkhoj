@@ -173,30 +173,30 @@ class _DonateState extends State<Donate> {
 
     String name="";
     RequestModel _req = RequestModel.fromMap(snapshot.data());
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('User Details').doc(_req.raiserUid).snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Padding(
-              padding: EdgeInsets.only(top: 50),
-              child: Row(
-                children: <Widget>[
-                  CircularProgressIndicator(
-                    valueColor:
-                    new AlwaysStoppedAnimation<Color>(
-                        kMainRed),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text('Loading Requests...')
-                ],
-              ));
-        try {
-          name = snapshot.data['Name'];
-        }catch(e){
-          name= 'Loading';
-        }
+    // return StreamBuilder(
+    //   stream: FirebaseFirestore.instance.collection('User Details').doc(_req.raiserUid).snapshots(),
+    //   builder: (context, snapshot) {
+    //     if (!snapshot.hasData)
+    //       return Padding(
+    //           padding: EdgeInsets.only(top: 50),
+    //           child: Row(
+    //             children: <Widget>[
+    //               CircularProgressIndicator(
+    //                 valueColor:
+    //                 new AlwaysStoppedAnimation<Color>(
+    //                     kMainRed),
+    //               ),
+    //               SizedBox(
+    //                 width: 15,
+    //               ),
+    //               Text('Loading Requests...')
+    //             ],
+    //           ));
+    //     try {
+    //       name = snapshot.data['Name'];
+    //     }catch(e){
+    //       name= 'Loading';
+    //     }
     return Column(
       children: [
         GestureDetector(
@@ -291,7 +291,7 @@ class _DonateState extends State<Donate> {
                                       Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,size: 12,),
                                       SizedBox(width: 3,),
                                       Text(
-                                        'Name: $name',
+                                        'Name: ${_req.patientName}',
                                         style: TextStyle(
                                             fontSize: 12.5,
                                             fontFamily: 'nunito',
@@ -377,7 +377,7 @@ class _DonateState extends State<Donate> {
                                     SizedBox(width:175),
                                     IconButton(onPressed: (){
                                       Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (_) => SingleRequestScreen(request: _req,name: name,),
+                                        builder: (_) => SingleRequestScreen(request: _req),
                                       ));
                                     }, icon:
                                         Icon(Icons.east_outlined,color: kMainRed,)),],
@@ -412,9 +412,9 @@ class _DonateState extends State<Donate> {
 
       ],
     );
-      }
+      // }
 
-    );
+     // );
   }
 
 
