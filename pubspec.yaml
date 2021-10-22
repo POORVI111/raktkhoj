@@ -64,6 +64,7 @@ dependencies:
   emoji_picker:
   file_picker:
   share:
+  firebase_dynamic_links:
 
 
 
