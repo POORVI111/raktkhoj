@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:raktkhoj/Colors.dart';
 import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/model/user.dart';
 import 'package:raktkhoj/screens/Chat/chat_screen.dart';
+import 'package:raktkhoj/screens/donate_here/dialog_box_bg_error.dart';
 import 'package:raktkhoj/screens/donate_here/request_direction.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 import 'package:share/share.dart';
@@ -30,8 +32,30 @@ class SingleRequestScreen extends StatelessWidget {
   }
   const SingleRequestScreen({Key key, this.request}) : super(key: key);
 
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
+
+    String donorBloodGroup="";
+    var valEnd;
+    User currentUser;
+    String donorName="";
+    String profilePhoto="";
+
+    currentUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid).get()
+        .then((value) {
+      valEnd=value.data()["Last Donation"];
+      print(valEnd);
+      donorBloodGroup=value.data()["BloodGroup"];
+      donorName=value.data()["Name"];
+      profilePhoto=value.data()["ProfilePhoto"];
+    });
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
@@ -280,8 +304,8 @@ class SingleRequestScreen extends StatelessWidget {
                                     padding: const EdgeInsets.only(right: 10),
                                     child: IconButton(
                                         icon: Icon(Icons.directions),
-                                        color: Theme.of(context)
-                                            .primaryColor,
+                                        color: Colors.green
+                                            ,
                                         onPressed:() async {
                                           await Navigator.push(context,MaterialPageRoute(
                                               builder: (context) =>
@@ -399,6 +423,97 @@ class SingleRequestScreen extends StatelessWidget {
                   ),
                   onPressed: () async {
 
+                    if(valEnd == null) {
+                      List<String> canDonateBloodSet=possibleDonors(request.bloodGroup.toString());
+                      if(canDonateBloodSet.contains(donorBloodGroup)){
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              Future.delayed(Duration(seconds: 2), () {
+                                Navigator.of(context).pop();
+                              });
+                              return AlertDialog(
+                                content: Text("Fit and Ready to donate",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 17)),
+                              );
+                            });
+                            FirebaseFirestore.instance.collection("Blood Request Details").doc(request.reqid)
+                              .update({"donorUid" : currentUser.uid , "active" : false});
+                            FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid)
+                                .update({"Last Donation":DateTime.now()});
+                      }else{
+                        //to show blood group incompatibility error
+                        //print(donorBloodGroup);
+                        return showDialog(context: context,
+                            builder: (BuildContext context){
+                              return CustomDialogBox(
+                                title: "Hey ${donorName} !!",
+                                descriptions: "You cannot donate to patients with ${request.bloodGroup} blood group .Please donate to compatible request raisers",
+                                text: "Ok",
+                                img: profilePhoto,
+                              );
+                            }
+                        );
+                      }
+
+                      }else {
+                      //valEnd.add(Duration(days: 2));
+                      var presentDate = DateTime.now();
+                      var lastDate=valEnd.toDate();
+                      var dur = lastDate.difference(presentDate);
+                      if (dur.inDays<2) {
+                        //to show error dialog box
+
+                        String cooldown = (2-dur.inDays).toString();
+                        return showDialog(context: context,
+                            builder: (BuildContext context) {
+                              return CustomDialogBox(
+                                title: "Hey $donorName !!",
+                                descriptions: "Your cooldown peroid is not over. Please try after $cooldown days .",
+                                text: "Ok",
+                                img: profilePhoto,
+                              );
+                            }
+                        );
+                      } else {
+                        List<String> canDonateBloodSet = possibleDonors(
+                            request.bloodGroup.toString());
+                        if (canDonateBloodSet.contains(donorBloodGroup)) {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  Future.delayed(Duration(seconds: 2), () {
+                                    Navigator.of(context).pop();
+                                  });
+                                  return AlertDialog(
+                                    content: Text("Fit and Ready to donate",
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 17)),
+                                  );
+                                });
+                            FirebaseFirestore.instance.collection("Blood Request Details").doc(request.reqid)
+                                .update({"donorUid" : currentUser.uid , "active" : false});
+                            FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid)
+                                .update({"Last Donation":DateTime.now()});
+
+                        } else {
+                          //to show blood group incompatibility error
+                          print(donorBloodGroup);
+                          return showDialog(context: context,
+                              builder: (BuildContext context) {
+                                return CustomDialogBox(
+                                  title: "Hey $donorName !!",
+                                  descriptions: "You cannot donate to patients with ${request
+                                      .bloodGroup} .Please donate to compatible request raisers",
+                                  text: "Ok",
+                                  img: profilePhoto,
+                                );
+                              }
+                          );
+                        }
+                      }
+                    }
                   },
                   child: Center(
                     child: Text(
@@ -449,6 +564,11 @@ class SingleRequestScreen extends StatelessWidget {
           return [];
       }
   }
+
+
+
+
+
 }
 
 class _MarkFulfilledBtn extends StatefulWidget {

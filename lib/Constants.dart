@@ -8,6 +8,11 @@ const OPENSERVICE_API_KEY='5b3ce3597851110001cf624803744a6a145c45c3b2cae63b3e67d
 const Color colour1=Colors.red;
 const Color colour2=Colors.pink;
 
+class Constants{
+  Constants._();
+  static const double padding =20;
+  static const double avatarRadius =45;
+}
 TextStyle kLabelTextStyle=GoogleFonts.montserrat(
   fontSize: 12.0,
   color: Colors.black,

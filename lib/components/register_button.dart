@@ -63,6 +63,7 @@ class RegisterButton extends StatelessWidget {
                     'Weight':50,
                     'Age':25,
                     'ProfilePhoto':'',
+                    'Last Donation':DateTime.now().subtract(Duration(days:3)),
                 });
               });
             }
