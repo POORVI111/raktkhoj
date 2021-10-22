@@ -117,11 +117,12 @@ class _SearchRequestState extends State<SearchRequest> {
       if (query != null || _req.address != null || _req.active == true) {
         String _getAddressname = _req.address.toLowerCase();
         String _query = query.toLowerCase();
-        String _getName = "";
-        FirebaseFirestore.instance.collection("User Details").doc(_req.raiserUid).get().then((value){
-          _getName=value.data()["Name"];
-      });
-        _getName=_getName.toLowerCase();
+        String _getName=  _req.patientName.toLowerCase();
+      //   String _getName = "";
+      //   FirebaseFirestore.instance.collection("User Details").doc(_req.raiserUid).get().then((value){
+      //     _getName=value.data()["Name"];
+      // });
+      //   _getName=_getName.toLowerCase();
 
         bool matchesUsername = _getAddressname.contains(_query);
         bool matchesName = _getName.contains(_query);
@@ -161,6 +162,7 @@ class _SearchRequestState extends State<SearchRequest> {
       itemBuilder: (context, index) {
         String name="";
         RequestModel _req= RequestModel(
+            patientName: suggestionList[index].patientName,
             raiserUid:suggestionList[index].raiserUid,
             qty:suggestionList[index].qty,
             phone:suggestionList[index].phone,
@@ -175,30 +177,30 @@ class _SearchRequestState extends State<SearchRequest> {
             donorUid:suggestionList[index].donorUid
         );
 
-        return StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('User Details').doc(_req.raiserUid).snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData)
-                return Padding(
-                    padding: EdgeInsets.only(top: 50),
-                    child: Row(
-                      children: <Widget>[
-                        CircularProgressIndicator(
-                          valueColor:
-                          new AlwaysStoppedAnimation<Color>(
-                              kMainRed),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Text('Loading Requests...')
-                      ],
-                    ));
-              try {
-                name = snapshot.data['Name'];
-              }catch(e){
-                name= 'Loading';
-              }
+        // return StreamBuilder(
+        //     stream: FirebaseFirestore.instance.collection('User Details').doc(_req.raiserUid).snapshots(),
+        //     builder: (context, snapshot) {
+        //       if (!snapshot.hasData)
+        //         return Padding(
+        //             padding: EdgeInsets.only(top: 50),
+        //             child: Row(
+        //               children: <Widget>[
+        //                 CircularProgressIndicator(
+        //                   valueColor:
+        //                   new AlwaysStoppedAnimation<Color>(
+        //                       kMainRed),
+        //                 ),
+        //                 SizedBox(
+        //                   width: 15,
+        //                 ),
+        //                 Text('Loading Requests...')
+        //               ],
+        //             ));
+        //       try {
+        //         name = snapshot.data['Name'];
+        //       }catch(e){
+        //         name= 'Loading';
+        //       }
               return Column(
                 children: [
                   GestureDetector(
@@ -293,7 +295,7 @@ class _SearchRequestState extends State<SearchRequest> {
                                       Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,size: 12,),
                                       SizedBox(width: 3,),
                                       Text(
-                                        'Name: $name',
+                                        'Name: ${_req.patientName}',
                                         style: TextStyle(
                                             fontSize: 12.5,
                                             fontFamily: 'nunito',
@@ -379,7 +381,7 @@ class _SearchRequestState extends State<SearchRequest> {
                                     SizedBox(width:158),
                                     IconButton(onPressed: (){
                                       Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (_) => SingleRequestScreen(request: _req,name: name,),
+                                        builder: (_) => SingleRequestScreen(request: _req),
                                       ));
                                     }, icon:
                                     Icon(Icons.east_outlined,color: kMainRed,)),],
@@ -417,8 +419,8 @@ class _SearchRequestState extends State<SearchRequest> {
             }
 
         );
-      },
-    );
+    //   },
+    // );
   }
 
 
