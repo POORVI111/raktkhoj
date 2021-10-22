@@ -1,7 +1,6 @@
 //import 'package:blooddonation/percentage_widget.dart';
 //import 'package:blooddonation/recent_update_list_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:raktkhoj/Colors.dart';
@@ -60,7 +59,6 @@ class _DonateState extends State<Donate> {
   List<RequestModel> requestList;
   String query = "";
   TextEditingController searchController = TextEditingController();
-
   @override
   void initState()  {
     super.initState();

@@ -10,6 +10,7 @@ import 'package:raktkhoj/model/user.dart';
 import 'package:raktkhoj/screens/Chat/chat_screen.dart';
 import 'package:raktkhoj/screens/donate_here/dialog_box_bg_error.dart';
 import 'package:raktkhoj/screens/donate_here/request_direction.dart';
+import 'package:raktkhoj/services/dynamic_link.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 import 'package:share/share.dart';
 import '../../Constants.dart';
@@ -67,9 +68,12 @@ class SingleRequestScreen extends StatelessWidget {
                 FontAwesomeIcons.shareAlt,
               ),
               onPressed: () async {
+
+                String url= await DynamicLinksService.createDynamicLink(request.reqid);
                 await Share.share(
+                  'I found this blood request at Raktkhoj: $url .\n'
                   '${request.patientName} needs ${request.bloodGroup} '
-                      'blood by ${request.dueDate}.\n'
+                      'blood by ${request.dueDate}.'
                       'You can donate by visiting at '
                       '${request.address}.\n\n'
                       'Contact +91${request.phone} for more info.',
