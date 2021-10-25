@@ -47,6 +47,7 @@ class SingleRequestScreen extends StatelessWidget {
     User currentUser;
     String donorName="";
     String profilePhoto="";
+    String to_show="Donate";
 
     currentUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid).get()
@@ -58,6 +59,11 @@ class SingleRequestScreen extends StatelessWidget {
       profilePhoto=value.data()["ProfilePhoto"];
     });
     final textTheme = Theme.of(context).textTheme;
+
+    //changing text of button in case if the user is request raiser..
+    if(request.raiserUid==currentUser.uid){
+      to_show="Delete";
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -426,6 +432,11 @@ class SingleRequestScreen extends StatelessWidget {
                     )),
                   ),
                   onPressed: () async {
+                    if(request.raiserUid==currentUser.uid){
+                      FirebaseFirestore.instance.collection("Blood Request Details").doc(request.reqid)
+                      .update({"active": false});
+                      return ;
+                    }
 
                     if(valEnd == null) {
                       List<String> canDonateBloodSet=possibleDonors(request.bloodGroup.toString());
@@ -521,7 +532,7 @@ class SingleRequestScreen extends StatelessWidget {
                   },
                   child: Center(
                     child: Text(
-                      'Donate',
+                      to_show,
                       textAlign: TextAlign.center,
                       style: textTheme.subtitle1.copyWith(color: Colors.white),
                     ),
