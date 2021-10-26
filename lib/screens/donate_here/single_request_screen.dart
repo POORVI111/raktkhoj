@@ -13,13 +13,24 @@ import 'package:raktkhoj/screens/donate_here/request_direction.dart';
 import 'package:raktkhoj/services/dynamic_link.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 import 'package:share/share.dart';
+import 'package:unicorndial/unicorndial.dart';
 import '../../Constants.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 
 
-class SingleRequestScreen extends StatelessWidget {
+class SingleRequestScreen extends StatefulWidget {
   final RequestModel request;
+const SingleRequestScreen({Key key, this.request}) : super(key: key);
+
+
+
+@override
+_SingleRequestScreenState createState() => _SingleRequestScreenState();
+}
+
+class _SingleRequestScreenState extends State<SingleRequestScreen> {
+  String admin="";
   Future<UserModel> getUserDetailsById(id) async {
     try {
       DocumentSnapshot documentSnapshot =
@@ -30,24 +41,68 @@ class SingleRequestScreen extends StatelessWidget {
       print(e);
       return null;
     }
+
   }
-  const SingleRequestScreen({Key key, this.request}) : super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance.collection('Admin').doc('AdminLogin').get().then((value) {
+      setState(() {
+        admin=value.data()['Aid'].toString();});
+      });
 
-
-
-
-
-
-
+  }
   @override
   Widget build(BuildContext context) {
+
+    var childButtons = <UnicornButton>[];
+
+    childButtons.add(UnicornButton(
+        hasLabel: true,
+        labelText: "Contact",
+        currentButton: FloatingActionButton(
+          heroTag: "Call",
+          backgroundColor: kMainRed,
+          mini: true,
+          child:  Icon(Icons.phone),
+          onPressed: () {
+            UrlLauncher.launch("tel:${widget.request.phone}");
+          },
+        )));
+
+    childButtons.add(UnicornButton(
+        currentButton: FloatingActionButton(
+            heroTag: "Chat",
+            backgroundColor: kMainRed,
+            mini: true,
+            child: Icon(FontAwesomeIcons.comments),
+            onPressed: () async {
+              UserModel requestRiser= await getUserDetailsById(widget.request.raiserUid);
+
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => ChatScreen(receiver: requestRiser,)
+              ));
+            },
+
+        )));
+
+    childButtons.add(UnicornButton(
+        currentButton: FloatingActionButton(
+            heroTag: "Sms",
+            backgroundColor: kMainRed,
+            mini: true,
+            child: Icon(FontAwesomeIcons.sms),
+        onPressed: (){
+          String message="Hello ${widget.request.patientName}, I am a potential blood donor willing to help you. Reply back if you still need blood.";
+          UrlLauncher.launch("sms:${widget.request.phone}?body=$message");
+        },)));
 
     String donorBloodGroup="";
     var valEnd;
     User currentUser;
     String donorName="";
     String profilePhoto="";
-    String to_show="Donate";
+    String to_show="DONATE";
 
     currentUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid).get()
@@ -58,14 +113,17 @@ class SingleRequestScreen extends StatelessWidget {
       donorName=value.data()["Name"];
       profilePhoto=value.data()["ProfilePhoto"];
     });
-    final textTheme = Theme.of(context).textTheme;
 
+
+
+    final textTheme = Theme.of(context).textTheme;
     //changing text of button in case if the user is request raiser..
-    if(request.raiserUid==currentUser.uid){
-      to_show="Delete";
+    if(widget.request.raiserUid==currentUser.uid){
+      to_show="DELETE";
     }
 
     return Scaffold(
+
       appBar: AppBar(
           title: const Text('Blood Request Details'),
           actions: [
@@ -75,14 +133,14 @@ class SingleRequestScreen extends StatelessWidget {
               ),
               onPressed: () async {
 
-                String url= await DynamicLinksService.createDynamicLink(request.reqid);
+                String url= await DynamicLinksService.createDynamicLink(widget.request.reqid);
                 await Share.share(
                   'I found this blood request at Raktkhoj: $url .\n'
-                  '${request.patientName} needs ${request.bloodGroup} '
-                      'blood by ${request.dueDate}.'
+                  '${widget.request.patientName} needs ${widget.request.bloodGroup} '
+                      'blood by ${widget.request.dueDate}.'
                       'You can donate by visiting at '
-                      '${request.address}.\n\n'
-                      'Contact +91${request.phone} for more info.',
+                      '${widget.request.address}.\n\n'
+                      'Contact +91${widget.request.phone} for more info.',
                 );
               },
             ),
@@ -90,14 +148,22 @@ class SingleRequestScreen extends StatelessWidget {
               icon: Icon(
                FontAwesomeIcons.ellipsisV,
               ),
-              onPressed: () {},
+              onPressed: () async {
+
+              },
             )
 
         ],
       ),
+      floatingActionButton: UnicornDialer(
+            parentButtonBackground: kMainRed,
+            orientation: UnicornOrientation.VERTICAL,
+            parentButton: Icon(FontAwesomeIcons.plus),
+            childButtons: childButtons),
+
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(20),
           child:SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +184,7 @@ class SingleRequestScreen extends StatelessWidget {
                           color: Colors.black.withOpacity(0.15),
                           blurRadius: 10,
                           spreadRadius: 0,
-                          offset: Offset(0, 4),
+                          offset: Offset(0, 3),
                         )
                       ]
                   ),
@@ -147,7 +213,7 @@ class SingleRequestScreen extends StatelessWidget {
                                     style: kLabelTextStyle,
                                   ),
                                   SizedBox(height: 3,),
-                                  Text(request.patientName,
+                                  Text(widget.request.patientName,
                                     style: kNumberTextStyle,
                                   ),
                                 ],
@@ -177,7 +243,7 @@ class SingleRequestScreen extends StatelessWidget {
                                     style: kLabelTextStyle,
                                   ),
                                   SizedBox(height: 3,),
-                                  Text(request.dueDate,
+                                  Text(widget.request.dueDate,
                                     style: kNumberTextStyle,
                                   ),
                                 ],
@@ -207,7 +273,7 @@ class SingleRequestScreen extends StatelessWidget {
                                     style: kLabelTextStyle,
                                   ),
                                   SizedBox(height: 6,),
-                                  Text(request.bloodGroup,
+                                  Text(widget.request.bloodGroup,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 3,
                                     style: kNumberTextStyle,
@@ -239,7 +305,7 @@ class SingleRequestScreen extends StatelessWidget {
                                     style: kLabelTextStyle,
                                   ),
                                   SizedBox(height: 6,),
-                                  Text(request.qty,
+                                  Text(widget.request.qty,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 3,
                                     style: kNumberTextStyle,
@@ -271,7 +337,7 @@ class SingleRequestScreen extends StatelessWidget {
                                     style: kLabelTextStyle,
                                   ),
                                   SizedBox(height: 6,),
-                                  Text(request.condition,
+                                  Text(widget.request.condition,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 3,
                                     style: kNumberTextStyle,
@@ -305,7 +371,7 @@ class SingleRequestScreen extends StatelessWidget {
                                         style: kLabelTextStyle,
                                       ),
                                       SizedBox(height: 3,),
-                                      Text(request.address.toString(),
+                                      Text(widget.request.address.toString(),
                                         style: kNumberTextStyle,
                                       ),
                                     ],
@@ -319,7 +385,7 @@ class SingleRequestScreen extends StatelessWidget {
                                         onPressed:() async {
                                           await Navigator.push(context,MaterialPageRoute(
                                               builder: (context) =>
-                                                  RequestDirection(location: request.location, address: request.address)));
+                                                  RequestDirection(location: widget.request.location, address: widget.request.address)));
                                           }
 
                                     ),
@@ -351,7 +417,7 @@ class SingleRequestScreen extends StatelessWidget {
                                     style: kLabelTextStyle,
                                   ),
                                   SizedBox(height: 3,),
-                                  Text(possibleDonors(request.bloodGroup.toString())
+                                  Text(possibleDonors(widget.request.bloodGroup.toString())
                                       .join('   /   '),
                                     style: kNumberTextStyle,
                                   ),
@@ -368,56 +434,88 @@ class SingleRequestScreen extends StatelessWidget {
                   ),
                   //curveType: CurveType.convex,
                 ),
+              /* only visible to admin to approve or disapprove*/
+              if(admin ==currentUser.uid)
               Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    RaisedButton(
-                      onPressed: () {
-                        UrlLauncher.launch("tel:${request.phone}");
-                      },
-                      textColor: Colors.white,
-                      padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                      color: kMainRed,
-                      child: Icon(Icons.phone),
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0)),
-                    ),
-                    RaisedButton(
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                         Colors.green,
+                        ),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        )),
+                      ),
                       onPressed: () async {
-                        UserModel requestRiser= await getUserDetailsById(request.raiserUid);
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              Future.delayed(Duration(seconds: 2), () {
+                                Navigator.of(context).pop();
+                              });
+                              return AlertDialog(
+                                content: Text("Blood Request Permitted",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 17)),
+                              );
+                            });
+                        FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
+                            .update({"permission" : true});
+                      },
+                      child: Center(
+                        child: Text(
+                          'Approve',
+                          textAlign: TextAlign.center,
+                          style: textTheme.subtitle1.copyWith(color: Colors.white),
 
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => ChatScreen(receiver: requestRiser,)
-                        ));
-                      },
-                      textColor: Colors.white,
-                      padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                      color: kMainRed,
-                      child: Icon(FontAwesomeIcons.comments),
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0)),
+                        ),
+                      ),
                     ),
-                    RaisedButton(
-                      onPressed: () {
-                        String message="Hello ${request.patientName}, I am a potential blood donor willing to help you. Reply back if you still need blood.";
-                        UrlLauncher.launch("sms:${request.phone}?body=$message");
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          kMainRed,
+                        ),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        )),
+                      ),
+                      onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              Future.delayed(Duration(seconds: 2), () {
+                                Navigator.of(context).pop();
+                              });
+                              return AlertDialog(
+                                content: Text("Deleted the request",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 17)),
+                              );
+                            });
+                        FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
+                            .update({"permission" : false, "active": false});
                       },
-                      textColor: Colors.white,
-                      padding: EdgeInsets.only(left: 5.0, right: 5.0),
-                      color: kMainRed,
-                      child: Icon(FontAwesomeIcons.sms),
-                      shape: new RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0)),
+                      child: Center(
+                        child: Text(
+                          'Disapprove',
+                          textAlign: TextAlign.center,
+                          style: textTheme.subtitle1.copyWith(color: Colors.white),
+                        ),
+                      ),
                     ),
+
                   ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
-                  vertical: 100,
+                  vertical: 50,
                 ),
                 child: ElevatedButton(
                   style: ButtonStyle(
@@ -432,14 +530,14 @@ class SingleRequestScreen extends StatelessWidget {
                     )),
                   ),
                   onPressed: () async {
-                    if(request.raiserUid==currentUser.uid){
-                      FirebaseFirestore.instance.collection("Blood Request Details").doc(request.reqid)
+                    if(widget.request.raiserUid==currentUser.uid){
+                      FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
                       .update({"active": false});
                       return ;
                     }
 
                     if(valEnd == null) {
-                      List<String> canDonateBloodSet=possibleDonors(request.bloodGroup.toString());
+                      List<String> canDonateBloodSet=possibleDonors(widget.request.bloodGroup.toString());
                       if(canDonateBloodSet.contains(donorBloodGroup)){
                         showDialog(
                             context: context,
@@ -453,7 +551,7 @@ class SingleRequestScreen extends StatelessWidget {
                                         color: Colors.black, fontSize: 17)),
                               );
                             });
-                            FirebaseFirestore.instance.collection("Blood Request Details").doc(request.reqid)
+                            FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
                               .update({"donorUid" : currentUser.uid , "active" : false});
                             FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid)
                                 .update({"Last Donation":DateTime.now()});
@@ -464,7 +562,7 @@ class SingleRequestScreen extends StatelessWidget {
                             builder: (BuildContext context){
                               return CustomDialogBox(
                                 title: "Hey ${donorName} !!",
-                                descriptions: "You cannot donate to patients with ${request.bloodGroup} blood group .Please donate to compatible request raisers",
+                                descriptions: "You cannot donate to patients with ${widget.request.bloodGroup} blood group .Please donate to compatible request raisers",
                                 text: "Ok",
                                 img: profilePhoto,
                               );
@@ -476,7 +574,7 @@ class SingleRequestScreen extends StatelessWidget {
                       //valEnd.add(Duration(days: 2));
                       var presentDate = DateTime.now();
                       var lastDate=valEnd.toDate();
-                      var dur = lastDate.difference(presentDate);
+                      var dur = presentDate.difference(lastDate);
                       if (dur.inDays<2) {
                         //to show error dialog box
 
@@ -493,7 +591,7 @@ class SingleRequestScreen extends StatelessWidget {
                         );
                       } else {
                         List<String> canDonateBloodSet = possibleDonors(
-                            request.bloodGroup.toString());
+                            widget.request.bloodGroup.toString());
                         if (canDonateBloodSet.contains(donorBloodGroup)) {
                             showDialog(
                                 context: context,
@@ -507,7 +605,7 @@ class SingleRequestScreen extends StatelessWidget {
                                             color: Colors.black, fontSize: 17)),
                                   );
                                 });
-                            FirebaseFirestore.instance.collection("Blood Request Details").doc(request.reqid)
+                            FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
                                 .update({"donorUid" : currentUser.uid , "active" : false});
                             FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid)
                                 .update({"Last Donation":DateTime.now()});
@@ -519,7 +617,7 @@ class SingleRequestScreen extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return CustomDialogBox(
                                   title: "Hey $donorName !!",
-                                  descriptions: "You cannot donate to patients with ${request
+                                  descriptions: "You cannot donate to patients with ${widget.request
                                       .bloodGroup} .Please donate to compatible request raisers",
                                   text: "Ok",
                                   img: profilePhoto,
@@ -550,6 +648,8 @@ class SingleRequestScreen extends StatelessWidget {
     );
   }
 
+
+
  //to return potential donor bloodGroups for a request
     List<String> possibleDonors(String s) {
       switch (s) {
@@ -578,76 +678,5 @@ class SingleRequestScreen extends StatelessWidget {
         default:
           return [];
       }
-  }
-
-
-
-
-
-}
-
-class _MarkFulfilledBtn extends StatefulWidget {
- // final BloodRequest request;
-
- // const _MarkFulfilledBtn({Key key, this.request}) : super(key: key);
-
-  @override
-  _MarkFulfilledBtnState createState() => _MarkFulfilledBtnState();
-}
-
-class _MarkFulfilledBtnState extends State<_MarkFulfilledBtn> {
-  bool _isLoading = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return _isLoading
-        ? const Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Center(child: CircularProgressIndicator()),
-    )
-        : Padding(
-      padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-      child: ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-            Colors.green[600],
-          ),
-          padding: MaterialStateProperty.all(
-            const EdgeInsets.all(12),
-          ),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          )),
-        ),
-        onPressed: () async {
-          // setState(() => _isLoading = true);
-          // try {
-          //   await FirebaseFirestore.instance
-          //       .collection('blood_requests')
-          //       .doc(widget.request.id)
-          //       .update({'isFulfilled': true});
-          //   widget.request.isFulfilled = true;
-          //   Navigator.pop(context);
-          // } on FirebaseException catch (e) {
-          //   Fluttertoast.showToast(msg: e.message);
-          // } catch (e) {
-          //   Fluttertoast.showToast(
-          //     msg: 'Something went wrong. Please try again',
-          //   );
-          // }
-          // setState(() => _isLoading = false);
-        },
-        child: Center(
-          child: Text(
-            'Mark as Fulfilled',
-            textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .subtitle1
-                .copyWith(color: Colors.white),
-          ),
-        ),
-      ),
-    );
   }
 }

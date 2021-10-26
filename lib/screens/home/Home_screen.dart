@@ -12,6 +12,7 @@ import 'package:raktkhoj/services/localization_service.dart';
 import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
 
 import '../../Colors.dart';
+import '../admin.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   Widget _child;
   List<String> _languages = ["English","हिंदी"];
   String language;
+  String admin;
 
   Future<Null> _fetchUserInfo() async {
     Map<String, dynamic> _userInfo;
@@ -53,6 +55,19 @@ class _HomePageState extends State<HomePage> {
       currentUser =_currentUser;
     });
 
+
+
+  }
+  Future<void> _getAdmin() async
+  {
+       String _admin;
+         await FirebaseFirestore.instance.collection('Admin').doc('AdminLogin').get().then((value) =>
+            _admin=value.data()['Aid'].toString());
+        this.setState(() {
+           admin=_admin;
+
+         });
+        //  print("admin: $admin");
   }
 
   @override
@@ -60,9 +75,10 @@ class _HomePageState extends State<HomePage> {
      super.initState();
     _child = RippleIndicator("");
      _loadCurrentUser();
-    _fetchUserInfo();
-
+     _fetchUserInfo();
      language = LocalizationService().getCurrentLang();
+     _getAdmin();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -74,7 +90,13 @@ class _HomePageState extends State<HomePage> {
     return _child;
   }
   Widget _myWidget() {
-    return Scaffold(
+    // print("admin:$admin");
+    // print("current:${currentUser.uid}");
+
+    return FutureBuilder(
+        future: _getAdmin(),
+      builder: (context, snapshot) {
+      return Scaffold(
       backgroundColor: kMainRed,
       appBar: AppBar(
         elevation: 0.0,
@@ -217,6 +239,18 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) => PageGuide()));
               },
             ),
+            if(admin==currentUser.uid)
+              ListTile(
+                title: Text("Admin Panel".tr),
+                leading: Icon(
+                  FontAwesomeIcons.userShield,
+                  color: kMainRed,
+                ),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Admin()));
+                },
+              ),
             ListTile(
               title: Text("Blood Donors".tr),
               leading: Icon(
@@ -288,6 +322,8 @@ class _HomePageState extends State<HomePage> {
           child: MapView(),
         ),
       ),
+    );
+  }
     );
   }
 }
