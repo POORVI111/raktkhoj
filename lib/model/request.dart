@@ -20,11 +20,12 @@ class RequestModel{
     String address;
     bool permission;
     bool active;
+    String docURL;
 
 
     RequestModel({
         this.raiserUid, this.qty, this.phone, this.condition,this.patientName,
-        this.dueDate, this.location, this.bloodGroup, this.address, this.active, this.permission, this.donorUid, this.reqid
+        this.dueDate, this.location, this.bloodGroup, this.address, this.active, this.permission, this.donorUid, this.reqid, this.docURL,
     });
 
 
@@ -43,6 +44,7 @@ class RequestModel{
         data['active']=requset.active;
         data['reqid']=requset.reqid;
         data['donorUid']= requset.donorUid;
+        data['docURL']=requset.docURL;
         return data;
     }
 
@@ -60,5 +62,6 @@ class RequestModel{
         this.permission=data['permission'];
         this.active=data['active'];
         this.donorUid=data['donorUid'];
+        this.docURL= data['docURL'];
     }
 }

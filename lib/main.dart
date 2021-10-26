@@ -8,6 +8,7 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:raktkhoj/screens/admin.dart';
 import 'package:raktkhoj/screens/donate_here/single_request_screen.dart';
 import 'package:raktkhoj/services/dynamic_link.dart';
 import 'package:raktkhoj/services/localization_service.dart';
@@ -87,52 +88,6 @@ class _MyApp extends State<MyApp> {
     )
     );
   }
-
-  // Future<void> initDynamicLinks() async {
-  //   FirebaseDynamicLinks.instance.onLink(
-  //       onSuccess: (PendingDynamicLinkData dynamicLink) async {
-  //         final Uri deepLink = dynamicLink.link;
-  //
-  //         if (deepLink != null) {
-  //           // ignore: unawaited_futures
-  //           //Navigator.pushNamed(deepLink.path);
-  //           DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
-  //               .instance.collection("Blood Request Details").doc(
-  //               deepLink.queryParameters['requestid']).get();
-  //           print("requestid ${deepLink.queryParameters['requestid']}");
-  //           RequestModel requestModel = RequestModel.fromMap(snapshot.data());
-  //           Navigator.of(context).push(MaterialPageRoute(
-  //             builder: (_) => SingleRequestScreen(request: requestModel),
-  //           ));
-  //
-  //         }
-  //       }, onError: (OnLinkErrorException e) async {
-  //     print('onLinkError');
-  //     print(e.message);
-  //   });
-  //
-  //   final PendingDynamicLinkData data =
-  //   await FirebaseDynamicLinks.instance.getInitialLink();
-  //   final Uri deepLink = data.link;
-  //
-  //   if (deepLink != null) {
-  //     try {
-  //       DocumentSnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
-  //           .instance.collection("Blood Request Details").doc(
-  //           deepLink.queryParameters['requestid']).get();
-  //       print('deeplink$deepLink');
-  //       print(deepLink.queryParameters['requestid']);
-  //       RequestModel requestModel = RequestModel.fromMap(snapshot.data());
-  //       Navigator.of(context).push(MaterialPageRoute(
-  //         builder: (_) => SingleRequestScreen(request: requestModel),
-  //       ));
-  //     }catch(e){}
-  //     // ignore: unawaited_futures
-  //     // Navigator.pushNamed(context, '/${deepLink.queryParameters['call_id']}');
-  //
-  //     // Navigator.pushNamed(context, deepLink.path);
-  //   }
-  // }
 
 }
 
