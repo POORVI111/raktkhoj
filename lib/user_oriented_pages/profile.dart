@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +16,8 @@ import 'package:raktkhoj/provider/storage_method.dart';
 import 'package:raktkhoj/screens/home/Home_screen.dart';
 
 import 'package:raktkhoj/user_oriented_pages/faq.dart';
+import 'package:raktkhoj/user_oriented_pages/my_donations.dart';
+import 'package:raktkhoj/user_oriented_pages/routes.dart';
 
 
 var _firebaseref = FirebaseDatabase().reference().child('User');
@@ -836,14 +838,15 @@ class _ProfileState extends State<Profile> {
                           onTap: (){
                             /////commenting here
                             ////need to add functionality afterwards
-                            /*Navigator.push(
+                            //Routes.initRoutes();
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return DonationHistory();
+                                  return MenuPager();
                                 },
                               ),
-                            );*/
+                            );
                           },
                           child: Container(
                             height: 65,

@@ -64,4 +64,25 @@ class RequestModel{
         this.donorUid=data['donorUid'];
         this.docURL= data['docURL'];
     }
+
+    RequestModel copyWith({String reqid, String patientName, String raiserUid, String donorUid,
+    String qty, String phone, String condition, String dueDate, GeoPoint location,
+    String bloodGroup, String address, bool permission, bool active, String docURL}){
+        return new RequestModel(
+            reqid: reqid??this.reqid,
+            patientName: patientName??this.patientName,
+            raiserUid: raiserUid ?? this.raiserUid,
+            qty: qty??this.qty,
+            phone: phone??this.phone,
+            condition: condition??this.condition,
+            dueDate: dueDate??this.dueDate,
+            location: location??this.location,
+            bloodGroup: bloodGroup??this.bloodGroup,
+            address: address??this.address,
+            permission: permission??this.permission,
+            active: active??this.active,
+            donorUid: donorUid??this.donorUid,
+            docURL: docURL??this.docURL
+        );
+    }
 }

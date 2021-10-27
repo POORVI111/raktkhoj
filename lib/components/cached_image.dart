@@ -3,6 +3,7 @@ show images from the internet and keep them in the cache directory.
  */
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:raktkhoj/Colors.dart';
 
 class CachedImage extends StatelessWidget {
   final String imageUrl;
@@ -39,6 +40,7 @@ class CachedImage extends StatelessWidget {
               errorWidget: (context, url, error) => CircleAvatar(
                 radius: 45.0,
                 backgroundImage: AssetImage('images/logo.png'),
+                backgroundColor: kBackgroundColor,
               ),
             )),
       );
@@ -47,6 +49,7 @@ class CachedImage extends StatelessWidget {
       return CircleAvatar(
         radius: 45.0,
         backgroundImage: AssetImage('images/logo.png'),
+        backgroundColor: kBackgroundColor,
       );
     }
   }
