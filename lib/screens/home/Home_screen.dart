@@ -6,13 +6,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/components/ripple_indicator.dart';
 import 'package:raktkhoj/screens/Chat/chat_list_screen.dart';
+import 'package:raktkhoj/screens/admin.dart';
 import 'package:raktkhoj/screens/home/map_view.dart';
 import 'package:raktkhoj/screens/nearby_hospitals/nearby_hospital_screen.dart';
 import 'package:raktkhoj/services/localization_service.dart';
 import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
 
 import '../../Colors.dart';
-import '../admin.dart';
 
 
 class HomePage extends StatefulWidget {

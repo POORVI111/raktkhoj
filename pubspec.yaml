@@ -68,6 +68,9 @@ dependencies:
   share:
   firebase_dynamic_links:
   unicorndial:
+  onesignal_flutter:
+  mailer:
+
 
 
 

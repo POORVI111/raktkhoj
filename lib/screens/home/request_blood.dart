@@ -12,6 +12,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:path/path.dart';
 import 'package:raktkhoj/provider/storage_method.dart';
+import 'package:raktkhoj/services/dynamic_link.dart';
+import 'package:raktkhoj/services/notifications.dart';
 import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
 
 import '../../Colors.dart';
@@ -39,6 +41,8 @@ class _RequestBloodState extends State<RequestBlood> {
   String _patientCondition;
   String _userID;
   String _name;
+  String _tokenid;
+  String _adminEmail;
   bool _categorySelected = false;
   DateTime selectedDate = DateTime.now();
   var formattedDate;
@@ -50,6 +54,7 @@ class _RequestBloodState extends State<RequestBlood> {
     super.initState();
     _loadCurrentUser();
     getAddress();
+    getAdminId();
   }
 
   bool isLoggedIn() {
@@ -71,7 +76,8 @@ class _RequestBloodState extends State<RequestBlood> {
           .catchError((e) {
         print(e);
       });
-    } else {
+
+    }else {
       print('Can not add data');
     }
   }
@@ -84,6 +90,25 @@ class _RequestBloodState extends State<RequestBlood> {
       _userID= currentUser.uid;
     });
 
+  }
+  // to get admin id and email for notifications
+  Future <String> getAdminId() async{
+    String _admin="";
+    String token,adminEmail;
+    await FirebaseFirestore.instance.collection('Admin').doc('AdminLogin').get().then((value) =>
+    _admin=value.data()['Aid'].toString())
+    ;
+
+    await FirebaseFirestore.instance.collection('User Details').doc(_admin).get().then((value) {
+      token = value.data()['tokenId'].toString();
+      adminEmail = value.data()['Email'].toString();
+    });
+    setState(() {
+      _tokenid=token;
+      _adminEmail=adminEmail;
+    });
+    // print('$token token');
+    return token;
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -108,6 +133,8 @@ class _RequestBloodState extends State<RequestBlood> {
 
     setState(() => file = File(path));
   }
+
+
 
   Future<String> uploadFile() async {
     if (file == null) return null;
@@ -373,8 +400,13 @@ class _RequestBloodState extends State<RequestBlood> {
                           if (!formkey.currentState.validate()) return;
                           formkey.currentState.save();
                          _docURL = await uploadFile();
+
+                          await sendNotification([_tokenid], 'A new blood request has been added.', 'New Request Requires Permission');
+
                           var time = DateTime.now().millisecondsSinceEpoch;
                           String key = time.toString();
+                          String url=await DynamicLinksService.createDynamicLink(key);
+
                           final Map<String, dynamic> BloodRequestDetails = {
                             'patientName': _name,
                             'raiserUid': _userID,
@@ -393,7 +425,13 @@ class _RequestBloodState extends State<RequestBlood> {
                             'extra': '',
 
                           };
-                          addData(BloodRequestDetails, key).then((result) {
+                           print("token: $_tokenid");
+
+                          addData(BloodRequestDetails, key).then((result) async {
+                         //   sendNotification();
+                            //send notif to admin when new request is added
+                            await sendNotification([_tokenid], 'A new blood request has been added.', 'New Request Requires Permission');
+                            await sendEmail(_adminEmail, url);
                             dialogTrigger(context);
                           }).catchError((e) {
                             print(e);

@@ -7,12 +7,14 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:raktkhoj/screens/admin.dart';
 import 'package:raktkhoj/screens/donate_here/single_request_screen.dart';
 import 'package:raktkhoj/services/dynamic_link.dart';
 import 'package:raktkhoj/services/localization_service.dart';
 import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
+import 'Constants.dart';
 import 'components/image_upload_provider.dart';
 import 'model/request.dart';
 import 'screens/home/Home_screen.dart';
@@ -27,6 +29,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
+
   runApp(MyApp());
 }
 
@@ -49,6 +52,7 @@ class _MyApp extends State<MyApp> {
   void initState() {
     super.initState();
     DynamicLinksService().initDynamicLinks();
+    OneSignal.shared.setAppId(ONESIGNAL_APP_ID);
   }
   // This widget is the root of your application.
   @override

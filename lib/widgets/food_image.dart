@@ -11,16 +11,22 @@ import 'package:raktkhoj/model/request.dart';
 
 
 
-class FoodImage extends StatelessWidget {
+class FoodImage extends StatefulWidget {
   FoodImage({this.request});
   final RequestModel request;
 
+  @override
+  _FoodImageState createState() => _FoodImageState();
+}
+  class _FoodImageState extends State<FoodImage>{
   String imageUrl="";
-
   @override
   void initState() {
-    FirebaseFirestore.instance.collection("User Details").doc(request.raiserUid).get().then((value){
+    FirebaseFirestore.instance.collection("User Details").doc(widget.request.raiserUid).get().then((value){
       imageUrl=value.data()["ProfilePhoto"];
+      setState(() {
+        imageUrl=imageUrl;
+      });
     });
   }
 
@@ -42,7 +48,7 @@ class FoodImage extends StatelessWidget {
 //              '/detail/${food.id}',
 //            ),
         child: new Hero(
-          tag: 'icon-${request.patientName}',
+          tag: 'icon-${widget.request.patientName}',
           child: CachedImage(
             imageUrl,
             radius: 100,
