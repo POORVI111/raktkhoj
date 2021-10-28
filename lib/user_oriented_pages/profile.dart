@@ -839,14 +839,17 @@ class _ProfileState extends State<Profile> {
                             /////commenting here
                             ////need to add functionality afterwards
                             //Routes.initRoutes();
-                            Navigator.push(
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => MenuPager(),
+                            ));
+                            /*Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
                                   return MenuPager();
                                 },
                               ),
-                            );
+                            );*/
                           },
                           child: Container(
                             height: 65,

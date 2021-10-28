@@ -6,19 +6,19 @@ import 'package:raktkhoj/components/cached_image.dart';
 
 import 'dart:math' as math;
 
-import 'package:raktkhoj/model/Food.dart';
+
 import 'package:raktkhoj/model/request.dart';
 
 
 
-class FoodImage extends StatefulWidget {
-  FoodImage({this.request});
+class RaiserImage extends StatefulWidget {
+  RaiserImage({this.request});
   final RequestModel request;
 
   @override
-  _FoodImageState createState() => _FoodImageState();
+  _RaiserImageState createState() => _RaiserImageState();
 }
-  class _FoodImageState extends State<FoodImage>{
+  class _RaiserImageState extends State<RaiserImage>{
   String imageUrl="";
   @override
   void initState() {

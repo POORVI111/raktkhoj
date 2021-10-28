@@ -4,7 +4,7 @@ import 'package:raktkhoj/Constants.dart';
 
 import 'dart:math' as math;
 
-import 'package:raktkhoj/model/Food.dart';
+
 import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/screens/donate_here/request_direction.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';

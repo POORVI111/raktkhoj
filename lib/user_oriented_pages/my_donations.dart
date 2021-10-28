@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:raktkhoj/Colors.dart';
-import 'package:raktkhoj/model/Food.dart';
+
 import 'package:raktkhoj/model/background_colors.dart';
-import 'package:raktkhoj/model/menu.dart';
+
 import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/widgets/animated_circle.dart';
-import 'package:raktkhoj/widgets/cart_button.dart';
-import 'package:raktkhoj/widgets/custom_app_bar.dart';
-import 'package:raktkhoj/widgets/food_image.dart';
+
+
+import 'package:raktkhoj/widgets/raiser_image.dart';
 import 'package:raktkhoj/widgets/item_card.dart';
 import 'package:raktkhoj/widgets/rectangle_indicator.dart';
 import 'package:raktkhoj/widgets/shadows.dart';
@@ -116,11 +116,11 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
     }
   }
 
-  onChangeFoodItem(int index, int value, Food food){
+  /*onChangeFoodItem(int index, int value, Food food){
     setState(() {
       Menu.menu[index] = food.copyWith(quantity: value);
     });
-  }
+  }*/
 
   _contentWidget(RequestModel donation, int index, Alignment alignment, double resize) {
     return new Stack(
@@ -151,7 +151,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
                   },*/
                 ),
 
-                new FoodImage(request: donation),
+                new RaiserImage(request: donation),
                 /*new CartButton(counter: food.quantity, addToCart: (){
                   onChangeFoodItem(index, 0, food);
                   playAnimation();
@@ -191,14 +191,23 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
         .size
         .height;
 
-    
+    if(menu.isEmpty){
+      return Container(
+        child: Text("No donations yet!!"),
+      );
+    }
 
     return new Stack(
       children: <Widget>[
+
         new Positioned.fill(bottom: screenHeight / 2,
             child: new Container(
                 decoration: new BoxDecoration(color: _backColor))),
-        new CustomAppBar(),
+        //new CustomAppBar(),
+        new AppBar(
+          title: const Text('Donations'),
+          actions: [
+          ],),
         new Align(alignment: Alignment.bottomCenter,
             child: new Padding(padding: const EdgeInsets.only(bottom: 50.0),
                 child: new RectangleIndicator(
