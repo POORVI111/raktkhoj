@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:raktkhoj/Colors.dart';
 import 'package:raktkhoj/Login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -42,6 +43,8 @@ class RegisterButton extends StatelessWidget {
               if (newUser != null) {
                 User user = newUser.user;
                await user.sendEmailVerification();
+               var status= await OneSignal.shared.getDeviceState();
+               String token= status.userId;
                 await user
                     .updateProfile(
                   displayName: userName,
@@ -63,6 +66,7 @@ class RegisterButton extends StatelessWidget {
                     'Weight':50,
                     'Age':25,
                     'ProfilePhoto':'',
+                    'tokenId': token,
                     'Last Donation':DateTime.now().subtract(Duration(days:3)),
                 });
               });
