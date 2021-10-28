@@ -840,7 +840,7 @@ class _ProfileState extends State<Profile> {
                             ////need to add functionality afterwards
                             //Routes.initRoutes();
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => MenuPager(),
+                              builder: (_) => MenuPager(type: "donations",),
                             ));
                             /*Navigator.push(
                               context,
@@ -886,6 +886,77 @@ class _ProfileState extends State<Profile> {
                                       ),
                                       Text(
                                         '  Donation History',
+                                        style: kLabelTextStyle.copyWith(color: kMainRed,fontSize: 14),
+                                      ),
+
+
+                                    ],
+                                  ),
+                                  //SizedBox(height: 1,),
+
+                                ],
+                              ),
+                            ),
+                            //curveType: CurveType.convex,
+                          ),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 25.0, right: 25, top: 20),
+                        child: GestureDetector(
+                          onTap: (){
+                            /////commenting here
+                            ////need to add functionality afterwards
+                            //Routes.initRoutes();
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => MenuPager(type: "requests",),
+                            ));
+                            /*Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return MenuPager();
+                                },
+                              ),
+                            );*/
+                          },
+                          child: Container(
+                            height: 65,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Color(0xFFffffff),Color(0xFFFfffff), ],
+                                    tileMode: TileMode.clamp
+                                ),
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.15),
+                                    blurRadius: 10,
+                                    spreadRadius: 0,
+                                    offset: Offset(0, 4),
+                                  )
+                                ]
+                            ),
+                            child: Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      SizedBox(width: 15,),
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Icon(
+                                          Icons.subject,
+                                          color: Color(0xFFBC002D),
+                                          size: 23,
+                                        ),
+                                      ),
+                                      Text(
+                                        '  Successful requests',
                                         style: kLabelTextStyle.copyWith(color: kMainRed,fontSize: 14),
                                       ),
 

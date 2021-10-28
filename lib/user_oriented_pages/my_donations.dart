@@ -20,6 +20,9 @@ import 'package:raktkhoj/widgets/rectangle_indicator.dart';
 import 'package:raktkhoj/widgets/shadows.dart';
 
 class MenuPager extends StatefulWidget {
+  final String type;
+
+  const MenuPager({Key key , this.type}):super(key: key);
   @override
   _MenuPagerState createState() => new _MenuPagerState();
 }
@@ -47,13 +50,26 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
 
     User curr=FirebaseAuth.instance.currentUser;
 
-    QuerySnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection("Blood Request Details").get();
-    for (var i = 0; i < querySnapshot.docs.length; i++) {
-      if(querySnapshot.docs[i]['donorUid']==curr.uid){
-        requestList.add(RequestModel.fromMap(querySnapshot.docs[i].data()));
+    if( widget.type =="donations"){
+      QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection("Blood Request Details").get();
+      for (var i = 0; i < querySnapshot.docs.length; i++) {
+        if(querySnapshot.docs[i]['donorUid']==curr.uid){
+          requestList.add(RequestModel.fromMap(querySnapshot.docs[i].data()));
+        }
+      }
+    }else{
+      QuerySnapshot querySnapshot =
+      await FirebaseFirestore.instance.collection("Blood Request Details").get();
+      for (var i = 0; i < querySnapshot.docs.length; i++) {
+        if(querySnapshot.docs[i]['raiserUid']==curr.uid && querySnapshot.docs[i]['active']==false) {
+          requestList.add(RequestModel.fromMap(querySnapshot.docs[i].data()));
+        }
       }
     }
+
+
+
     return requestList;
   }
 
@@ -116,11 +132,6 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
     }
   }
 
-  /*onChangeFoodItem(int index, int value, Food food){
-    setState(() {
-      Menu.menu[index] = food.copyWith(quantity: value);
-    });
-  }*/
 
   _contentWidget(RequestModel donation, int index, Alignment alignment, double resize) {
     return new Stack(
@@ -137,25 +148,11 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
                 shadow1,
                 new ItemCard(
                   request: donation,
-                  /*increment: () {
-                    setState(() {
-                      _counter++;
-                    });
-                    onChangeFoodItem(index, _counter, food);
-                  },
-                  decrement: () {
-                    setState(() {
-                      _counter--;
-                    });
-                    onChangeFoodItem(index, _counter, food);
-                  },*/
+
                 ),
 
-                new RaiserImage(request: donation),
-                /*new CartButton(counter: food.quantity, addToCart: (){
-                  onChangeFoodItem(index, 0, food);
-                  playAnimation();
-                }),*/
+                new RaiserImage(request: donation ,type: widget.type,),
+
               ],
             ),
           ),
@@ -193,8 +190,14 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
 
     if(menu.isEmpty){
       return Container(
-        child: Text("No donations yet!!"),
+        child: Text("No requests yet!!"),
       );
+    }
+    String heading="";
+    if(widget.type=='donations'){
+      heading="Donations";
+    }else{
+      heading="My Requests";
     }
 
     return new Stack(
@@ -205,7 +208,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
                 decoration: new BoxDecoration(color: _backColor))),
         //new CustomAppBar(),
         new AppBar(
-          title: const Text('Donations'),
+          title:  Text(heading),
           actions: [
           ],),
         new Align(alignment: Alignment.bottomCenter,
