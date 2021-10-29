@@ -401,7 +401,7 @@ class _RequestBloodState extends State<RequestBlood> {
                           formkey.currentState.save();
                          _docURL = await uploadFile();
 
-                          await sendNotification([_tokenid], 'A new blood request has been added.', 'New Request Requires Permission');
+                          // await sendNotification([_tokenid], 'A new blood request has been added.', 'New Request Requires Permission');
 
                           var time = DateTime.now().millisecondsSinceEpoch;
                           String key = time.toString();
@@ -431,7 +431,7 @@ class _RequestBloodState extends State<RequestBlood> {
                          //   sendNotification();
                             //send notif to admin when new request is added
                             await sendNotification([_tokenid], 'A new blood request has been added.', 'New Request Requires Permission');
-                            await sendEmail(_adminEmail, url);
+                            await sendEmail(_adminEmail, url, 'A new blood request has been registered. Click on the link to view and verify request: ');
                             dialogTrigger(context);
                           }).catchError((e) {
                             print(e);

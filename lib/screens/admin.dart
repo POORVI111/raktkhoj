@@ -11,6 +11,8 @@ import 'package:raktkhoj/model/user.dart';
 import 'package:raktkhoj/screens/donate_here/percentage_widget.dart';
 import 'package:raktkhoj/screens/donate_here/search_request.dart';
 import 'package:raktkhoj/screens/donate_here/single_request_screen.dart';
+import 'package:raktkhoj/services/dynamic_link.dart';
+import 'package:raktkhoj/services/notifications.dart';
 
 
 class Admin extends StatefulWidget {
@@ -143,32 +145,34 @@ class _AdminState extends State<Admin> {
   Widget RequestItem(DocumentSnapshot snapshot, BuildContext context){
 
 
-    String name="";
+    // String name="";
+    String email="", tokenid="";
     RequestModel _req = RequestModel.fromMap(snapshot.data());
-    // return StreamBuilder(
-    //   stream: FirebaseFirestore.instance.collection('User Details').doc(_req.raiserUid).snapshots(),
-    //   builder: (context, snapshot) {
-    //     if (!snapshot.hasData)
-    //       return Padding(
-    //           padding: EdgeInsets.only(top: 50),
-    //           child: Row(
-    //             children: <Widget>[
-    //               CircularProgressIndicator(
-    //                 valueColor:
-    //                 new AlwaysStoppedAnimation<Color>(
-    //                     kMainRed),
-    //               ),
-    //               SizedBox(
-    //                 width: 15,
-    //               ),
-    //               Text('Loading Requests...')
-    //             ],
-    //           ));
-    //     try {
-    //       name = snapshot.data['Name'];
-    //     }catch(e){
-    //       name= 'Loading';
-    //     }
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('User Details').doc(_req.raiserUid).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData)
+          return Padding(
+              padding: EdgeInsets.only(top: 50),
+              child: Row(
+                children: <Widget>[
+                  CircularProgressIndicator(
+                    valueColor:
+                    new AlwaysStoppedAnimation<Color>(
+                        kMainRed),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text('Loading Requests...')
+                ],
+              ));
+        try {
+          email=snapshot.data['Email'];
+          tokenid = snapshot.data['tokenId'];
+        }catch(e){
+          // name= 'Loading';
+        }
     return Column(
       children: [
         GestureDetector(
@@ -369,7 +373,7 @@ class _AdminState extends State<Admin> {
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: (){
+                        onTap: () async {
                           showDialog(
                               context: context,
                               builder: (context) {
@@ -382,6 +386,10 @@ class _AdminState extends State<Admin> {
                                           color: Colors.black, fontSize: 17)),
                                 );
                               });
+                          String url=await DynamicLinksService.createDynamicLink(_req.reqid);
+                          // print('email $email tokenid $tokenid');
+                          await sendNotification([tokenid], 'Your request has been approved.', 'Blood Request Approved');
+                          await sendEmail(email, url, 'You blood request has been approved by admin. We hope you find your donor through Raktkhoj.Click on the link to view your request');
                           FirebaseFirestore.instance.collection("Blood Request Details").doc(_req.reqid)
                               .update({"permission" : true});
                         },
@@ -459,9 +467,9 @@ class _AdminState extends State<Admin> {
         ],
     );
 
-    // }
+    }
 
-    // );
+    );
   }
 
 
