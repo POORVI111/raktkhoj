@@ -189,9 +189,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
         .height;
 
     if(menu.isEmpty){
-      return Container(
-        child: Text("No requests yet!!"),
-      );
+      return Center(child: Text("No requests yet!!"));
     }
     String heading="";
     if(widget.type=='donations'){

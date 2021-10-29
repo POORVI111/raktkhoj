@@ -11,6 +11,7 @@ import 'package:raktkhoj/screens/Chat/chat_screen.dart';
 import 'package:raktkhoj/screens/donate_here/dialog_box_bg_error.dart';
 import 'package:raktkhoj/screens/donate_here/request_direction.dart';
 import 'package:raktkhoj/services/dynamic_link.dart';
+import 'package:raktkhoj/services/notifications.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 import 'package:share/share.dart';
 import 'package:unicorndial/unicorndial.dart';
@@ -102,6 +103,8 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
     User currentUser;
     String donorName="";
     String profilePhoto="";
+    String tokenId="";
+    String email="";
     String to_show="DONATE";
 
     currentUser = FirebaseAuth.instance.currentUser;
@@ -113,6 +116,13 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
       donorName=value.data()["Name"];
       profilePhoto=value.data()["ProfilePhoto"];
     });
+
+    FirebaseFirestore.instance.collection('User Details').doc(widget.request.reqid).get().then((value)
+    {
+      email= value.data()['Email'];
+      tokenId= value.data()['tokenId'];
+    }
+    );
 
 
 
@@ -434,6 +444,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                   ),
                   //curveType: CurveType.convex,
                 ),
+
               /* only visible to admin to approve or disapprove*/
               if(admin ==currentUser.uid)
               Padding(
@@ -463,8 +474,16 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                                         color: Colors.black, fontSize: 17)),
                               );
                             });
+
+                        //set permission to true
                         FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
                             .update({"permission" : true});
+
+                        /* notification to user when request accepted by admin*/
+                        String url=await DynamicLinksService.createDynamicLink(widget.request.reqid);
+                        // print('email $email tokenid $tokenid');
+                        await sendNotification([tokenId], 'Your request has been approved.', 'Blood Request Approved');
+                        await sendEmail(email, url, 'You blood request has been approved by admin. We hope you find your donor through Raktkhoj.Click on the link to view your request');
                       },
                       child: Center(
                         child: Text(
@@ -497,6 +516,8 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                                         color: Colors.black, fontSize: 17)),
                               );
                             });
+
+                        //request rejected
                         FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
                             .update({"permission" : false, "active": false});
                       },
@@ -551,6 +572,9 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                                         color: Colors.black, fontSize: 17)),
                               );
                             });
+
+
+
                             FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
                               .update({"donorUid" : currentUser.uid , "active" : false});
                             FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid)
