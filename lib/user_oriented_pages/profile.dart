@@ -14,6 +14,7 @@ import 'package:raktkhoj/components/cached_image.dart';
 import 'package:raktkhoj/components/image_upload_provider.dart';
 import 'package:raktkhoj/provider/storage_method.dart';
 import 'package:raktkhoj/screens/home/Home_screen.dart';
+import 'package:raktkhoj/splash_screen.dart';
 
 import 'package:raktkhoj/user_oriented_pages/faq.dart';
 import 'package:raktkhoj/user_oriented_pages/my_donations.dart';
@@ -835,6 +836,93 @@ class _ProfileState extends State<Profile> {
                         padding: const EdgeInsets.only(
                             left: 25.0, right: 25, top: 20),
                         child: GestureDetector(
+                          onTap: ()async {
+                            print("yes u have tapped");
+                            //showDialogBox(context);
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  Future.delayed(Duration(seconds: 10), () {
+                                    Navigator.of(context).pop();
+                                  });
+                                  return AlertDialog(
+                                    content: Text("Fit and Ready to donate",
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 17)),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                          child: Text('OK'),
+                                          onPressed: () {
+                                            var firestoreInstance = FirebaseFirestore.instance;
+                                            var firebaseUser = FirebaseAuth.instance.currentUser;
+                                            firestoreInstance.collection("User Details").doc(firebaseUser.uid).
+                                            update({"Doctor": true});
+                                            Navigator.of(context).pop();
+                                          }
+
+
+                                      ),
+                                      FlatButton( child: Text('Cancel'),
+                                        onPressed: () => Navigator.of(context).pop(),
+                                      )
+                                    ],
+                                  );
+                                });
+                          },
+                          child: Container(
+                            height: 65,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [Color(0xFFffffff),Color(0xFFFfffff), ],
+                                    tileMode: TileMode.clamp
+                                ),
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.15),
+                                    blurRadius: 10,
+                                    spreadRadius: 0,
+                                    offset: Offset(0, 4),
+                                  )
+                                ]
+                            ),
+                            child: Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      SizedBox(width: 15,),
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Icon(
+                                          Icons.volunteer_activism,
+                                          color: Color(0xFFBC002D),
+                                          size: 23,
+                                        ),
+                                      ),
+                                      Text(
+                                        '  Doctors Section',
+                                        style: kLabelTextStyle.copyWith(color: kMainRed,fontSize: 14),
+                                      ),
+
+
+                                    ],
+                                  ),
+                                  //SizedBox(height: 1,),
+
+                                ],
+                              ),
+                            ),
+                            //curveType: CurveType.convex,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 25.0, right: 25, top: 20),
+                        child: GestureDetector(
                           onTap: (){
                             /////commenting here
                             ////need to add functionality afterwards
@@ -901,6 +989,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                       ),
+
 
                       Padding(
                         padding: const EdgeInsets.only(
@@ -1024,8 +1113,12 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
-                          _auth.signOut();
+                        onTap: ()async{
+                          await FirebaseAuth.instance.signOut();
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SplashScreen()));
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(left:25.0,right: 25.0,top: 0,bottom: 10),
@@ -1375,7 +1468,35 @@ class _ProfileState extends State<Profile> {
       },
     );
   }
+
+  showDialogBox(BuildContext context)
+  {
+    return AlertDialog(
+      title: Text(name),
+      content: Text("If you are a certified doctor , "
+          "then please help the patients in emergency condition by enabling this option."),
+      actions: <Widget>[
+        FlatButton(
+            child: Text('OK'),
+            onPressed: () {
+              var firestoreInstance = FirebaseFirestore.instance;
+              var firebaseUser = FirebaseAuth.instance.currentUser;
+              firestoreInstance.collection("User Details").doc(firebaseUser.uid).
+              set({"Doctor": true});
+              Navigator.of(context).pop();
+            }
+
+
+        ),
+        FlatButton( child: Text('Cancel'),
+          onPressed: () => Navigator.of(context).pop(),
+        )
+      ],
+    );
+  }
 }
+
+
 class RoundIconButton extends StatelessWidget {
   RoundIconButton({@required this.icon, @required this.onPressed});
 

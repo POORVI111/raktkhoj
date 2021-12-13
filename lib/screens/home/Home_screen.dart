@@ -10,6 +10,7 @@ import 'package:raktkhoj/screens/admin.dart';
 import 'package:raktkhoj/screens/home/map_view.dart';
 import 'package:raktkhoj/screens/nearby_hospitals/nearby_hospital_screen.dart';
 import 'package:raktkhoj/services/localization_service.dart';
+import 'package:raktkhoj/splash_screen.dart';
 import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
 
 import '../../Colors.dart';
@@ -295,17 +296,28 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
+              title: Text("Doctors".tr),
+              leading: Icon(
+                FontAwesomeIcons.userNurse,
+                color: kMainRed,
+              ),
+              //onTap: () {
+                //Navigator.push(context,
+                  //  MaterialPageRoute(builder: (context) =>ChatListPage()));
+              //},
+            ),
+            ListTile(
               title: Text("Logout".tr),
               leading: Icon(
                 FontAwesomeIcons.signOutAlt,
                 color: kMainRed,
               ),
               onTap: () async {
-                // await FirebaseAuth.instance.signOut();
-                // Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => AuthPage(FirebaseAuth.instance)));
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacement(
+                    context,
+                     MaterialPageRoute(
+                         builder: (context) => SplashScreen()));
               },
             ),
           ],
