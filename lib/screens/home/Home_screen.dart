@@ -29,6 +29,8 @@ class _HomePageState extends State<HomePage> {
   String language;
   String admin;
 
+
+  //getting user info
   Future<Null> _fetchUserInfo() async {
     Map<String, dynamic> _userInfo;
     User _currentUser = await FirebaseAuth.instance.currentUser;
@@ -48,7 +50,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-
+//loading user details
   Future<void> _loadCurrentUser() async {
     User _currentUser;
     _currentUser = await FirebaseAuth.instance.currentUser;
@@ -59,6 +61,8 @@ class _HomePageState extends State<HomePage> {
 
 
   }
+
+  //loading admin details
   Future<void> _getAdmin() async
   {
        String _admin;
@@ -112,6 +116,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
+
+          //adding multi language feature
           IconButton(
             icon: Icon(
               FontAwesomeIcons.globe,
@@ -202,10 +208,12 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      //drawer for more options
       drawer: Drawer(
         child: ListView(
           padding: const EdgeInsets.all(0.0),
           children: <Widget>[
+            //showing email id , name , blood group of user here
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(
                 color: kMainRed,
@@ -229,6 +237,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+
+            //option to go back to home
             ListTile(
               title: Text("Home".tr),
               leading: Icon(
@@ -240,6 +250,8 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) => PageGuide()));
               },
             ),
+
+            //to enter admin zone
             if(admin==currentUser.uid)
               ListTile(
                 title: Text("Admin Panel".tr),
@@ -252,6 +264,8 @@ class _HomePageState extends State<HomePage> {
                       MaterialPageRoute(builder: (context) => Admin()));
                 },
               ),
+
+            //to view blood donors
             ListTile(
               title: Text("Blood Donors".tr),
               leading: Icon(
@@ -273,6 +287,8 @@ class _HomePageState extends State<HomePage> {
                 //
               },
             ),
+
+            //to check near by hospitals and their location on map
             ListTile(
               title: Text("Nearby Hospitals".tr),
               leading: Icon(
@@ -284,6 +300,8 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) => NearbyHospitalPage()));
               },
             ),
+
+            //option to chat with other users
             ListTile(
               title: Text("Chats".tr),
               leading: Icon(
@@ -295,6 +313,8 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) =>ChatListPage()));
               },
             ),
+
+            //to interact with doctors in emergency conditions
             ListTile(
               title: Text("Doctors".tr),
               leading: Icon(
@@ -306,6 +326,8 @@ class _HomePageState extends State<HomePage> {
                   //  MaterialPageRoute(builder: (context) =>ChatListPage()));
               //},
             ),
+
+            //logout functionality
             ListTile(
               title: Text("Logout".tr),
               leading: Icon(

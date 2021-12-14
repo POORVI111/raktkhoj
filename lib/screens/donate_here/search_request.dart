@@ -59,6 +59,8 @@ class _SearchRequestState extends State<SearchRequest> {
     });
   }
 
+
+  //search bar code
   searchAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: kMainRed,

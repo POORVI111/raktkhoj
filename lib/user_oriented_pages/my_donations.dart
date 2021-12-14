@@ -31,6 +31,8 @@ const double _kViewportFraction = 0.75;
 
 class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
 
+  //code to show history of donations in animated form
+
   List<RequestModel> menu=[];
 
 
@@ -49,6 +51,9 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
     List<RequestModel> requestList = <RequestModel>[];
 
     User curr=FirebaseAuth.instance.currentUser;
+
+    //to check if to show donation history or requests history
+    //and accordingly update the request list
 
     if( widget.type =="donations"){
       QuerySnapshot querySnapshot =
@@ -78,6 +83,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    //initialising variables for animatiomn
     controller = new AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
     scaleController = new AnimationController(vsync: this, duration: Duration(milliseconds: 175));
     scaleAnimation = new Tween<double>(begin: 1.0, end: 1.20).animate(
@@ -100,6 +106,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  //code for playing animations
   Future<Null> playAnimation() async {
     try {
       if(controller.isCompleted){
@@ -133,6 +140,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
   }
 
 
+  //widget for showing card of request or donation
   _contentWidget(RequestModel donation, int index, Alignment alignment, double resize) {
     return new Stack(
       children: <Widget>[
@@ -188,9 +196,12 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
         .size
         .height;
 
+    //checking if list is empty
     if(menu.isEmpty){
-      return Center(child: Text("No requests yet!!"));
+      return Center(child: Text("Empty list!!"));
     }
+
+    //to set heading of page as donations or requests
     String heading="";
     if(widget.type=='donations'){
       heading="Donations";
@@ -198,6 +209,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
       heading="My Requests";
     }
 
+    //stack to show rest of data
     return new Stack(
       children: <Widget>[
 

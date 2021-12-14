@@ -13,6 +13,7 @@ class OnBoarding extends StatefulWidget {
 
 class _OnBoardingState extends State<OnBoarding> {
   int _current=0;
+  //adding three images animation when user first time opens the app
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,7 +121,7 @@ class _OnBoardingState extends State<OnBoarding> {
                           padding: const EdgeInsets.only(right: 30,left: 7),
                           child: InkWell(
                             onTap: (){
-                              //Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                             },
                             child: Container(
                                 height: 50,

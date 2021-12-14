@@ -66,6 +66,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
             ],
           ),
         ),
+        //displaying profile
         Positioned(
           left: Constants.padding,
           right: Constants.padding,

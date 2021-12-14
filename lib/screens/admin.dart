@@ -33,6 +33,9 @@ class _AdminState extends State<Admin> {
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+
+  //fetching all blood requests and dumping into a list
+
   Future<List<RequestModel>> fetchAllRequests()  async {
     List<RequestModel> requestList = <RequestModel>[];
 
@@ -104,7 +107,7 @@ class _AdminState extends State<Admin> {
     );
   }
 
-
+ // to show blood requets to admin in list form
   Widget requests(BuildContext context) {
     return StreamBuilder(
 
@@ -141,7 +144,7 @@ class _AdminState extends State<Admin> {
 
 
 
-
+//designing a single request item
   Widget RequestItem(DocumentSnapshot snapshot, BuildContext context){
 
 
@@ -181,6 +184,7 @@ class _AdminState extends State<Admin> {
             //
             // });
           },
+          //showing data of blood requests raised
           child: Padding(
             padding: const EdgeInsets.symmetric(
                 vertical: 10.0, horizontal: 5),
@@ -350,6 +354,7 @@ class _AdminState extends State<Admin> {
                             ),
                           ]
                       ),
+                      //head towards full view of request
                       Row(
                         children:[
                           SizedBox(width:175),
@@ -369,6 +374,10 @@ class _AdminState extends State<Admin> {
 
 
             ),
+                //while approving blood request
+                //changing in db
+                //sending notifiactions to request raiser
+                //sending email to request raiser
                 Row(
                   children: [
                     Expanded(
@@ -432,6 +441,8 @@ class _AdminState extends State<Admin> {
                           FirebaseFirestore.instance.collection("Blood Request Details").doc(_req.reqid)
                               .update({"permission" : false, "active": false});
                         },
+
+                        //section for disapproving the request
                         child: Container(
                             height: 30,
                             width: double.infinity,
@@ -486,6 +497,8 @@ class _AdminState extends State<Admin> {
     );
   }
 
+  //a container to create teh banners
+  //decoration part
   Container bannerContainer() {
     return
       Container(
@@ -512,6 +525,8 @@ class _AdminState extends State<Admin> {
 
   }
 
+
+  //sorting the requests on baseis of blood groups
   Widget getScrollView(){
     return SingleChildScrollView(
         physics: BouncingScrollPhysics(),

@@ -29,13 +29,15 @@ class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
 }
+
+//declaring variables to be shown in profile page of user
 var name;
 var email;
 var req;
 var donations;
 var dob;
 var btype;
-var mc;
+var mc;//refers to medical condition
 var contact;
 var userid;
 
@@ -47,6 +49,7 @@ class _ProfileState extends State<Profile> {
   String name, profilePhoto;
   bool showSpinner = false;
 
+  //taking datetiem variable for applying cooldown feature
   DateTime selectedDate = DateTime.now();
   var formattedDate;
   int flag = 0;
@@ -82,6 +85,8 @@ class _ProfileState extends State<Profile> {
     final firestoreInstance =  FirebaseFirestore.instance;
 
     var firebaseUser =  FirebaseAuth.instance.currentUser;
+
+    //fetching data of user from firebase
     firestoreInstance.collection("User Details").doc(firebaseUser.uid).get().then((value){
       //print(value.data());
       this.setState(() {
@@ -103,16 +108,7 @@ class _ProfileState extends State<Profile> {
       });
       //name=value.data()["Name"].toString();
     });
-    /*_firebaseref.child("${userid}").once().then((DataSnapshot snapshot) {
-      name = snapshot.value["Name"].toString();
-      req = snapshot.value["Requests"].toString();
-      donations = snapshot.value["Donations"].toString();
-      dob = snapshot.value["Dob"].toString();
-      btype = snapshot.value["BloodType"].toString();
-      mc = snapshot.value["MedCondition"].toString();
-      contact = snapshot.value["Phone"].toString();
-      setState(() {});
-    });*/
+
 
 
 
@@ -125,7 +121,7 @@ class _ProfileState extends State<Profile> {
     isActive = false;
   }
 
-
+ //finction ot get dob of user in string form
   String getDOB(){
     final firestoreInstance =  FirebaseFirestore.instance;
 
@@ -139,7 +135,7 @@ class _ProfileState extends State<Profile> {
     return dob;
   }
 
-
+ //function to get imagreurl for profile photo of user
   String getImageUrl(){
     final firestoreInstance =  FirebaseFirestore.instance;
 
@@ -154,6 +150,7 @@ class _ProfileState extends State<Profile> {
     return profilePhoto;
   }
 
+  //selecting(changing dob)
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -175,12 +172,15 @@ class _ProfileState extends State<Profile> {
     update({"Dob":formattedDate});
 
   }
+
+  //image picking in order to change dp of user
   static Future<PickedFile> _pickImage({@required ImageSource source}) async {
     final _picker = ImagePicker();
     PickedFile selectedImage = await _picker.getImage(source: source);
     return selectedImage;
   }
 
+  //uploading image to firebase
   void UploadImage({@required ImageSource source}) async {
     PickedFile selectedImage = await _pickImage(source: source);
     final firestoreInstance =  FirebaseFirestore.instance;
@@ -220,6 +220,10 @@ class _ProfileState extends State<Profile> {
 
             ),
           ),
+
+          //first part of profile
+          //containing name , email id , profile pic
+          //option to change dp
 
           child: SingleChildScrollView(
             child: Column(
@@ -287,6 +291,8 @@ class _ProfileState extends State<Profile> {
                         SizedBox(
                           height: 20,
                         ),
+
+                        //dislay no of requests and donations of user in digits
                         Row(children: [
                           SizedBox(width: 15,),
                           Expanded(
@@ -337,6 +343,8 @@ class _ProfileState extends State<Profile> {
                       SizedBox(
                         height: 10,
                       ),
+
+                      //dob widget goes here
                       Row(
                         children: <Widget>[
                           Expanded(
@@ -406,6 +414,8 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                           ),
+
+                          //blood type widget goes here
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -474,6 +484,8 @@ class _ProfileState extends State<Profile> {
                           ),
                         ],
                       ),
+
+                      //height widget(user can change it as well)
                       Padding(
                         padding:
                         const EdgeInsets.only(left: 25.0, right: 25.0, top: 20),
@@ -517,6 +529,8 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
+
+                              //slider for changing height of user
                               SliderTheme(
                                 data: SliderTheme.of(context).copyWith(
                                   thumbShape: RoundSliderThumbShape(
@@ -534,6 +548,7 @@ class _ProfileState extends State<Profile> {
                                     max: 220.0,
                                     onChanged: (double newValue) {
                                       setState(() {
+                                        //function to save changed height data in db
                                         height = newValue.round();
                                         final firestoreInstance =  FirebaseFirestore.instance;
 
@@ -548,6 +563,8 @@ class _ProfileState extends State<Profile> {
                           //curveType: CurveType.convex,
                         ),
                       ),
+
+                      //weight widget goes here (similar to height widget)
                       Row(
                         children: <Widget>[
                           Expanded(
@@ -627,6 +644,8 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                           ),
+
+                          //Age widget  goes here(increasing /decresaing feature provided)
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -727,6 +746,10 @@ class _ProfileState extends State<Profile> {
                                 )
                               ]
                           ),
+
+                          //display medical condition of user
+                          //1.normal
+                          //2.critical
                           child: Center(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -790,6 +813,9 @@ class _ProfileState extends State<Profile> {
                                 )
                               ]
                           ),
+
+                          //conatct details of user shown here
+                          //updation feature still to be added
                           child: Center(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -886,6 +912,10 @@ class _ProfileState extends State<Profile> {
                                   )
                                 ]
                             ),
+
+                            //to activate doctors respopsibility
+                            //if a user is also a doctor
+                            //then acn serve the patients in emergency cases
                             child: Center(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -919,6 +949,9 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                       ),
+
+                      //donatiojn history to be shown here
+                      //would be directed to new page
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 25.0, right: 25, top: 20),
@@ -990,7 +1023,8 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
 
-
+                      //request history of user would be shown here
+                      //would be directed to new page
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 25.0, right: 25, top: 20),
@@ -1062,6 +1096,9 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
 
+                      //a user friendly option
+                      // a sort of guide for donors and recievers
+
                       GestureDetector(
                         onTap: (){
                           Navigator.push(
@@ -1112,6 +1149,8 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                       ),
+
+                      //logout feature
                       GestureDetector(
                         onTap: ()async{
                           await FirebaseAuth.instance.signOut();
@@ -1169,7 +1208,8 @@ class _ProfileState extends State<Profile> {
 
 
 
-
+ // dummy code to change conatct details and medical condition of user
+  //not yet enabled
   displayOverlay(BuildContext context) {
     String name;
     String dob;
@@ -1469,9 +1509,12 @@ class _ProfileState extends State<Profile> {
     );
   }
 
+
+  //a dialog box to be shown to every user if one clicks on enabling doctors responsibility
   showDialogBox(BuildContext context)
   {
     return AlertDialog(
+      //dislpay name of user
       title: Text(name),
       content: Text("If you are a certified doctor , "
           "then please help the patients in emergency condition by enabling this option."),

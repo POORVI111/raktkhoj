@@ -58,6 +58,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
 
     var childButtons = <UnicornButton>[];
 
+    //calling feature
     childButtons.add(UnicornButton(
         hasLabel: true,
         labelText: "Contact",
@@ -71,6 +72,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
           },
         )));
 
+    //chatting feature
     childButtons.add(UnicornButton(
         currentButton: FloatingActionButton(
             heroTag: "Chat",
@@ -87,6 +89,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
 
         )));
 
+    //sms feature
     childButtons.add(UnicornButton(
         currentButton: FloatingActionButton(
             heroTag: "Sms",
@@ -110,6 +113,8 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
 
 
     currentUser = FirebaseAuth.instance.currentUser;
+
+    //fetching data of request
     FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid).get()
         .then((value) {
       valEnd=value.data()["Last Donation"];
@@ -121,6 +126,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
 
     });
 
+    //getting mail id and token id of raiser
     FirebaseFirestore.instance.collection('User Details').doc(widget.request.raiserUid).get().then((value)
     {
       email= value.data()["Email"];
@@ -147,6 +153,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
               ),
               onPressed: () async {
 
+                //sharing of request link
                 String url= await DynamicLinksService.createDynamicLink(widget.request.reqid);
                 await Share.share(
                   'I found this blood request at Raktkhoj: $url .\n'
@@ -158,6 +165,9 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                 );
               },
             ),
+
+            //additional icon added
+            //in order to add any other feature in future
             IconButton(
               icon: Icon(
                FontAwesomeIcons.ellipsisV,
@@ -169,13 +179,17 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
 
         ],
       ),
+
+      //bar to get calling/sms/chatting feature
       floatingActionButton: UnicornDialer(
             parentButtonBackground: kMainRed,
             orientation: UnicornOrientation.VERTICAL,
             parentButton: Icon(FontAwesomeIcons.plus),
             childButtons: childButtons),
 
+      //goes below a form like stucture to show data
       body: SafeArea(
+
         child: Padding(
           padding: const EdgeInsets.all(20),
           child:SingleChildScrollView(
@@ -483,6 +497,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                         FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
                             .update({"permission" : true});
 
+
                         /* notification to user when request accepted by admin*/
                         String url=await DynamicLinksService.createDynamicLink(widget.request.reqid);
                         // print('email $email tokenid $tokenid');
@@ -559,6 +574,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                     if(widget.request.raiserUid==currentUser.uid){
                       FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
                       .update({"active": false});
+
                       return ;
                     }
 
@@ -585,6 +601,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                               .update({"donorUid" : currentUser.uid , "active" : false});
                             FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid)
                                 .update({"Last Donation":DateTime.now()});
+                            to_show="DONATED";
                       }else{
                         //to show blood group incompatibility error
                         //print(donorBloodGroup);
@@ -642,6 +659,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
 
                             FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
                                 .update({"donorUid" : currentUser.uid , "active" : false});
+                            to_show="DONATED";
                             FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid)
                                 .update({"Last Donation":DateTime.now()});
 

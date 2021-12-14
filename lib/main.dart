@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -51,12 +55,38 @@ class _MyApp extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
+
+
     DynamicLinksService().initDynamicLinks();
     OneSignal.shared.setAppId(ONESIGNAL_APP_ID);
+  }
+
+
+  void _showDialog() {
+    // dialog implementation
+    //showDialog(
+      //context: context,
+      //builder: () =>
+          AlertDialog(
+        title: Text("Internet needed!"),
+        content: Text("You may want to exit the app here"),
+        actions: <Widget>[FlatButton(child: Text("EXIT"), onPressed: () {})],
+      );
+    //);
   }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+
+
+
+    // Set portrait orientation
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.portraitUp,
+    ]);
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => ImageUploadProvider()),

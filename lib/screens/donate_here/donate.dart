@@ -100,6 +100,8 @@ class _DonateState extends State<Donate> {
     );
   }
 
+  //search button leading to new page
+  //where one can search the requests
   Widget searchButton(BuildContext context)
   {
 
@@ -129,6 +131,7 @@ class _DonateState extends State<Donate> {
   }
 
 
+  //code for presenting all requests in from of list
   Widget requests(BuildContext context) {
     return StreamBuilder(
 
@@ -166,6 +169,7 @@ class _DonateState extends State<Donate> {
 
 
 
+  //each request item to be shown here
   Widget RequestItem(DocumentSnapshot snapshot, BuildContext context){
 
 
@@ -597,6 +601,9 @@ class _DonateState extends State<Donate> {
 
 
 
+
+  //would show emergency conditions
+  //view all feature added
   Row rowRecentUpdates() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -641,6 +648,9 @@ class _DonateState extends State<Donate> {
     );
   }
 
+
+  //added a banner on top of page
+  //again ui ui ui......
   Container bannerContainer() {
     return
           Container(
@@ -667,6 +677,8 @@ class _DonateState extends State<Donate> {
 
   }
 
+
+  //conatiner for ui enhancement
   Container cardContainer(BuildContext context) {
     return Container(
       alignment: Alignment.topCenter,
@@ -707,6 +719,8 @@ class _DonateState extends State<Donate> {
     );
   }
 
+
+  //scroll view added for sorting the requests on basis of blood grps
   Widget getScrollView(){
     return SingleChildScrollView(
         physics: BouncingScrollPhysics(),

@@ -11,6 +11,8 @@ class PercentageWidget extends StatelessWidget{
   const PercentageWidget({Key key, this.size, this.count, this.percentage, this.title, this.countLeft}) : super(key: key);
 
   @override
+  //done for ui purpose
+  //would show the percentage of requests successfully finished etc
   Widget build(BuildContext context) {
     return SizedBox(
       width: size,

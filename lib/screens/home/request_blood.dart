@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dropdownfield/dropdownfield.dart';
@@ -27,6 +28,8 @@ class RequestBlood extends StatefulWidget {
 }
 
 class _RequestBloodState extends State<RequestBlood> {
+
+
   final StorageMethods _storageMethods = StorageMethods();
   final formkey = new GlobalKey<FormState>();
   List<String> _bloodGroup = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
@@ -49,6 +52,8 @@ class _RequestBloodState extends State<RequestBlood> {
   int flag = 0;
   User currentUser;
   List<Placemark> placemark;
+
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +70,9 @@ class _RequestBloodState extends State<RequestBlood> {
     }
   }
 
+
+  //function to add lood request in db
+  //need approval of admin
   Future<void> addData(_request, key) async {
 
     if (isLoggedIn()) {
@@ -111,6 +119,8 @@ class _RequestBloodState extends State<RequestBlood> {
     return token;
   }
 
+
+  //function for selecting date
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -125,6 +135,9 @@ class _RequestBloodState extends State<RequestBlood> {
     var date = DateTime.parse(selectedDate.toString());
     formattedDate = "${date.day}-${date.month}-${date.year}";
   }
+
+
+  //select file to show valid request to admin
   Future selectFile() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
 
@@ -135,7 +148,7 @@ class _RequestBloodState extends State<RequestBlood> {
   }
 
 
-
+//upoading the file in db
   Future<String> uploadFile() async {
     if (file == null) return null;
 
@@ -154,6 +167,10 @@ class _RequestBloodState extends State<RequestBlood> {
     return urlDownload;
   }
 
+
+  //if the submission is successful
+  //showing a dialog box
+//heading toward page guide
   Future<bool> dialogTrigger(BuildContext context) async {
     return showDialog(
         context: context,
@@ -180,6 +197,9 @@ class _RequestBloodState extends State<RequestBlood> {
         });
   }
 
+
+  //to get current loaction of rerquest raiser
+  // would be putted in request address section
   void getAddress() async {
     placemark =
     await Geolocator().placemarkFromCoordinates(widget._lat, widget._lng);
@@ -188,6 +208,23 @@ class _RequestBloodState extends State<RequestBlood> {
         placemark[0].locality.toString() +
         ", Postal Code:" +
         placemark[0].postalCode.toString();
+  }
+
+
+  //implementing internet need
+  //not yet working properly
+  void _showDialog(BuildContext context) {
+    // dialog implementation
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Internet needed!"),
+        content: Text("You may want to exit the app here"),
+        actions: <Widget>[FlatButton(child: Text("EXIT"), onPressed: () {
+          new HomePage();
+        })],
+      ),
+    );
   }
 
   @override
@@ -427,6 +464,25 @@ class _RequestBloodState extends State<RequestBlood> {
                           };
                            print("token: $_tokenid");
 
+
+                          //checking internet connectivity
+                          Timer.run(() {
+                            try {
+                              InternetAddress.lookup('google.com').then((result) {
+                                if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+                                  print('connected');
+                                } else {
+                                  _showDialog(context); // show dialog
+                                }
+                              }).catchError((error) {
+                                _showDialog(context); // show dialog
+                              });
+                            } on SocketException catch (_) {
+                              _showDialog(context);
+                              print('not connected'); // show dialog
+                            }
+                          });
+
                           addData(BloodRequestDetails, key).then((result) async {
                            //sendNotification();
                             /*send notif to admin when new request is added*/
@@ -456,6 +512,9 @@ class _RequestBloodState extends State<RequestBlood> {
       ),
     );
   }
+
+
+
 
   //to show percentage doc uploaded
   Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(

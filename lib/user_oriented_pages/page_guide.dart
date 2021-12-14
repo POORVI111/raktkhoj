@@ -25,9 +25,11 @@ class _PageGuideState extends State<PageGuide> {
   final Donate _listDonatePage=new Donate();
   final Info _listInfoPage= new Info();
 
-
+ //code to check , which page to be shown as home page
+  //deafult page for now is home_page
   Widget _showPage=new HomePage();
 
+  //using switch cases for choosing pages
   Widget _pageChooser(int page)
   {
     switch(page)

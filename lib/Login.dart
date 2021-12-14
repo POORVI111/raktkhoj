@@ -312,6 +312,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
                             borderRadius: BorderRadius.circular(30),
                             color: kMainRed.withAlpha(50)
                         ),
+                          //dropdown list for choosing blood group along with search feature
                           child: DropDownField(
                               controller: bgroup,
                               itemsVisibleInDropdown: 1,
@@ -347,7 +348,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
   }
 
-
+//register container starts here
   Widget buildRegisterConatiner()
   {
     return Align(
