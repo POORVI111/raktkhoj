@@ -487,7 +487,8 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                         String url=await DynamicLinksService.createDynamicLink(widget.request.reqid);
                         // print('email $email tokenid $tokenid');
                         await sendNotification([tokenId], 'Your request has been approved.', 'Blood Request Approved');
-                        await sendEmail(email, url, 'You blood request has been approved by admin. We hope you find your donor through Raktkhoj.Click on the link to view your request', 'Blood Request Approved');
+                        await sendEmail(email, url, 'You blood request has been approved by admin. We hope you find your donor through Raktkhoj.'
+                            'Click on the link to view your request', 'Blood Request Approved');
                       },
                       child: Center(
                         child: Text(
@@ -636,7 +637,8 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                                 });
                             String url=await DynamicLinksService.createDynamicLink(widget.request.reqid);
                             await sendNotification([tokenId], 'You found a donor.', 'Your blood request got a potential donor');
-                            await sendEmail(email, url, 'Your blood request matched with a potential donor \n. Hope we could save a life, connect with the donor- $donorEmail.\n Click on the link to view your request', 'Found a Donor');
+                            await sendEmail(email, url, 'Your blood request matched with a potential donor \n. Hope we could save a life, '
+                                'connect with the donor- $donorEmail.\n Click on the link to view your request', 'Found a Donor');
 
                             FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
                                 .update({"donorUid" : currentUser.uid , "active" : false});

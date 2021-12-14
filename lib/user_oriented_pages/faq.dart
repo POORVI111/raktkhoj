@@ -10,89 +10,95 @@ class _FAQState extends State<FAQ> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Center(
-          child: Text(
-            "FAQ",
-            style: TextStyle(
-                color: Colors.black,
-                letterSpacing: 20,
-                fontSize: 25,
-                fontWeight: FontWeight.w400),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  tileMode: TileMode.mirror,
+                  begin: Alignment.topRight,
+                  end: Alignment.topLeft,
+
+                  colors: <Color>[
+                    Color(0xFFE53033),Color(0xFFBC002D),
+                  ])
           ),
         ),
+        title: Text("Information Guide",style: TextStyle(fontFamily: 'nunito'),),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Who can donate blood?"),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    "In most states, donors must be age 17 or older. Some states allow donation by 16-year-olds with a signed parental consent form. Donors must weigh at least 110 pounds and be in good health. Additional eligibility criteria apply."),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top:20,left: 20,right: 20),
+              child: Text("Who can I donate to?",style: TextStyle(fontFamily: 'nunito',fontSize: 16,fontWeight: FontWeight.bold),),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top:8,left: 20,right: 20),
+              child: Text("A patient can receive blood that has the same ABO antigens as theirs, plus O. Rh+ can receive Rh+ or Rh-, while Rh- must receive Rh- blood. Here is a table of compatible blood types:",style: TextStyle(fontFamily: 'nunito',fontSize: 14,fontWeight: FontWeight.w400),),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:20.0,bottom: 10,left: 8,right: 20),
+              child: Container(
+                child: new Image.asset('images/table1.png',width:330,height:200),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("What should I do before donating blood?"),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:8,left: 20,right: 20),
+              child: Text("Who can give blood?",style: TextStyle(fontFamily: 'nunito',fontSize: 16,fontWeight: FontWeight.bold),),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top:8,left: 20,right: 20),
+              child: Text("Almost anyone who is healthy, at least 16 years old, and weighs at least 110 pounds. (16-year-olds must weigh at least 130 lbs and need signed parental consent.)",style: TextStyle(fontFamily: 'nunito',fontSize: 14,fontWeight: FontWeight.w400),),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:20,left: 20,right: 20),
+              child: Text("How much blood is drawn?",style: TextStyle(fontFamily: 'nunito',fontSize: 16,fontWeight: FontWeight.bold),),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top:8,left: 20,right: 20),
+              child: Text("One pint. The average person has 10-12 pints, so the small loss is easily afforded. The fluid (plasma) is replaced within 24 hours. The red cells take about five weeks. You can donate again in eight weeks!",style: TextStyle(fontFamily: 'nunito',fontSize: 14,fontWeight: FontWeight.w400),),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:20,left: 20,right: 20),
+              child: Text('Who needs blood transfusions?',style: TextStyle(fontFamily: 'nunito',fontSize: 16,fontWeight: FontWeight.bold),),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top:8,left: 20,right: 20),
+              child: Text('A wide variety of patients receive blood transfusions. The various components of donated blood are used to treat different conditions ranging from replenishing lost blood to platelet transfusions for Cancer patients',style: TextStyle(fontFamily: 'nunito',fontSize: 14,fontWeight: FontWeight.w400),),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:20,left: 20,right: 20),
+              child: Text('Is donating blood safe?',style: TextStyle(fontFamily: 'nunito',fontSize: 16,fontWeight: FontWeight.bold),),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top:8,left: 20,right: 20),
+              child: Text('Absolutely. Blood donation conditions are sanitary, and needles are sterile and disposable.',style: TextStyle(fontFamily: 'nunito',fontSize: 14,fontWeight: FontWeight.w400),),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:20,left: 20,right: 20),
+              child: Text('What should I do to prepare for donating?',style: TextStyle(fontFamily: 'nunito',fontSize: 16,fontWeight: FontWeight.bold),),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top:8,left: 20,right: 20),
+              child: Text('Eat a well-balanced meal, free of fatty or fried foods. A diet that regularly includes iron-rich foods will help promote red cell regeneration, increasing your chances of having an adequate hemoglobin level for blood donation.',style: TextStyle(fontFamily: 'nunito',fontSize: 14,fontWeight: FontWeight.w400),),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:20,left: 20,right: 20),
+              child: Text('Blood Compatability',style: TextStyle(fontFamily: 'nunito',fontSize: 16,fontWeight: FontWeight.bold),),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top:10.0,bottom: 10,left: 20,right: 20),
+              child: Container(
+                child: new Image.asset('images/table2.png',width:340,height:250),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    "Before your blood donation:Get plenty of sleep the night before you plan to donate.Eat a healthy meal before your donation.Avoid fatty foods, such as hamburgers, french fries or ice cream before donating. Tests for infections done on all donated blood can be affected by fats that appear in your blood for several hours after eating fatty foods.Drink an extra 16 ounces (473 milliliters) of water and other fluids before the donation.If you are a platelet donor, remember that you must not take aspirin for two days prior to donating. Otherwise, you can take your normal medications as prescribed."),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("What should I do after donating blood?"),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    "Drink an extra four glasses (eight ounces each) of non-alcoholic liquids.Keep your bandage on and dry for the next five hours, and do not do heavy exercising or lifting.If the needle site starts to bleed, raise your arm straight up and press on the site until the bleeding stops.Because you could experience dizziness or loss of strength, use caution if you plan to do anything that could put you or others at risk of harm. Eat healthy meals and consider adding iron-rich foods to your regular dieIf you get dizzy or lightheaded:  Stop what you are doing, lie down, and raise your feet until the feeling passes "),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("How long does a blood donation take?"),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    "The entire process takes about one hour and 15 minutes; the actual donation of a pint of whole blood unit takes eight to 10 minutes. However, the time varies slightly with each person depending on several factors including the donor’s health history and attendance at the blood drive."),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    "How long will it take to replenish the pint of blood I donate?"),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    "The plasma from your donation is replaced within about 24 hours. Red cells need about four to six weeks for complete replacement. That’s why at least eight weeks are required between whole blood donations."),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("How much plasma can an individual give safely?"),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    "The amount of plasma that can be safely donated is based on your weight and amount of red blood cells in your body. The Red Cross apheresis machine or cell separator carefully calculates this at each donation to ensure the donor’s safety. With each donation, COVID-19 survivors may now have a unique ability to help up to four patients recover from the virus"),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("What is convalescent plasma donation?"),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                    "COVID-19 convalescent plasma is a type of blood donation collected from individuals who have recovered from COVID-19. The convalescent plasma contains antibodies that might help patients actively fighting the virus."),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
