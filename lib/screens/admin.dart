@@ -389,7 +389,7 @@ class _AdminState extends State<Admin> {
                           String url=await DynamicLinksService.createDynamicLink(_req.reqid);
                           // print('email $email tokenid $tokenid');
                           await sendNotification([tokenid], 'Your request has been approved.', 'Blood Request Approved');
-                          await sendEmail(email, url, 'You blood request has been approved by admin. We hope you find your donor through Raktkhoj.Click on the link to view your request');
+                          await sendEmail(email, url, 'You blood request has been approved by admin. We hope you find your donor through Raktkhoj.Click on the link to view your request', 'Blood request approved');
                           FirebaseFirestore.instance.collection("Blood Request Details").doc(_req.reqid)
                               .update({"permission" : true});
                         },
