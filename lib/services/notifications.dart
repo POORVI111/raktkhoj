@@ -33,7 +33,7 @@ Future<Response> sendNotification(List<String> tokenIdList, String contents, Str
 
 
 }
-  sendEmail(String adminMail, String requestlink, String text) async {
+  sendEmail(String adminMail, String requestlink, String text, String heading) async {
     String username = 'raktkhojad@gmail.com';
     String password = 'raktkhojadmin';
 
@@ -48,7 +48,7 @@ Future<Response> sendNotification(List<String> tokenIdList, String contents, Str
       ..from = Address(username, 'Raktkhoj')
       ..recipients.add(adminMail)
       ..subject = 'Raktkhoj Blood Request 🩸 \n ${DateTime.now()}'
-      ..html = "<h1>New Request Added</h1>\n<p>$text $requestlink</p>";
+      ..html = "<h1>$heading</h1>\n<p>$text $requestlink</p>";
 
     try {
       final sendReport = await send(message, smtpServer);

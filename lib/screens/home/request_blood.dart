@@ -428,10 +428,10 @@ class _RequestBloodState extends State<RequestBlood> {
                            print("token: $_tokenid");
 
                           addData(BloodRequestDetails, key).then((result) async {
-                         //   sendNotification();
-                            //send notif to admin when new request is added
+                           //sendNotification();
+                            /*send notif to admin when new request is added*/
                             await sendNotification([_tokenid], 'A new blood request has been added.', 'New Request Requires Permission');
-                            await sendEmail(_adminEmail, url, 'A new blood request has been registered. Click on the link to view and verify request: ');
+                            await sendEmail(_adminEmail, url, 'A new blood request has been registered. Click on the link to view and verify request: ', 'New Blood Request');
                             dialogTrigger(context);
                           }).catchError((e) {
                             print(e);
