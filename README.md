@@ -17,11 +17,11 @@ Raktkhoj is a flutter application which aims to provide a network for blood dono
   <img margin="0" src="https://firebasestorage.googleapis.com/v0/b/baithak-4a1fe.appspot.com/o/android-ver1.svg?alt=media&token=b22cc972-c33f-4d7f-910f-07bc17e9b20e" />
 </a>
 
-## 🚩 App Flow
+## ✔️ App Flow
 
-Here's a app flow [link](pdf link) 
+Here's a app flow [link](https://drive.google.com/file/d/1zVeUsRNSRSV-oRMszbZFhLlIn2QypDOF/view?usp=sharing) 
   
-## 🚩 Features✨
+## ✔️ Features✨
 
 - Secure with **Authentication**🔐
   
@@ -80,6 +80,23 @@ Here's a app flow [link](pdf link)
     - FAQs 
        - Blood donation information is given here. 
     - Edit Profile
+
+
+## ✔️ Tech Stack
+
+<p align="center">
+  
+   <img width="250" height="120" src="https://user-images.githubusercontent.com/68559217/146030875-062fd553-3ec1-4b70-b5f1-1dabb1ea39e5.png">
+  <img width="200" height="120" src="https://user-images.githubusercontent.com/68559217/146030868-c270cee6-e305-4d4f-b010-e2a9cc9aa17b.png">
+  <img width="250" height="120" src="https://user-images.githubusercontent.com/68559217/146030913-bd6af18d-7ec7-4fb9-a53d-1a12bc0a170e.png">
+  <img width="250" height="120" src="https://user-images.githubusercontent.com/68559217/146030864-ecabfd9d-158c-480e-b3b0-ef9fb7becbb4.png">
+</p>
+
+### ✔️ Team : Aergia
+**Members:**<br />
+- [Poorvi Garg](https://github.com/POORVI111)
+- [Radhika Gupta](https://github.com/radhika2312)
+
 
 
   
