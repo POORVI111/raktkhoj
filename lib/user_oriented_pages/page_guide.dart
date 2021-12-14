@@ -6,7 +6,7 @@ import 'package:raktkhoj/screens/home/Home_screen.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 
 import '../Colors.dart';
-import '../info.dart';
+import '../screens/info.dart';
 
 
 class PageGuide extends StatefulWidget {

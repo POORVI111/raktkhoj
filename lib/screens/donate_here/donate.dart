@@ -887,12 +887,14 @@ class _DonateState extends State<Donate> {
         return  FirebaseFirestore.instance
             .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
             .where('active',isEqualTo:true)
+            .where('permission', isEqualTo: true)
             .orderBy('dueDate');
         break;
       case 1:
         return FirebaseFirestore.instance
             .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
             .where('active',isEqualTo:true)
+            .where('permission', isEqualTo: true)
             .where('bloodGroup',isEqualTo: "A+")
             .orderBy('dueDate');
         break;
@@ -900,6 +902,7 @@ class _DonateState extends State<Donate> {
         return FirebaseFirestore.instance
             .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
             .where('active',isEqualTo:true)
+            .where('permission', isEqualTo: true)
             .where('bloodGroup',isEqualTo: "A-")
             .orderBy('dueDate');
         break;
@@ -907,6 +910,7 @@ class _DonateState extends State<Donate> {
         return FirebaseFirestore.instance
             .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
             .where('active',isEqualTo:true)
+            .where('permission', isEqualTo: true)
             .where('bloodGroup',isEqualTo: "B+")
             .orderBy('dueDate');
         break;
@@ -914,6 +918,7 @@ class _DonateState extends State<Donate> {
         return FirebaseFirestore.instance
             .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
             .where('active',isEqualTo:true)
+            .where('permission', isEqualTo: true)
             .where('bloodGroup',isEqualTo: "B-")
             .orderBy('dueDate');
         break;
@@ -921,6 +926,7 @@ class _DonateState extends State<Donate> {
         return FirebaseFirestore.instance
             .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
             .where('active',isEqualTo:true)
+            .where('permission', isEqualTo: true)
             .where('bloodGroup',isEqualTo: "AB+")
             .orderBy('dueDate');
         break;
@@ -928,6 +934,7 @@ class _DonateState extends State<Donate> {
         return FirebaseFirestore.instance
             .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
             .where('active',isEqualTo:true)
+            .where('permission', isEqualTo: true)
             .where('bloodGroup',isEqualTo: "AB-")
             .orderBy('dueDate');
         break;
@@ -935,6 +942,7 @@ class _DonateState extends State<Donate> {
         return FirebaseFirestore.instance
             .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
             .where('active',isEqualTo:true)
+            .where('permission', isEqualTo: true)
             .where('bloodGroup',isEqualTo: "O+")
             .orderBy('dueDate');
         break;
@@ -942,6 +950,7 @@ class _DonateState extends State<Donate> {
         return FirebaseFirestore.instance
             .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
             .where('active',isEqualTo:true)
+            .where('permission', isEqualTo: true)
             .where('bloodGroup',isEqualTo: "O-")
             .orderBy('dueDate');
         break;

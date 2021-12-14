@@ -11,13 +11,13 @@ import 'package:raktkhoj/Colors.dart';
 import 'package:raktkhoj/model/background_colors.dart';
 
 import 'package:raktkhoj/model/request.dart';
-import 'package:raktkhoj/widgets/animated_circle.dart';
+import 'package:raktkhoj/components/animated_circle.dart';
 
 
-import 'package:raktkhoj/widgets/raiser_image.dart';
-import 'package:raktkhoj/widgets/item_card.dart';
-import 'package:raktkhoj/widgets/rectangle_indicator.dart';
-import 'package:raktkhoj/widgets/shadows.dart';
+import 'package:raktkhoj/components/raiser_image.dart';
+import 'package:raktkhoj/components/item_card.dart';
+import 'package:raktkhoj/components/rectangle_indicator.dart';
+import 'package:raktkhoj/components/shadows.dart';
 
 class MenuPager extends StatefulWidget {
   final String type;
