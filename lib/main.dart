@@ -22,7 +22,7 @@ import 'Constants.dart';
 import 'components/image_upload_provider.dart';
 import 'model/request.dart';
 import 'screens/home/Home_screen.dart';
-import 'splash_screen.dart';
+import 'screens/splash_screen.dart';
 
 
 /*void main() {
@@ -31,6 +31,8 @@ import 'splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Firebase.initializeApp();
   await GetStorage.init();
 

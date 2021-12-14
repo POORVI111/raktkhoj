@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:raktkhoj/Colors.dart';
-import 'package:raktkhoj/Login.dart';
+import 'package:raktkhoj/screens/Login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -141,28 +141,46 @@ class RegisterButton extends StatelessWidget {
   }
 
   Future<void> _showDialog1(BuildContext context, String errorMsg) {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          //title: Text('Alert'),
-          content: Text(errorMsg),
-          actions: <Widget>[
-            FlatButton(
-              child:  Text('Ok',style: GoogleFonts.montserrat(fontSize: 14,color: kMainRed,fontWeight: FontWeight.w600),),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
-                  ),
-                );
-              },
-            ),
-          ],
-        );
-      },
-    );
+
+    return showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 10), () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginScreen(),
+              ),
+            );
+          });
+          return AlertDialog(
+            content: Text(errorMsg,
+                style: TextStyle(
+                    color: Colors.black, fontSize: 17)),
+          );
+        });
+    // return showDialog<void>(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return AlertDialog(
+    //       //title: Text('Alert'),
+    //       content: Text(errorMsg),
+    //       actions: <Widget>[
+    //         FlatButton(
+    //           child:  Text('Ok',style: GoogleFonts.montserrat(fontSize: 14,color: kMainRed,fontWeight: FontWeight.w600),),
+    //           onPressed: () {
+    //             Navigator.pushReplacement(
+    //               context,
+    //               MaterialPageRoute(
+    //                 builder: (context) => LoginScreen(),
+    //               ),
+    //             );
+    //           },
+    //         ),
+    //       ],
+    //     );
+    //   },
+    // );
   }
 }
 String errorMsg = '';

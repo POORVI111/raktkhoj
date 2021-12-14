@@ -10,7 +10,7 @@ import 'package:raktkhoj/screens/admin.dart';
 import 'package:raktkhoj/screens/home/map_view.dart';
 import 'package:raktkhoj/screens/nearby_hospitals/nearby_hospital_screen.dart';
 import 'package:raktkhoj/services/localization_service.dart';
-import 'package:raktkhoj/splash_screen.dart';
+import 'package:raktkhoj/screens/splash_screen.dart';
 import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
 
 import '../../Colors.dart';
