@@ -11,6 +11,7 @@ import 'package:raktkhoj/screens/home/map_view.dart';
 import 'package:raktkhoj/screens/nearby_hospitals/nearby_hospital_screen.dart';
 import 'package:raktkhoj/services/localization_service.dart';
 import 'package:raktkhoj/screens/splash_screen.dart';
+import 'package:raktkhoj/user_oriented_pages/be_a_donor.dart';
 import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
 
 import '../../Colors.dart';
@@ -265,16 +266,16 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
 
-            //to view blood donors
+            //to enable/disable donor option
             ListTile(
-              title: Text("Blood Donors".tr),
+              title: Text("Be a Donor".tr),
               leading: Icon(
                 FontAwesomeIcons.handshake,
                 color: kMainRed,
               ),
               onTap: () {
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => DonorsPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => BeDonor()));
               },
             ),
             ListTile(
