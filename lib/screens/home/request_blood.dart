@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
@@ -139,7 +140,8 @@ class _RequestBloodState extends State<RequestBlood> {
 
   //select file to show valid request to admin
   Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+    final result = await FilePicker.platform.pickFiles(type: FileType.custom,
+        allowedExtensions: ['pdf'],allowMultiple: false);
 
     if (result == null) return;
     final path = result.files.single.path;
@@ -387,12 +389,15 @@ class _RequestBloodState extends State<RequestBlood> {
                               color: kMainRed,
                             ),
                           ),
-                          validator: (value) => value.isEmpty
-                              ? "Phone Number field can't be empty".tr
+                          validator: (value) => (value.isEmpty || value.length<10 )
+                              ? "Please Enter a valid Phone Number".tr
                               : null,
                           onSaved: (value) => _phone = value,
                           maxLength: 10,
                           keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ], // Only numbers can be entered
                         ),
                       ),
                       Padding(
