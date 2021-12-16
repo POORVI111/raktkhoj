@@ -68,7 +68,6 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
       await FirebaseFirestore.instance.collection("Blood Request Details").get();
       for (var i = 0; i < querySnapshot.docs.length; i++) {
         if(querySnapshot.docs[i]['raiserUid']==curr.uid && querySnapshot.docs[i]['active']==false
-
             &&querySnapshot.docs[i]['permission']==true && querySnapshot.docs[i]['donorUid']!='') {
 
           requestList.add(RequestModel.fromMap(querySnapshot.docs[i].data()));

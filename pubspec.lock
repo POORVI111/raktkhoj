@@ -106,6 +106,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+  convert:
+    dependency: transitive
+    description:
+      name: convert
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.1"
   cross_file:
     dependency: transitive
     description:
@@ -321,6 +328,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.2"
+  flutter_pdfview:
+    dependency: "direct main"
+    description:
+      name: flutter_pdfview
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -437,7 +451,7 @@ packages:
     source: hosted
     version: "0.10.0+3"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       url: "https://pub.dartlang.org"
@@ -555,6 +569,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.4"
+  open_file:
+    dependency: "direct main"
+    description:
+      name: open_file
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.1"
   path:
     dependency: "direct main"
     description:
@@ -577,7 +598,7 @@ packages:
     source: hosted
     version: "0.2.1"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -791,6 +812,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  syncfusion_flutter_core:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_core
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "19.3.59"
+  syncfusion_flutter_pdf:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_pdf
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "19.3.59-beta"
+  syncfusion_flutter_pdfviewer:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_pdfviewer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "19.3.59-beta"
+  syncfusion_flutter_pdfviewer_macos:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_pdfviewer_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "19.3.59-beta"
+  syncfusion_flutter_pdfviewer_platform_interface:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_pdfviewer_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "19.3.59-beta"
+  syncfusion_flutter_pdfviewer_web:
+    dependency: transitive
+    description:
+      name: syncfusion_flutter_pdfviewer_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "19.3.59-beta"
   synchronized:
     dependency: transitive
     description:

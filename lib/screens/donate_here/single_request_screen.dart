@@ -1,12 +1,20 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart';
+import 'package:open_file/open_file.dart';
+
+import 'package:path_provider/path_provider.dart';
 import 'package:raktkhoj/Colors.dart';
 import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/model/user.dart';
+import 'package:raktkhoj/provider/pdf_api.dart';
+import 'package:raktkhoj/provider/pdf_viewer_page.dart';
 import 'package:raktkhoj/screens/Chat/chat_screen.dart';
 import 'package:raktkhoj/screens/donate_here/dialog_box_bg_error.dart';
 import 'package:raktkhoj/screens/donate_here/request_direction.dart';
@@ -14,6 +22,8 @@ import 'package:raktkhoj/services/dynamic_link.dart';
 import 'package:raktkhoj/services/notifications.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 import 'package:share/share.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:unicorndial/unicorndial.dart';
 import '../../Constants.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
@@ -168,11 +178,16 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
 
             //additional icon added
             //in order to add any other feature in future
+            //added admin verification feature here
             IconButton(
               icon: Icon(
-               FontAwesomeIcons.ellipsisV,
+               FontAwesomeIcons.file,
               ),
               onPressed: () async {
+                var docURL=widget.request.docURL;
+                final url =docURL;
+                final file = await PDFApi.loadNetwork(url);
+                openPDF(context, file);
 
               },
             )
@@ -700,6 +715,14 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
       ),
     );
   }
+
+  //to open pdf
+  void openPDF(BuildContext context, File file) => Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => PDFViewerPage(file: file)),
+  );
+
+
+
 
 
 
