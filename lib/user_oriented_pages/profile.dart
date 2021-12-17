@@ -13,6 +13,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:raktkhoj/components/cached_image.dart';
 import 'package:raktkhoj/components/image_upload_provider.dart';
 import 'package:raktkhoj/provider/storage_method.dart';
+import 'package:raktkhoj/screens/doctor_oriented_pages/doctor_info.dart';
 import 'package:raktkhoj/screens/home/Home_screen.dart';
 import 'package:raktkhoj/screens/splash_screen.dart';
 
@@ -864,8 +865,10 @@ class _ProfileState extends State<Profile> {
                         child: GestureDetector(
                           onTap: ()async {
                             print("yes u have tapped");
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) => DoctorInfo()));
                             //showDialogBox(context);
-                            showDialog(
+                            /*showDialog(
                                 context: context,
                                 builder: (context) {
                                   Future.delayed(Duration(seconds: 10), () {
@@ -893,7 +896,7 @@ class _ProfileState extends State<Profile> {
                                       )
                                     ],
                                   );
-                                });
+                                });*/
                           },
                           child: Container(
                             height: 65,
