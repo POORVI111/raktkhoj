@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -55,6 +56,7 @@ class _MapViewState extends State<MapView> {
   //     _name = _userInfo['Name'];
   //   });
   // }
+
 
   //get all requests from db and show in map
   Future<Null> populateClients() async {
@@ -201,11 +203,15 @@ class _MapViewState extends State<MapView> {
 
   void getCurrentLocation() async {
     Position res = await Geolocator().getCurrentPosition();
-    print(Position);
+   // print(Position);
+    User currentUser= FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid).
+    update({'location': GeoPoint(res.latitude,res.longitude)});
     setState(() {
       currentPosition = res;
       _child = mapWidget();
     });
+
 
     //print(currentPosition.latitude);
     //print(currentPosition.longitude);
