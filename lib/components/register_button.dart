@@ -68,6 +68,11 @@ class RegisterButton extends StatelessWidget {
                     'ProfilePhoto':'',
                     'tokenId': token,
                     'Last Donation':DateTime.now().subtract(Duration(days:3)),
+                    'Degree':null,
+                    'Description':null,
+                    'Doctor':null,
+                    'AdminVerified':null,
+                    'DoctorVerificationReport':null,
                 });
               });
             }
