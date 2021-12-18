@@ -132,7 +132,7 @@ class _AdminState extends State<Admin> {
     );
   }
 
- // to show blood requets to admin in list form
+  // to show blood requets to admin in list form
   Widget requests(BuildContext context) {
     return StreamBuilder(
 
@@ -295,240 +295,240 @@ class _AdminState extends State<Admin> {
                     MainAxisAlignment.center,
                     children: <Widget>[
 
-                      SizedBox(height: 8),
-                      //                                     SizedBox(height: 12,),
+                              SizedBox(height: 8),
+                              //                                     SizedBox(height: 12,),
 
-                      Row(
-                          children : <Widget>[
-                            Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,size: 12,),
-                            SizedBox(width: 3,),
-                            Text(
-                              'Name: ${_req.patientName}',
-                              style: TextStyle(
-                                  fontSize: 12.5,
-                                  fontFamily: 'nunito',
-                                  color: Colors.black),
-                            ),
-                          ]
+                              Row(
+                                  children : <Widget>[
+                                    Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,size: 12,),
+                                    SizedBox(width: 3,),
+                                    Text(
+                                      'Name: ${_req.patientName}',
+                                      style: TextStyle(
+                                          fontSize: 12.5,
+                                          fontFamily: 'nunito',
+                                          color: Colors.black),
+                                    ),
+                                  ]
 
+                              ),
+                              SizedBox(height: 5,),
+                              Row(
+                                  children : <Widget>[
+                                    Icon(FontAwesomeIcons.prescriptionBottle,color: kMainRed,size: 12,),
+                                    SizedBox(width: 3,),
+                                    Text(
+                                      'Quantity:  ${_req
+                                          .qty
+                                          .toString()} L',
+                                      style: TextStyle(
+                                          fontSize: 12.5,
+                                          fontFamily: 'nunito',
+                                          color: Colors.black),
+                                    ),
+                                  ]
+                              ),
+                              SizedBox(height: 5,),
+                              Row(
+                                  children : <Widget>[
+                                    Icon(FontAwesomeIcons.clock,color: kMainRed,size: 12,),
+                                    SizedBox(width: 3,),
+                                    Text(
+                                      'Due Date: ${_req.dueDate
+                                          .toString()}',
+                                      style: TextStyle(
+                                          fontSize: 12.5,
+                                          fontFamily: 'nunito',
+                                          color: kMainRed),
+                                    ),
+                                  ]
+                              ),
+                              Expanded(child:
+                              Row(
+                                  children : <Widget>[
+                                    Icon(FontAwesomeIcons.mapMarkedAlt,color: kMainRed, size: 12),
+                                    SizedBox(width:3,),
+                                    Expanded(child:
+                                    Text(
+                                      '${_req.address}',
+                                      overflow: TextOverflow.ellipsis,
+                                      // maxLines: 2,
+                                      //softWrap: false,
+                                      style: TextStyle(
+                                          fontSize: 12.5,
+                                          fontFamily: 'nunito',
+                                          color: Colors.black),
+
+                                    ),
+                                    ),
+                                  ]
+                              ),
+                              ),
+
+                              Row(
+                                  children:<Widget> [
+                                    Icon(FontAwesomeIcons.ambulance,color: kMainRed,size: 15,),
+                                    SizedBox(width: 5),
+                                    Text('${_req.condition
+                                        .toString()}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 13,
+                                          fontFamily: 'nunito',
+                                          color: kMainRed),
+
+
+                                    ),
+                                  ]
+                              ),
+                              //head towards full view of request
+                              Row(
+                                children:[
+                                  SizedBox(width:175),
+                                  IconButton(onPressed: (){
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => SingleRequestScreen(request: _req),
+                                    ));
+                                  }, icon:
+                                  Icon(Icons.east_outlined,color: kMainRed,)),],
+                              ),
+                            ],
+                          ),
+                          ),
+
+                        ],
                       ),
-                      SizedBox(height: 5,),
+
+
+                    ),
+                      //while approving blood request
+                      //changing in db
+                      //sending notifiactions to request raiser
+                      //sending email to request raiser
                       Row(
-                          children : <Widget>[
-                            Icon(FontAwesomeIcons.prescriptionBottle,color: kMainRed,size: 12,),
-                            SizedBox(width: 3,),
-                            Text(
-                              'Quantity:  ${_req
-                                  .qty
-                                  .toString()} L',
-                              style: TextStyle(
-                                  fontSize: 12.5,
-                                  fontFamily: 'nunito',
-                                  color: Colors.black),
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        content: Text("Blood Request Permitted",
+                                            style: TextStyle(
+                                                color: Colors.black, fontSize: 17)),
+                                        actions: <Widget>[
+                                          new FlatButton(
+                                            child: new Text('Ok'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    });
+                                // showDialog(
+                                //     context: context,
+                                //     builder: (context) {
+                                //       Future.delayed(Duration(seconds: 2), () {
+                                //         Navigator.of(context).pop();
+                                //       });
+                                //       return AlertDialog(
+                                //         content: Text("Blood Request Permitted",
+                                //             style: TextStyle(
+                                //                 color: Colors.black, fontSize: 17)),
+                                //       );
+                                //     });
+                                String url=await DynamicLinksService.createDynamicLink(_req.reqid);
+                                // print('email $email tokenid $tokenid');
+
+
+                                try {
+                                  sendNotification([tokenid], 'Your request has been approved.', 'Blood Request Approved');
+                                  sendEmail(email, url, 'You blood request has been approved by admin. We hope you find your donor through Raktkhoj.Click on the link to view your request', 'Blood request approved');
+                                  sendNotifNearbyDonor(url, location);
+                                }catch(e) {};
+
+                                FirebaseFirestore.instance.collection("Blood Request Details").doc(_req.reqid)
+                                    .update({"permission" : true});
+                              },
+                              child: Container(
+                                  height: 30,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(15),
+                                        // bottomRight: Radius.circular(15),
+                                      ),
+                                      border:
+                                      Border.all(width: 1, color: kMainRed),
+                                      color: Colors.transparent),
+                                  child: Center(
+                                    child: Text('Approve'.tr,
+                                        style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                          color: kMainRed,
+                                        )),
+                                  )),
                             ),
-                          ]
-                      ),
-                      SizedBox(height: 5,),
-                      Row(
-                          children : <Widget>[
-                            Icon(FontAwesomeIcons.clock,color: kMainRed,size: 12,),
-                            SizedBox(width: 3,),
-                            Text(
-                              'Due Date: ${_req.dueDate
-                                  .toString()}',
-                              style: TextStyle(
-                                  fontSize: 12.5,
-                                  fontFamily: 'nunito',
-                                  color: kMainRed),
-                            ),
-                          ]
-                      ),
-                      Expanded(child:
-                      Row(
-                          children : <Widget>[
-                            Icon(FontAwesomeIcons.mapMarkedAlt,color: kMainRed, size: 12),
-                            SizedBox(width:3,),
-                            Expanded(child:
-                            Text(
-                              '${_req.address}',
-                              overflow: TextOverflow.ellipsis,
-                              // maxLines: 2,
-                              //softWrap: false,
-                              style: TextStyle(
-                                  fontSize: 12.5,
-                                  fontFamily: 'nunito',
-                                  color: Colors.black),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: (){
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      Future.delayed(Duration(seconds: 2), () {
+                                        Navigator.of(context).pop();
+                                      });
+                                      return AlertDialog(
+                                        content: Text("Deleted the request",
+                                            style: TextStyle(
+                                                color: Colors.black, fontSize: 17)),
+                                      );
+                                    });
+                                FirebaseFirestore.instance.collection("Blood Request Details").doc(_req.reqid)
+                                    .update({"permission" : false, "active": false});
+                              },
+
+                              //section for disapproving the request
+                              child: Container(
+                                  height: 30,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      // bottomLeft: Radius.circular(15),
+                                      bottomRight: Radius.circular(15),
+                                    ),
+
+                                    // border: Border.symmetric(horizontal: BorderSide.none),
+                                    //border: Border.all(width:1, color:Colors.white24),
+                                    border: Border.all(width: 1, color: kMainRed),
+                                    color: Colors.transparent,
+                                  ),
+                                  child: Center(
+                                    child: Text('Disapprove'.tr,
+                                        style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                          color: kMainRed,
+                                          //letterSpacing: 1
+                                        )),
+                                  )),
 
                             ),
-                            ),
-                          ]
-                      ),
-                      ),
-
-                      Row(
-                          children:<Widget> [
-                            Icon(FontAwesomeIcons.ambulance,color: kMainRed,size: 15,),
-                            SizedBox(width: 5),
-                            Text('${_req.condition
-                                .toString()}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 13,
-                                  fontFamily: 'nunito',
-                                  color: kMainRed),
-
-
-                            ),
-                          ]
-                      ),
-                      //head towards full view of request
-                      Row(
-                        children:[
-                          SizedBox(width:175),
-                          IconButton(onPressed: (){
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => SingleRequestScreen(request: _req),
-                            ));
-                          }, icon:
-                          Icon(Icons.east_outlined,color: kMainRed,)),],
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  ),
-
-                ],
-              ),
-
-
-            ),
-                //while approving blood request
-                //changing in db
-                //sending notifiactions to request raiser
-                //sending email to request raiser
-                Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () async {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  content: Text("Blood Request Permitted",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 17)),
-                                  actions: <Widget>[
-                                    new FlatButton(
-                                      child: new Text('Ok'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    )
-                                  ],
-                                );
-                              });
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (context) {
-                          //       Future.delayed(Duration(seconds: 2), () {
-                          //         Navigator.of(context).pop();
-                          //       });
-                          //       return AlertDialog(
-                          //         content: Text("Blood Request Permitted",
-                          //             style: TextStyle(
-                          //                 color: Colors.black, fontSize: 17)),
-                          //       );
-                          //     });
-                          String url=await DynamicLinksService.createDynamicLink(_req.reqid);
-                          // print('email $email tokenid $tokenid');
-
-
-                          try {
-                            sendNotification([tokenid], 'Your request has been approved.', 'Blood Request Approved');
-                            sendEmail(email, url, 'You blood request has been approved by admin. We hope you find your donor through Raktkhoj.Click on the link to view your request', 'Blood request approved');
-                            sendNotifNearbyDonor(url, location);
-                          }catch(e) {};
-
-                          FirebaseFirestore.instance.collection("Blood Request Details").doc(_req.reqid)
-                              .update({"permission" : true});
-                        },
-                        child: Container(
-                            height: 30,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(15),
-                                  // bottomRight: Radius.circular(15),
-                                ),
-                                border:
-                                Border.all(width: 1, color: kMainRed),
-                                color: Colors.transparent),
-                            child: Center(
-                              child: Text('Approve'.tr,
-                                  style: GoogleFonts.montserrat(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                    color: kMainRed,
-                                  )),
-                            )),
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: (){
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                Future.delayed(Duration(seconds: 2), () {
-                                  Navigator.of(context).pop();
-                                });
-                                return AlertDialog(
-                                  content: Text("Deleted the request",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 17)),
-                                );
-                              });
-                          FirebaseFirestore.instance.collection("Blood Request Details").doc(_req.reqid)
-                              .update({"permission" : false, "active": false});
-                        },
-
-                        //section for disapproving the request
-                        child: Container(
-                            height: 30,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                // bottomLeft: Radius.circular(15),
-                                bottomRight: Radius.circular(15),
-                              ),
-
-                              // border: Border.symmetric(horizontal: BorderSide.none),
-                              //border: Border.all(width:1, color:Colors.white24),
-                             border: Border.all(width: 1, color: kMainRed),
-                              color: Colors.transparent,
-                            ),
-                            child: Center(
-                              child: Text('Disapprove'.tr,
-                                  style: GoogleFonts.montserrat(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                    color: kMainRed,
-                                    //letterSpacing: 1
-                                  )),
-                            )),
-
-                      ),
-                    ),
-                  ],
                 ),
+              ),
             ],
-          ),
-        ),
-            ),
-        ],
-    );
+          );
 
-    }
+        }
 
     );
   }
