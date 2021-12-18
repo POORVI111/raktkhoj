@@ -1,6 +1,7 @@
 //import 'package:blooddonation/percentage_widget.dart';
 //import 'package:blooddonation/recent_update_list_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:raktkhoj/Colors.dart';
@@ -25,23 +26,47 @@ class _DonateState extends State<Donate> {
   double cardContainerHeight, cardContainerTopPadding;
   //String name="";
   int selectedSort;
+  var location;
+  GeoPoint lesserGeopoint;
+  GeoPoint greaterGeopoint;
   List<String> requestConditonList=["normal","critical"];
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   String query = "";
   TextEditingController searchController = TextEditingController();
   @override
   void initState()  {
     super.initState();
+    var firebaseUser =  FirebaseAuth.instance.currentUser;
+     _firestore.collection("User Details").doc(firebaseUser.uid).get().then((value) {
+      this.setState(() {
+        location = value.data()['location'];
+      });
+    });
     selectedSort=0;
     }
+
+    //geo nearby points
+  void getGeoPoint() async{
+    int distance=200;
+    // ~1 mile of lat and lon in degrees
+    var lat = 0.0144927536231884;
+    var lon = 0.0181818181818182;
+    double lowerLat = location.latitude - (lat * distance);
+    double lowerLon = location.longitude - (lon * distance);
+    var greaterLat = location.latitude + (lat * distance);
+    var greaterLon = location.longitude + (lon * distance);
+    lesserGeopoint = GeoPoint(lowerLat, lowerLon);
+    greaterGeopoint = GeoPoint(greaterLat, greaterLon);
+  }
+
 
   @override
   Widget build(BuildContext context) {
     bannerHeight = MediaQuery.of(context).size.height * .25;
     listHeight = MediaQuery.of(context).size.height * .75;
     cardContainerHeight = 200;
-
     cardContainerTopPadding = bannerHeight / 2;
     listPaddingTop = cardContainerHeight - (bannerHeight / 2);
     return Scaffold(
@@ -129,8 +154,6 @@ class _DonateState extends State<Donate> {
 
   //each request item to be shown here
   Widget RequestItem(DocumentSnapshot snapshot, BuildContext context){
-
-
     String name="";
     RequestModel _req = RequestModel.fromMap(snapshot.data());
     // return StreamBuilder(
@@ -377,189 +400,6 @@ class _DonateState extends State<Donate> {
      // );
   }
 
-
-  /*ListView listRecentUpdates() {
-
-      return ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: false,
-          itemCount: 10,
-          itemBuilder: (BuildContext context, int index) {
-            //return RecentUpdateListWidget();
-            return new ListView.builder(
-                shrinkWrap: true,
-                itemCount: requestList.length,
-                // physics: ScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 10),
-                          child: Container(
-                            height: 109,
-                            width: MediaQuery
-                                .of(context)
-                                .size
-                                .width - 20,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                BorderRadius.circular(15),
-                                border: Border.all(
-                                    color: kMainRed,
-                                    width: 1.2),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black
-                                        .withOpacity(0.1),
-                                    blurRadius: 8,
-                                    offset: Offset(0, 4),
-                                  )
-                                ]),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  width: 75,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center,
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .center,
-                                    children: <Widget>[
-                                      Text(
-                                        requestList[index].bloodGroup,
-                                        style: TextStyle(
-                                            fontSize: 22,
-                                            color: kMainRed,
-                                            fontWeight:
-                                            FontWeight.bold,
-                                            fontFamily:
-                                            'nunito'),
-                                      ),
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.only(
-                                            left: 5),
-                                        child: Text(
-                                          'Type',
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              color: Colors.black,
-                                              fontFamily:
-                                              'nunito'),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                    height: 35,
-                                    child: VerticalDivider(
-                                      color: Colors.black,
-                                      thickness: 1,
-                                    )),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    SizedBox(height: 5,),
-//                                     SizedBox(height: 12,),
-                                    Text(
-                                      'Hospital Name :  ${getRaiserName(
-                                          requestList[index].raiserUid)
-                                          .toString()}',
-                                      style: TextStyle(
-                                          fontSize: 12.5,
-                                          fontFamily: 'nunito',
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      'Units Required :  ${requestList[index]
-                                          .qty
-                                          .toString()}',
-                                      style: TextStyle(
-                                          fontSize: 12.5,
-                                          fontFamily: 'nunito',
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      'Deadline :  ${requestList[index].dueDate
-                                          .toString()}',
-                                      style: TextStyle(
-                                          fontSize: 12.5,
-                                          fontFamily: 'nunito',
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      'Contact Number :  ${requestList[index]
-                                          .phone
-                                          .toString()}',
-                                      style: TextStyle(
-                                          fontSize: 12.5,
-                                          fontFamily: 'nunito',
-                                          color: Colors.black),
-                                    ),
-                                    SizedBox(height: 5,),
-                                    Container(
-                                      alignment: Alignment.centerRight,
-                                      width: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width - 140,
-                                      child: Text(
-                                        'Status: ${requestList[index].condition
-                                            .toString()}',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 11,
-                                            fontFamily: 'nunito',
-                                            color: kMainRed),
-                                      ),
-                                    ),
-//                                      Row(
-//                                        //mainAxisAlignment: MainAxisAlignment.end,
-//                                        crossAxisAlignment: CrossAxisAlignment.end,
-//                                        children: [
-//                                          SizedBox(width: 80,),
-//                                          Text(
-//                                            'Status: ${lists[index]["Status"].toString()}',
-//                                            style: TextStyle(
-//                                              fontWeight: FontWeight.w700,
-//                                                fontSize: 12.5,
-//                                                fontFamily: 'nunito',
-//                                                color: kMainRed),
-//                                          ),
-//                                        ],
-//                                      ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                });
-          });
-    }*/
-
-
-
-
   //would show emergency conditions
   //view all feature added
   Row rowRecentUpdates() {
@@ -706,6 +546,22 @@ class _DonateState extends State<Donate> {
             SizedBox(width: 5),
             ChoiceChip(
               selectedColor:
+              kMainRed,
+              //Theme.of(context).accentColor,
+              elevation: 10,
+              onSelected: (value) {
+                setState(() {
+                  selectedSort = 9;
+                });
+              },
+              label: Text('Nearby',
+                  style: TextStyle(
+                      color: kDarkerGrey)),
+              selected: selectedSort == 9,
+            ),
+            SizedBox(width: 5),
+            ChoiceChip(
+              selectedColor:
                   kMainRed,
               //Theme.of(context).accentColor,
               elevation: 10,
@@ -719,6 +575,7 @@ class _DonateState extends State<Donate> {
                       color:kDarkerGrey,)),
               selected: selectedSort == 1,
             ),
+
             SizedBox(width: 5),
             ChoiceChip(
               selectedColor:
@@ -912,10 +769,22 @@ class _DonateState extends State<Donate> {
             .where('bloodGroup',isEqualTo: "O-")
             .orderBy('dueDate');
         break;
+      case 9:
+            getGeoPoint();
+        return FirebaseFirestore.instance
+            .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
+            .where('active',isEqualTo:true)
+            .where('permission', isEqualTo: true)
+            .where('location',isGreaterThan:lesserGeopoint)
+            .where('location', isLessThan:greaterGeopoint);
+            //.orderBy('dueDate');
+        break;
+        
     }
     debugPrint('Unexpected sorting selected');
     return null;
   }
+
 }
 
 
