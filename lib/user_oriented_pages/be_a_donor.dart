@@ -59,7 +59,7 @@ class _BeDonorState extends State<BeDonor>
     {
       setState(() {
         if(value.data()['Donor']!=true) {
-          to_show = 'Yes, I want to be a donor';
+          to_show = 'I want to recieve notification';
           print(to_show);
         }
         else
@@ -194,7 +194,7 @@ class _BeDonorState extends State<BeDonor>
                                       FirebaseFirestore.instance.collection(
                                           "User Details").doc(currentUser.uid).
                                       update({'Donor': false});
-                                      to_show= 'Yes, I want to be a donor';
+                                      to_show= 'I want to receive notification';
                                     }
                                     else {
                                       FirebaseFirestore.instance.collection(

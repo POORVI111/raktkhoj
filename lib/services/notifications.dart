@@ -60,3 +60,34 @@ Future<Response> sendNotification(List<String> tokenIdList, String contents, Str
       }
     }
   }
+
+sendccEmails(List<String> donorMails, String requestlink, String text, String heading) async {
+  String username = 'raktkhojad@gmail.com';
+  String password = 'raktkhojadmin';
+
+  final smtpServer = gmail(username, password);
+  // Use the SmtpServer class to configure an SMTP server:
+  // final smtpServer = SmtpServer('smtp.domain.com');
+  // See the named arguments of SmtpServer for further configuration
+  // options.
+
+  // Create our message.
+  final message = Message()
+    ..from = Address(username, 'Raktkhoj')
+    ..ccRecipients.addAll(donorMails)
+    ..subject = 'Raktkhoj Blood Request 🩸 \n ${DateTime.now()}'
+    ..html = "<h1>$heading</h1>\n<p>$text $requestlink</p>";
+
+  try {
+    final sendReport = await send(message, smtpServer);
+    print('Message sent: ' + sendReport.toString());
+  } on MailerException catch (e) {
+    print('Message not sent.');
+    for (var p in e.problems) {
+      print('Problem: ${p.code}: ${p.msg}');
+    }
+  }
+}
+
+
+
