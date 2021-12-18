@@ -1,19 +1,28 @@
 //import 'package:blooddonation/percentage_widget.dart';
 //import 'package:blooddonation/recent_update_list_widget.dart';
+
+
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:raktkhoj/Colors.dart';
+import 'package:raktkhoj/components/cached_image.dart';
 import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/model/user.dart';
+import 'package:raktkhoj/provider/pdf_api.dart';
+import 'package:raktkhoj/provider/pdf_viewer_page.dart';
 import 'package:raktkhoj/screens/donate_here/percentage_widget.dart';
 import 'package:raktkhoj/screens/donate_here/search_request.dart';
 import 'package:raktkhoj/screens/donate_here/single_request_screen.dart';
 import 'package:raktkhoj/services/dynamic_link.dart';
 import 'package:raktkhoj/services/notifications.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 
 class Admin extends StatefulWidget {
@@ -30,6 +39,7 @@ class _AdminState extends State<Admin> {
   double cardContainerHeight, cardContainerTopPadding;
   //String name="";
   int selectedSort;
+  int reqOrDoc;
   List<String> requestConditonList=["normal","critical"];
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -48,13 +58,38 @@ class _AdminState extends State<Admin> {
     return requestList;
   }
 
+
+  //fetching all doctors verfication requests and dumping into a list
+  Future<List<UserModel>> fetchAllDoctors()  async {
+   List<UserModel> doctorList = <UserModel>[];
+
+    QuerySnapshot querySnapshot =
+    await _firestore.collection("User Details").get();
+    for (var i = 0; i < querySnapshot.docs.length; i++) {
+      UserModel x=UserModel.fromMap(querySnapshot.docs[i].data());
+
+      if(x!=null&&x.Doctor!=null){
+      if(querySnapshot.docs[i]['Doctor']&&querySnapshot.docs[i]['Doctor']==true
+          /*&&querySnapshot.docs[i]['AdminVerified']==false*/){
+      doctorList.add(UserModel.fromMap(querySnapshot.docs[i].data()));
+      }
+      }
+      print(doctorList.length);
+      //doctorList.add(UserModel.fromMap(querySnapshot.docs[i].data()));
+
+    }
+    return doctorList;
+  }
+
   List<RequestModel> requestList;
+  List<UserModel> doctorList;
   String query = "";
   TextEditingController searchController = TextEditingController();
   @override
   void initState()  {
     super.initState();
     selectedSort=0;
+    reqOrDoc=1;
 
     //requestList=_firestore.collection("Blood Request Details").snapshots() as List<RequestModel>;
 
@@ -63,6 +98,14 @@ class _AdminState extends State<Admin> {
         requestList = list;
       });
     });
+
+    fetchAllDoctors().then((List<UserModel> list) {
+      setState(() {
+        doctorList = list;
+      });
+    });
+
+
 
   }
 
@@ -116,30 +159,141 @@ class _AdminState extends State<Admin> {
     );
   }
 
+
+  Row rowRecentUpdates() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      verticalDirection: VerticalDirection.down,
+      children: <Widget>[
+        InkWell(
+          onTap: (){
+            setState(() {
+              reqOrDoc=1;
+            });
+          },
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text("Doctors Verification",
+                style: TextStyle(color: kMainRed, fontSize: 17.0)),
+
+          ),
+        ),
+        InkWell(
+          onTap: (){
+            setState(() {
+              reqOrDoc=0;
+            });
+          },
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text("Blood Request",
+                style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0)),
+          ),
+        )
+      ],
+    );
+  }
+
   Container bodyBloodRequestList(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       color: Colors.grey.shade300,
       padding:
       new EdgeInsets.only(top: listPaddingTop, right: 10.0, left: 10.0),
+      //child: requestOrDoctorSelector(context),
       child: Column(
         children: <Widget>[
           //searchButton(context),
-          getScrollView(),
-          Expanded(child: requests(context))
+          //getScrollView(),
+          rowRecentUpdates(),
+
+          Expanded(child: requestOrDoctorSelector(context)),
+
         ],
       ),
     );
+  }
+
+  //to show request or doctor
+  Widget requestOrDoctorSelector(BuildContext context)
+  {
+    if(reqOrDoc==0)
+    {
+      return Column(
+        children: <Widget>[
+          //searchButton(context),
+          getScrollView(),
+
+          Expanded(child:  requests(context)),
+
+        ],
+      );
+    }
+
+    else
+    {
+
+      if(doctorList.length==0)
+      {
+        return Column(
+          children: <Widget>[
+            //searchButton(context),
+            //getScrollView(),
+
+            Expanded(child: Center(child: CircularProgressIndicator()) ),
+
+          ],
+        );
+
+      }
+    }
+    return Column(
+      children: <Widget>[
+        //searchButton(context),
+        //getScrollView(),
+
+        Expanded(child: doctors(context , doctorList) ),
+
+      ],
+    );
+
+
+  }
+
+  //to show doctors verification request to admin in list form
+  Widget doctors(BuildContext context , List<UserModel> list)
+  {
+
+      return ListView.builder(
+
+        padding: EdgeInsets.all(10),
+        //reverse: true,
+
+
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+
+          return DoctorItem(list[index], context );
+        },
+      );
+
+
+
+
+
+
+
   }
 
   // to show blood requets to admin in list form
   Widget requests(BuildContext context) {
     return StreamBuilder(
 
-      /*stream: FirebaseFirestore.instance
-          .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
-          .where('active',isEqualTo:true)
-          .orderBy('dueDate').snapshots(),*/
+
       stream: getQuery().snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.data == null) {
@@ -162,6 +316,262 @@ class _AdminState extends State<Admin> {
           },
         );
       },
+    );
+  }
+
+
+  //to open pdf
+  void openPDF(BuildContext context, File file) => Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => PDFViewerPage(file: file)),
+  );
+
+
+  //designing a single doctor verification item
+  Widget DoctorItem(UserModel _doc, BuildContext context){
+
+
+    // String name="";
+    String email="", tokenid="";
+    GeoPoint location;
+    //UserModel _doc = UserModel.fromMap(snapshot.data());
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('User Details').doc(_doc.uid).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return Padding(
+                padding: EdgeInsets.only(top: 50),
+                child: Row(
+                  children: <Widget>[
+                    CircularProgressIndicator(
+                      valueColor:
+                      new AlwaysStoppedAnimation<Color>(
+                          kMainRed),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text('Loading Requests...')
+                  ],
+                ));
+          try {
+            email=snapshot.data['Email'];
+            tokenid = snapshot.data['tokenId'];
+            location=snapshot.data['location'];
+          }catch(e){
+            // name= 'Loading';
+          }
+          return Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  // setState(() {
+                  //
+                  // });
+                },
+                //showing data of doctor verification requests
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 5),
+                  child: Column(
+                    children: <Widget>[Container(
+                      height: 140,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width ,
+                      decoration: BoxDecoration(
+                          color: kBackgroundColor,
+                          // borderRadius:
+                          // BorderRadius.circular(15),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                            bottomLeft: Radius.circular(15),
+                            bottomRight: Radius.circular(15),
+                          ),
+                          border: Border.all(
+                              color: kMainRed,
+                              width: 1.2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black
+                                  .withOpacity(0.1),
+                              blurRadius: 8,
+                              offset: Offset(0, 4),
+                            )
+                          ]),
+                      child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Container(
+                            width: 60,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .center,
+                              mainAxisAlignment: MainAxisAlignment
+                                  .center,
+                              children: <Widget>[
+                                CachedImage(
+                                  _doc.profilePhoto,
+                                  radius: 60,
+                                  isRound: true,
+                                ),
+
+
+                              ],
+                            ),
+                          ),
+                          // SizedBox(
+                          //     height: 160,
+                          //     child: VerticalDivider(
+                          //       color: Colors.black,
+                          //       thickness: 1,
+                          //     )),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Expanded(child:
+                          Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            mainAxisAlignment:
+                            MainAxisAlignment.center,
+                            children: <Widget>[
+
+                              SizedBox(height: 8),
+                              //                                     SizedBox(height: 12,),
+
+                              Row(
+                                  children : <Widget>[
+                                    Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,size: 16,),
+                                    SizedBox(width: 3,),
+                                    Text(
+                                      'Doctor: ${_doc.name}',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: 'nunito',
+                                          color: Colors.black),
+                                    ),
+                                  ]
+
+                              ),
+                              SizedBox(height: 7,),
+                              Row(
+                                  children : <Widget>[
+                                    Icon(FontAwesomeIcons.bookOpen,color: kMainRed,size: 14,),
+                                    SizedBox(width: 3,),
+                                    Text(
+                                      'Degree:  ${_doc.Degree
+                                          .toString()} ',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: 'nunito',
+                                          color: Colors.black),
+                                    ),
+                                  ]
+                              ),
+                              SizedBox(height: 5,),
+                              Row(
+                                  children : <Widget>[
+                                    SizedBox(width: 8,),
+                                    //opening the doctor verification document
+                                    //not working properly
+                                    //poorvi dudh do galati
+                                    IconButton(onPressed:() async{
+                                      var docURL=_doc.DoctorVerificationReport;
+                                      final url =docURL;
+                                      final file = await PDFApi.loadNetwork(url.toString());
+                                      openPDF(context, file);
+                                    },
+                                        icon:Icon(FontAwesomeIcons.folderOpen,color: kMainRed,size: 20,), ),
+                                    SizedBox(width: 8,),
+                                    //icon if user wants to approve doctor
+                                    //dialog would be shown
+                                    //db changes
+                                    //email and push notifications to doctor
+                                    IconButton(onPressed:() async{
+
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content: Text("Doctor Verification Done",
+                                                  style: TextStyle(
+                                                      color: Colors.black, fontSize: 17)),
+                                              actions: <Widget>[
+                                                new FlatButton(
+                                                  child: new Text('Ok'),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          });
+
+                                      String url=await DynamicLinksService.createDynamicLink(_doc.uid);
+                                      // print('email $email tokenid $tokenid');
+
+
+                                      try {
+                                        sendNotification([tokenid], 'Your verification is finished.', 'Welcom to raktkhoj doctors community');
+                                        sendEmail(email, url, 'You doctor community joining request has been approved by admin. We hope you find you help needies through Raktkhoj.Click on the link to view your request', 'Verification successful');
+                                        sendNotifNearbyDonor(url, location);
+                                      }catch(e) {};
+
+                                      FirebaseFirestore.instance.collection("User Details").doc(_doc.uid)
+                                          .update({"AdminVerified" : true});
+                                    },
+                                      icon:Icon(FontAwesomeIcons.thumbsUp,color: kMainRed,size: 20,), ),
+                                    SizedBox(width: 8,),
+                                    //if admin disapproves the doctor
+                                    //changes in db
+                                    IconButton(onPressed:(){
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            Future.delayed(Duration(seconds: 2), () {
+                                              Navigator.of(context).pop();
+                                            });
+                                            return AlertDialog(
+                                              content: Text("Deleted the request",
+                                                  style: TextStyle(
+                                                      color: Colors.black, fontSize: 17)),
+                                            );
+                                          });
+                                      FirebaseFirestore.instance.collection("User Details").doc(_doc.uid)
+                                          .update({"Doctor" : false, "AdminVerified": false});
+                                    },
+                                      icon:Icon(FontAwesomeIcons.trash,color: kMainRed,size: 20,), ),
+
+                                  ]
+                              ),
+                              SizedBox(height: 5,),
+
+
+
+
+                            ],
+                          ),
+                          ),
+
+                        ],
+                      ),
+
+
+                    ),
+
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+
+        }
+
     );
   }
 
