@@ -104,6 +104,10 @@ class _FindHearbyHospitalsState extends State<FindNearbyHospitals>
                           itemBuilder:
                               (BuildContext context, int index) {
                             return Card(
+                              shadowColor: Colors.black.withOpacity(0.4),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
                               child: ListTile(
                                 title:
                                 Text(snapshot.data[index].name),

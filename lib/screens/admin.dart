@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:raktkhoj/Colors.dart';
@@ -35,7 +36,6 @@ class _AdminState extends State<Admin> {
 
 
   //fetching all blood requests and dumping into a list
-
   Future<List<RequestModel>> fetchAllRequests()  async {
     List<RequestModel> requestList = <RequestModel>[];
 
@@ -66,6 +66,30 @@ class _AdminState extends State<Admin> {
 
   }
 
+  //send notif to all donors opted for notification
+  sendNotifNearbyDonor(String url,  GeoPoint requestLocation) async {
+
+    List<String> donorMails=[];
+      QuerySnapshot querySnapshot= await  FirebaseFirestore.instance.collection('User Details').where('Donor', isEqualTo: true).get();
+        for (var i = 0; i < querySnapshot.docs.length; i++) {
+          dynamic request = querySnapshot.docs[i].data();
+          GeoPoint position= request['location'];
+          String donorMail=  request['Email'].toString();
+
+          //calc distance
+          var _distanceInMeters = await Geolocator().distanceBetween(
+              position.latitude,
+              position.longitude,
+              requestLocation.latitude,
+              requestLocation.longitude
+          );
+          if(_distanceInMeters<=10000000)
+            donorMails.add(donorMail);
+        }
+      await sendccEmails(donorMails, url, "Dear Raktkhoj donor, we found a request near you. Help save a life. Click on the link to view request:", "Found a request near you" );
+
+  }
+
   @override
   Widget build(BuildContext context) {
     bannerHeight = MediaQuery.of(context).size.height * .14;
@@ -78,6 +102,7 @@ class _AdminState extends State<Admin> {
       // https://flutter.io/docs/development/ui/layout#stack
       body: Stack(
         children: <Widget>[
+
           new Column(
             children: <Widget>[
               //searchButton(context),
@@ -150,6 +175,7 @@ class _AdminState extends State<Admin> {
 
     // String name="";
     String email="", tokenid="";
+    GeoPoint location;
     RequestModel _req = RequestModel.fromMap(snapshot.data());
     return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('User Details').doc(_req.raiserUid).snapshots(),
@@ -173,6 +199,7 @@ class _AdminState extends State<Admin> {
         try {
           email=snapshot.data['Email'];
           tokenid = snapshot.data['tokenId'];
+          location=snapshot.data['location'];
         }catch(e){
           // name= 'Loading';
         }
@@ -386,19 +413,42 @@ class _AdminState extends State<Admin> {
                           showDialog(
                               context: context,
                               builder: (context) {
-                                Future.delayed(Duration(seconds: 2), () {
-                                  Navigator.of(context).pop();
-                                });
                                 return AlertDialog(
                                   content: Text("Blood Request Permitted",
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 17)),
+                                  actions: <Widget>[
+                                    new FlatButton(
+                                      child: new Text('Ok'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                  ],
                                 );
                               });
+                          // showDialog(
+                          //     context: context,
+                          //     builder: (context) {
+                          //       Future.delayed(Duration(seconds: 2), () {
+                          //         Navigator.of(context).pop();
+                          //       });
+                          //       return AlertDialog(
+                          //         content: Text("Blood Request Permitted",
+                          //             style: TextStyle(
+                          //                 color: Colors.black, fontSize: 17)),
+                          //       );
+                          //     });
                           String url=await DynamicLinksService.createDynamicLink(_req.reqid);
                           // print('email $email tokenid $tokenid');
-                          await sendNotification([tokenid], 'Your request has been approved.', 'Blood Request Approved');
-                          await sendEmail(email, url, 'You blood request has been approved by admin. We hope you find your donor through Raktkhoj.Click on the link to view your request', 'Blood request approved');
+
+
+                          try {
+                            sendNotification([tokenid], 'Your request has been approved.', 'Blood Request Approved');
+                            sendEmail(email, url, 'You blood request has been approved by admin. We hope you find your donor through Raktkhoj.Click on the link to view your request', 'Blood request approved');
+                            sendNotifNearbyDonor(url, location);
+                          }catch(e) {};
+
                           FirebaseFirestore.instance.collection("Blood Request Details").doc(_req.reqid)
                               .update({"permission" : true});
                         },
@@ -764,6 +814,8 @@ class _AdminState extends State<Admin> {
     debugPrint('Unexpected sorting selected');
     return null;
   }
+
+
 }
 
 

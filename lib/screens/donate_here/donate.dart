@@ -28,50 +28,12 @@ class _DonateState extends State<Donate> {
   List<String> requestConditonList=["normal","critical"];
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  // Future<Null> getRaiserName(RequestModel req) async
-  // {
-  //   final firestoreInstance =  FirebaseFirestore.instance;
-  //   firestoreInstance.collection("User Details").doc(req.raiserUid).get().then((value) {
-  //
-  //     setState(() {
-  //       //print(value.data()['Name'].toString());
-  //       name=value.data()["Name"].toString();
-  //      // print('NAme $name');
-  //
-  //     });
-  //   });
-  //
-  //
-  // }
-
-  Future<List<RequestModel>> fetchAllRequests()  async {
-    List<RequestModel> requestList = <RequestModel>[];
-
-    QuerySnapshot querySnapshot =
-     await _firestore.collection("Blood Request Details").get();
-    for (var i = 0; i < querySnapshot.docs.length; i++) {
-      requestList.add(RequestModel.fromMap(querySnapshot.docs[i].data()));
-
-    }
-    return requestList;
-  }
-
-  List<RequestModel> requestList;
   String query = "";
   TextEditingController searchController = TextEditingController();
   @override
   void initState()  {
     super.initState();
     selectedSort=0;
-
-    //requestList=_firestore.collection("Blood Request Details").snapshots() as List<RequestModel>;
-
-      fetchAllRequests().then((List<RequestModel> list) {
-        setState(() {
-          requestList = list;
-        });
-      });
-
     }
 
   @override
@@ -163,10 +125,6 @@ class _DonateState extends State<Donate> {
       },
     );
   }
-
-
-
-
 
 
   //each request item to be shown here
