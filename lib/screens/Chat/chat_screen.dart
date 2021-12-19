@@ -14,6 +14,7 @@ import 'package:raktkhoj/model/user.dart';
 import 'package:raktkhoj/provider/chat_method.dart';
 import 'package:raktkhoj/provider/storage_method.dart';
 
+import '../../call_utils.dart';
 import '../../main.dart';
 
 //screen to display one on one chat
@@ -389,15 +390,15 @@ class _ChatScreenState extends State<ChatScreen> {
           icon: Icon(
             Icons.video_call,
           ),
-          onPressed: () /*async =>
-          await Permissions.cameraAndMicrophonePermissionsGranted()
+          onPressed: () async =>
+          await CallUtils.cameraAndMicrophonePermissionsGranted()
               ? CallUtils.dial(
             from: sender,
             to: widget.receiver,
             context: context,
           )
               :
-              */{},
+              {},
         ),
         IconButton(
           icon: Icon(

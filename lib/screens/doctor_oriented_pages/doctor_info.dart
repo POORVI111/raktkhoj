@@ -464,7 +464,7 @@ class _DoctorInfoState extends State<DoctorInfo>
                                             update({'Doctor': true,
                                             'Degree':_degree,
                                             'Description':_description,
-                                            'DoctorVerficationReport':_docURL}).then((result) async {
+                                            'DoctorVerificationReport':_docURL}).then((result) async {
                                               //sendNotification();
                                               /*send notif to admin when new request is added*/
                                               await sendNotification([_tokenid], 'Request from Doctors community','Requires Permission');
