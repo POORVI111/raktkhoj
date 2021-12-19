@@ -86,6 +86,9 @@ dependencies:
   unicorndial:
   onesignal_flutter: any
   mailer:
+  agora_rtc_engine:
+  permission_handler:
+  flutter_ringtone_player:
 
 
 
