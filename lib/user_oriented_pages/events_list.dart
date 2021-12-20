@@ -32,7 +32,7 @@ class _EventsListState extends State<EventsList>
 
   @override
   void dispose() {
-    animationController?.dispose();
+    animationController.dispose();
     super.dispose();
   }
 
@@ -75,7 +75,7 @@ class _EventsListState extends State<EventsList>
                                 parent: animationController,
                                 curve: Interval((1 / count) * index, 1.0,
                                     curve: Curves.fastOutSlowIn)));
-                        animationController?.forward();
+                        animationController.forward();
 
                         return EventView(
                           snapshot: snapshot.data.docs[index],

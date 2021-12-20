@@ -22,14 +22,14 @@ import 'package:raktkhoj/services/dynamic_link.dart';
 import 'package:raktkhoj/services/notifications.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 import 'package:share/share.dart';
-import 'package:syncfusion_flutter_pdf/pdf.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+//import 'package:syncfusion_flutter_pdf/pdf.dart';
+//import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:unicorndial/unicorndial.dart';
 import '../../Constants.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 
-
+//single page request screen
 class SingleRequestScreen extends StatefulWidget {
   final RequestModel request;
 const SingleRequestScreen({Key key, this.request}) : super(key: key);

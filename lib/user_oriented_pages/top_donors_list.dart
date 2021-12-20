@@ -33,7 +33,7 @@ class _TopDonorsListState extends State<TopDonorsList>
 
   @override
   void dispose() {
-    animationController?.dispose();
+    animationController.dispose();
     super.dispose();
   }
 
@@ -63,15 +63,15 @@ class _TopDonorsListState extends State<TopDonorsList>
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (BuildContext context, int index) {
                         final int count = snapshot.data.docs.length > 5
-                        ? 5:
-                        snapshot.data.docs.length;
+                        ? 5
+                        :snapshot.data.docs.length;
                         final Animation<double> animation =
                         Tween<double>(begin: 0.0, end: 1.0).animate(
                             CurvedAnimation(
                                 parent: animationController,
                                 curve: Interval((1 / count) * index, 1.0,
                                     curve: Curves.fastOutSlowIn)));
-                        animationController?.forward();
+                        animationController.forward();
 
                         return DonorView(
                           snapshot: snapshot.data.docs[index],
