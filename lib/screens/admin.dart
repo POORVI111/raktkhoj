@@ -61,7 +61,7 @@ class _AdminState extends State<Admin> {
 
   //fetching all doctors verfication requests and dumping into a list
   Future<List<UserModel>> fetchAllDoctors()  async {
-   List<UserModel> doctorList = <UserModel>[];
+    List<UserModel> doctorList = <UserModel>[];
 
     QuerySnapshot querySnapshot =
     await _firestore.collection("User Details").get();
@@ -69,10 +69,10 @@ class _AdminState extends State<Admin> {
       UserModel x=UserModel.fromMap(querySnapshot.docs[i].data());
 
       if(x!=null&&x.Doctor!=null){
-      if(querySnapshot.docs[i]['Doctor']&&querySnapshot.docs[i]['Doctor']==true
-          /*&&querySnapshot.docs[i]['AdminVerified']==false*/){
-      doctorList.add(UserModel.fromMap(querySnapshot.docs[i].data()));
-      }
+        if(querySnapshot.docs[i]['Doctor']&&querySnapshot.docs[i]['Doctor']==true
+        /*&&querySnapshot.docs[i]['AdminVerified']==false*/){
+          doctorList.add(UserModel.fromMap(querySnapshot.docs[i].data()));
+        }
       }
       print(doctorList.length);
       //doctorList.add(UserModel.fromMap(querySnapshot.docs[i].data()));
@@ -113,23 +113,23 @@ class _AdminState extends State<Admin> {
   sendNotifNearbyDonor(String url,  GeoPoint requestLocation) async {
 
     List<String> donorMails=[];
-      QuerySnapshot querySnapshot= await  FirebaseFirestore.instance.collection('User Details').where('Donor', isEqualTo: true).get();
-        for (var i = 0; i < querySnapshot.docs.length; i++) {
-          dynamic request = querySnapshot.docs[i].data();
-          GeoPoint position= request['location'];
-          String donorMail=  request['Email'].toString();
+    QuerySnapshot querySnapshot= await  FirebaseFirestore.instance.collection('User Details').where('Donor', isEqualTo: true).get();
+    for (var i = 0; i < querySnapshot.docs.length; i++) {
+      dynamic request = querySnapshot.docs[i].data();
+      GeoPoint position= request['location'];
+      String donorMail=  request['Email'].toString();
 
-          //calc distance
-          var _distanceInMeters = await Geolocator().distanceBetween(
-              position.latitude,
-              position.longitude,
-              requestLocation.latitude,
-              requestLocation.longitude
-          );
-          if(_distanceInMeters<=10000000)
-            donorMails.add(donorMail);
-        }
-      await sendccEmails(donorMails, url, "Dear Raktkhoj donor, we found a request near you. Help save a life. Click on the link to view request:", "Found a request near you" );
+      //calc distance
+      var _distanceInMeters = await Geolocator().distanceBetween(
+          position.latitude,
+          position.longitude,
+          requestLocation.latitude,
+          requestLocation.longitude
+      );
+      if(_distanceInMeters<=10000000)
+        donorMails.add(donorMail);
+    }
+    await sendccEmails(donorMails, url, "Dear Raktkhoj donor, we found a request near you. Help save a life. Click on the link to view request:", "Found a request near you" );
 
   }
 
@@ -175,7 +175,7 @@ class _AdminState extends State<Admin> {
           child: Padding(
             padding: EdgeInsets.all(10.0),
             child: Text("Doctors Verification",
-                style: TextStyle(color: kMainRed, fontSize: 17.0)),
+                style: TextStyle(color: reqOrDoc==1? kMainRed: Colors.black87, fontSize: 17.0)),
 
           ),
         ),
@@ -189,9 +189,9 @@ class _AdminState extends State<Admin> {
             padding: EdgeInsets.all(10.0),
             child: Text("Blood Request",
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: reqOrDoc==0? kMainRed: Colors.black87,
                     fontWeight: FontWeight.bold,
-                    fontSize: 15.0)),
+                    fontSize: 17.0)),
           ),
         )
       ],
@@ -268,18 +268,18 @@ class _AdminState extends State<Admin> {
   Widget doctors(BuildContext context , List<UserModel> list)
   {
 
-      return ListView.builder(
+    return ListView.builder(
 
-        padding: EdgeInsets.all(10),
-        //reverse: true,
+      padding: EdgeInsets.all(10),
+      //reverse: true,
 
 
-        itemCount: list.length,
-        itemBuilder: (context, index) {
+      itemCount: list.length,
+      itemBuilder: (context, index) {
 
-          return DoctorItem(list[index], context );
-        },
-      );
+        return DoctorItem(list[index], context );
+      },
+    );
 
 
 
@@ -483,9 +483,9 @@ class _AdminState extends State<Admin> {
                                       var docURL=_doc.DoctorVerificationReport;
                                       final url =docURL;
                                       final file = await PDFApi.loadNetwork(url.toString());
-                                      openPDF(context, file);
+                                      await openPDF(context, file);
                                     },
-                                        icon:Icon(FontAwesomeIcons.folderOpen,color: kMainRed,size: 20,), ),
+                                      icon:Icon(FontAwesomeIcons.folderOpen,color: kMainRed,size: 20,), ),
                                     SizedBox(width: 8,),
                                     //icon if user wants to approve doctor
                                     //dialog would be shown
@@ -588,122 +588,122 @@ class _AdminState extends State<Admin> {
     GeoPoint location;
     RequestModel _req = RequestModel.fromMap(snapshot.data());
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('User Details').doc(_req.raiserUid).snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Padding(
-              padding: EdgeInsets.only(top: 50),
-              child: Row(
-                children: <Widget>[
-                  CircularProgressIndicator(
-                    valueColor:
-                    new AlwaysStoppedAnimation<Color>(
-                        kMainRed),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text('Loading Requests...')
-                ],
-              ));
-        try {
-          email=snapshot.data['Email'];
-          tokenid = snapshot.data['tokenId'];
-          location=snapshot.data['location'];
-        }catch(e){
-          // name= 'Loading';
-        }
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {
-            // setState(() {
-            //
-            // });
-          },
-          //showing data of blood requests raised
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-                vertical: 10.0, horizontal: 5),
-            child: Column(
-              children: <Widget>[Container(
-              height: 160,
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width ,
-              decoration: BoxDecoration(
-                  color: kBackgroundColor,
-                  // borderRadius:
-                  // BorderRadius.circular(15),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15),
-                  ),
-                  border: Border.all(
-                      color: kMainRed,
-                      width: 1.2),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black
-                          .withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: Offset(0, 4),
-                    )
-                  ]),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    width: 55,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment
-                          .center,
-                      mainAxisAlignment: MainAxisAlignment
-                          .center,
-                      children: <Widget>[
-                        Icon(Icons.bloodtype_sharp,color: kMainRed,),
-                        Text(
-                          _req.bloodGroup,
-                          style: TextStyle(
-                              fontSize: 22,
-                              color: kMainRed,
-                              fontWeight:
-                              FontWeight.bold,
-                              fontFamily:
-                              'nunito'),
-                        ),
-                        Padding(
-                          padding:
-                          const EdgeInsets.only(
-                              left: 5),
-                          child: Text(
-                            'Type',
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.black,
-                                fontFamily:
-                                'nunito'),
-                          ),
-                        ),
-                      ],
+        stream: FirebaseFirestore.instance.collection('User Details').doc(_req.raiserUid).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return Padding(
+                padding: EdgeInsets.only(top: 50),
+                child: Row(
+                  children: <Widget>[
+                    CircularProgressIndicator(
+                      valueColor:
+                      new AlwaysStoppedAnimation<Color>(
+                          kMainRed),
                     ),
-                  ),
-                  // SizedBox(
-                  //     height: 160,
-                  //     child: VerticalDivider(
-                  //       color: Colors.black,
-                  //       thickness: 1,
-                  //     )),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(child:
-                  Column(
-                    crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                    mainAxisAlignment:
-                    MainAxisAlignment.center,
-                    children: <Widget>[
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text('Loading Requests...')
+                  ],
+                ));
+          try {
+            email=snapshot.data['Email'];
+            tokenid = snapshot.data['tokenId'];
+            location=snapshot.data['location'];
+          }catch(e){
+            // name= 'Loading';
+          }
+          return Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  // setState(() {
+                  //
+                  // });
+                },
+                //showing data of blood requests raised
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 5),
+                  child: Column(
+                    children: <Widget>[Container(
+                      height: 160,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width ,
+                      decoration: BoxDecoration(
+                          color: kBackgroundColor,
+                          // borderRadius:
+                          // BorderRadius.circular(15),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                          ),
+                          border: Border.all(
+                              color: kMainRed,
+                              width: 1.2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black
+                                  .withOpacity(0.1),
+                              blurRadius: 8,
+                              offset: Offset(0, 4),
+                            )
+                          ]),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            width: 55,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .center,
+                              mainAxisAlignment: MainAxisAlignment
+                                  .center,
+                              children: <Widget>[
+                                Icon(Icons.bloodtype_sharp,color: kMainRed,),
+                                Text(
+                                  _req.bloodGroup,
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      color: kMainRed,
+                                      fontWeight:
+                                      FontWeight.bold,
+                                      fontFamily:
+                                      'nunito'),
+                                ),
+                                Padding(
+                                  padding:
+                                  const EdgeInsets.only(
+                                      left: 5),
+                                  child: Text(
+                                    'Type',
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.black,
+                                        fontFamily:
+                                        'nunito'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // SizedBox(
+                          //     height: 160,
+                          //     child: VerticalDivider(
+                          //       color: Colors.black,
+                          //       thickness: 1,
+                          //     )),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(child:
+                          Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            mainAxisAlignment:
+                            MainAxisAlignment.center,
+                            children: <Widget>[
 
                               SizedBox(height: 8),
                               //                                     SizedBox(height: 12,),
