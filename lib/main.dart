@@ -68,13 +68,13 @@ class _MyApp extends State<MyApp> {
   void _showDialog() {
     // dialog implementation
     //showDialog(
-      //context: context,
-      //builder: () =>
-          AlertDialog(
-        title: Text("Internet needed!"),
-        content: Text("You may want to exit the app here"),
-        actions: <Widget>[FlatButton(child: Text("EXIT"), onPressed: () {})],
-      );
+    //context: context,
+    //builder: () =>
+    AlertDialog(
+      title: Text("Internet needed!"),
+      content: Text("You may want to exit the app here"),
+      actions: <Widget>[FlatButton(child: Text("EXIT"), onPressed: () {})],
+    );
     //);
   }
   // This widget is the root of your application.
@@ -93,39 +93,38 @@ class _MyApp extends State<MyApp> {
         providers: [
           ChangeNotifierProvider(create: (_) => ImageUploadProvider()),
         ],
-    child: GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Raktkhoj',
-        theme: ThemeData(
-        //...
-        // CUSTOMIZE showDatePicker Colors
-        colorScheme: ColorScheme.light(primary: const Color(0xFFed1e25)),
-        buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
-    //
-    //...
-    ),
-      translations: LocalizationService(), // your translations
-      locale: LocalizationService().getCurrentLocale(), // translations will be displayed in that locale
-      fallbackLocale: Locale(
-        'en',
-        'US',
-      ), // specify the fallback locale in case an invalid locale is selected.
-      home: //Login(),
-      FutureBuilder(
-        future: getCurrentUser(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return PageGuide();
-          } else {
-            return SplashScreen();
-          }
-        },
-      ),
-    )
+        child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Raktkhoj',
+          theme: ThemeData(
+            //...
+            // CUSTOMIZE showDatePicker Colors
+            colorScheme: ColorScheme.light(primary: const Color(0xFFed1e25)),
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            //
+            //...
+          ),
+          translations: LocalizationService(), // your translations
+          locale: LocalizationService().getCurrentLocale(), // translations will be displayed in that locale
+          fallbackLocale: Locale(
+            'en',
+            'US',
+          ), // specify the fallback locale in case an invalid locale is selected.
+          home: //Login(),
+          FutureBuilder(
+            future: getCurrentUser(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return PageGuide();
+              } else {
+                return SplashScreen();
+              }
+            },
+          ),
+        )
     );
   }
 
 }
-
 
 

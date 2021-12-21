@@ -78,6 +78,26 @@ class StorageMethods {
 
   }
 
+  Future<String> uploadEventImage({
+    @required File image,
+    //@required String userId,
+    @required ImageUploadProvider imageUploadProvider,
+  }) async {
+
+    // Set some loading value to db and show it to user
+    imageUploadProvider.setToLoading();
+
+    // Get url from the image bucket
+    String url = await uploadImageToStorage(image);
+
+    // Hide loading
+    imageUploadProvider.setToIdle();
+    return url;
+    //FirebaseFirestore.instance.collection("User Details").doc(userId).
+    //update({"ProfilePhoto":url});
+
+  }
+
 // for uploading valid doc attached with request
    UploadTask uploadFile(String destination, File file) {
     try {

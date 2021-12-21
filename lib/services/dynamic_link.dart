@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -13,18 +14,20 @@ class DynamicLinksService {
     String uriPrefix = "https://raktkhoj.page.link";
 
     final DynamicLinkParameters parameters = DynamicLinkParameters(
-      uriPrefix: uriPrefix,
-      link: Uri.parse('https://raktkhoj.page.link//?requestid=$parameter'),
-      androidParameters: AndroidParameters(
-        packageName: 'com.example.raktkhoj',
-        minimumVersion: 0,
-      ));
+        uriPrefix: uriPrefix,
+        link: Uri.parse('https://raktkhoj.page.link//?requestid=$parameter'),
+        androidParameters: AndroidParameters(
+          packageName: 'com.example.raktkhoj',
+          minimumVersion: 0,
+        ));
     //   socialMetaTagParameters: SocialMetaTagParameters(
     //       title: 'Example of a Dynamic Link',
     //       description: 'This link works whether app is installed or not!',
     //       imageUrl: Uri.parse(
     //           "https://images.pexels.com/photos/3841338/pexels-photo-3841338.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")),
     // );
+
+
 
     // final Uri dynamicUrl = await parameters.buildUrl();
     final ShortDynamicLink shortDynamicLink = await parameters.buildShortLink();
