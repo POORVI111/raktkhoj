@@ -10,8 +10,9 @@ class EventModel{
   String imageUrl;
   String date;
 
-  EventModel(this.eventid, this.Name, this.organiserUid, this.time,
-      this.imageUrl, this.date);
+  EventModel( {
+    this.eventid, this.Name, this.organiserUid, this.time,
+    this.imageUrl, this.date});
 
   Map<String,dynamic> toMap(EventModel event) {
     var data = Map<String, dynamic>();

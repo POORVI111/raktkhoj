@@ -39,6 +39,7 @@ class _TopDonorsListState extends State<TopDonorsList>
 
 
   Widget topDonors(BuildContext context){
+    print(FirebaseFirestore.instance.collection("User Details").snapshots().length);
     return StreamBuilder(
           //proper query yet has to be written
         stream: FirebaseFirestore.instance
