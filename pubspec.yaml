@@ -123,6 +123,7 @@ flutter:
     - images/
     - customStyle
     - assets/sample.pdf
+    - assets/dialog_flow_auth.json
 
 
 
