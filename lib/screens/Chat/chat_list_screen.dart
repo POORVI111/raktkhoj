@@ -9,6 +9,7 @@ import 'package:raktkhoj/main.dart';
 import 'package:raktkhoj/model/contact.dart';
 import 'package:raktkhoj/provider/chat_method.dart';
 import 'package:raktkhoj/screens/Chat/search_screen.dart';
+import 'package:raktkhoj/screens/Chat/chat_bot.dart';
 
 import '../../Colors.dart';
 
@@ -69,6 +70,12 @@ class _ChatListPageState extends State<ChatListPage> {
          child: ChatListContainer(),
         ),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () { Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChatBot()),
+      ); },
+        backgroundColor: kMainRed,
+        child: const Icon(FontAwesomeIcons.robot),),
     );
   }
 

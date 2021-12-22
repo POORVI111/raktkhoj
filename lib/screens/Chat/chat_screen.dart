@@ -250,7 +250,6 @@ class _ChatScreenState extends State<ChatScreen> {
       });
 
       textFieldController.text = "";
-
       _chatMethods.addMessageToDb(_message);
     }
 
