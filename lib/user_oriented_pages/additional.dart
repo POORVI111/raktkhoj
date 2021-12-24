@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/components/cached_image.dart';
 import 'package:raktkhoj/components/ripple_indicator.dart';
 import 'package:raktkhoj/model/event.dart';
+import 'package:raktkhoj/model/post.dart';
 import 'package:raktkhoj/model/user.dart';
 import 'package:raktkhoj/screens/Chat/chat_list_screen.dart';
 import 'package:raktkhoj/screens/Chat/chat_screen.dart';
@@ -21,9 +23,13 @@ import 'package:raktkhoj/services/localization_service.dart';
 import 'package:raktkhoj/user_oriented_pages/events_list.dart';
 import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
 import 'package:raktkhoj/user_oriented_pages/top_donors_list.dart';
+//import 'package:readmore/readmore.dart';
+
 
 import '../Colors.dart';
 import 'be_a_donor.dart';
+
+
 
 class Additional extends StatefulWidget {
 
@@ -113,6 +119,22 @@ class _AdditionalState extends State<Additional> {
     return eventList;
   }
 
+  //fetch all posts
+  Future<List<PostModel>> fetchAllPosts(User currentUser) async {
+    List<PostModel> postList = <PostModel>[];
+
+    QuerySnapshot querySnapshot =
+    await _firestore.collection("Post Details").get();
+    for (var i = 0; i < querySnapshot.docs.length; i++) {
+
+      postList.add(PostModel.fromMap(querySnapshot.docs[i].data()));
+
+    }
+    return postList;
+  }
+  
+  
+
   //loading admin details
   Future<void> _getAdmin() async
   {
@@ -129,6 +151,7 @@ class _AdditionalState extends State<Additional> {
 
   List<UserModel> userList;
   List<EventModel> eventList;
+  List<PostModel> postList;
   @override
   Future<void> initState() {
     super.initState();
@@ -148,6 +171,13 @@ class _AdditionalState extends State<Additional> {
       fetchAllEvents(user).then((List<EventModel> list) {
         setState(() {
           eventList = list;
+        });
+      });
+    });
+    getCurrentUser().then((User user) {
+      fetchAllPosts(user).then((List<PostModel> list) {
+        setState(() {
+          postList = list;
         });
       });
     });
@@ -374,6 +404,140 @@ class _AdditionalState extends State<Additional> {
               ),);*/
           })
 
+      ),
+    );
+  }
+
+  getImage(String profilePhoto)
+  {
+    if(profilePhoto==null)
+    {
+        return CircleAvatar(
+          radius: 20.0,
+          backgroundImage: AssetImage('images/logo.png'),
+          backgroundColor: kBackgroundColor,
+        );
+      }
+    //return CachedImage(profilePhoto, radius: 20,);
+    /*return CircleAvatar(
+        backgroundImage:
+        CachedNetworkImageProvider(profilePhoto),
+        radius: 20.0,
+        );*/
+    return SizedBox(
+      height: 40,
+      width: 40,
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: CachedNetworkImage(
+            imageUrl: profilePhoto,
+            fit: BoxFit.cover,
+            placeholder: (context, url) =>
+                Center(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) => CircleAvatar(
+              radius: 45.0,
+              backgroundImage: AssetImage('images/logo.png'),
+              backgroundColor: kBackgroundColor,
+            ),
+          )),
+    );
+  }
+
+
+  searchPosts(){
+    final List<PostModel> suggestionList = (postList!=null? postList:[]);
+    
+    return Container(
+      child: ListView.builder(
+        itemCount: suggestionList.length,
+        scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          physics: ScrollPhysics(),
+          itemBuilder: ((context, index)
+          {
+            PostModel searchedPost = PostModel(
+                creator: suggestionList[index].creator,
+                creatorId: suggestionList[index].creatorId,
+                title: suggestionList[index].title,
+                time: suggestionList[index].time,
+                content: suggestionList[index].content,
+                creatorPhoto: suggestionList[index].creatorPhoto,
+            );
+
+
+
+                  return Padding(padding: const EdgeInsets.all(8.0),
+                      child: InkWell(onTap: (){},
+                        child:Container(
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(10),
+                          alignment: Alignment.center,
+                          // height:DeviceSize.height(context),
+                          decoration: BoxDecoration(
+                            /*border: Border.all(
+                                width: 3.0,
+                              color: kMainRed,
+                            ),*/
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10.0)),
+                              boxShadow: [BoxShadow(blurRadius: 10,color: kBackgroundColor,offset: Offset(1,3))],
+
+                          ),
+                          child: Card(
+                            child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Column(children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0)),
+                                      border: Border.all(
+                                        width: 1.0,
+                                        color: kMainRed,
+                                      ),
+                                      //boxShadow: [BoxShadow(blurRadius: 1,color: kBackgroundColor,offset: Offset(1,3))],
+
+                                    ),
+
+                                    child: Row(
+                                        children: <Widget>[
+                                      getImage(searchedPost.creatorPhoto),
+
+                                      Padding(
+                                          padding: const EdgeInsets.only(left: 8.0),
+                                          child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(searchedPost.title,
+                                                    style: TextStyle(
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: 18.0)
+                                                ),
+                                                Text(searchedPost.creator,
+                                                    style: TextStyle(
+                                                        color: kBackgroundColor,
+                                                        fontSize: 13.0),
+                                                    ),
+
+                                              ]))
+                                    ]),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Expanded(
+                                      child: Text(
+                                        searchedPost.content
+                                      ),
+                                    ),
+                                  )
+
+                                ])),
+                          ),
+                        ),
+                      ),);
+
+          })
       ),
     );
   }
@@ -848,17 +1012,23 @@ class _AdditionalState extends State<Additional> {
                 height: 143,
                 width: double.infinity,
                 child: searchEvents(),),),
-            /*Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: searchEvents(),
-            ),*/
+            Container(
+              child: Text("Tips and Information",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'nunito',
+                    color: Colors.black),),
+            ),
+            searchPosts(),
+
+
 
           ],
 
       ),
       floatingActionButton: FloatingActionButton(onPressed: () { Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => CreatePost()),
+        MaterialPageRoute(builder: (context) => AddTips()),
       ); },
         backgroundColor: kMainRed,
         child: const Icon(FontAwesomeIcons.feather),),

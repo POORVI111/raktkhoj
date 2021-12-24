@@ -69,6 +69,9 @@ class _AddEventsState extends State<AddEvents>
         curve: Interval(0, 1.0, curve: Curves.fastOutSlowIn)));
     setData();
     super.initState();
+    FirebaseFirestore.instance.collection('User Details').doc(currentUser.uid).get().then((value) {
+      userName = value.data()['Name'];
+    });
     //getAdminId();
   }
 
@@ -183,9 +186,7 @@ class _AddEventsState extends State<AddEvents>
         15.0;
     //return Container();
 
-    FirebaseFirestore.instance.collection('User Details').doc(currentUser.uid).get().then((value) {
-      userName = value.data()['Name'];
-    });
+
 
     return Container(
       color: kMainRed,

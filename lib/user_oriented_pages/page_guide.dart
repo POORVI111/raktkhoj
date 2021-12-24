@@ -4,6 +4,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:raktkhoj/screens/donate_here/donate.dart';
 import 'package:raktkhoj/screens/home/Home_screen.dart';
 import 'package:raktkhoj/user_oriented_pages/additional.dart';
+import 'package:raktkhoj/user_oriented_pages/extra.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 
 import '../Colors.dart';
@@ -22,7 +23,7 @@ class _PageGuideState extends State<PageGuide> {
   int index=1;
 
   final HomePage _listHomePage=HomePage();
-  final Profile _listProfilePage=new Profile();
+  final ExtraPage _listProfilePage=new ExtraPage();
   final Donate _listDonatePage=new Donate();
   final Additional _listInfoPage= new Additional();
 
