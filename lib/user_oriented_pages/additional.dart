@@ -13,6 +13,7 @@ import 'package:raktkhoj/screens/Chat/chat_list_screen.dart';
 import 'package:raktkhoj/screens/Chat/chat_screen.dart';
 import 'package:raktkhoj/screens/admin.dart';
 import 'package:raktkhoj/screens/doctor_oriented_pages/add_events.dart';
+import 'package:raktkhoj/screens/doctor_oriented_pages/add_tips_posts.dart';
 import 'package:raktkhoj/screens/doctor_oriented_pages/doctors_list.dart';
 import 'package:raktkhoj/screens/nearby_hospitals/nearby_hospital_screen.dart';
 import 'package:raktkhoj/screens/splash_screen.dart';
@@ -855,6 +856,12 @@ class _AdditionalState extends State<Additional> {
           ],
 
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () { Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => CreatePost()),
+      ); },
+        backgroundColor: kMainRed,
+        child: const Icon(FontAwesomeIcons.feather),),
 
     );
   }
