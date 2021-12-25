@@ -268,7 +268,7 @@ class _DoctorInfoState extends State<DoctorInfo>
                             padding: const EdgeInsets.only(
                                 top: 32.0, left: 18, right: 16),
                             child: Text(
-                              userName,
+                              userName==null?'--':userName,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
