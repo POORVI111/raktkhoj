@@ -198,9 +198,16 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
         .size
         .height;
 
+    menu=menu.length==0 ? []:menu;
+
     //checking if list is empty
     if(menu.isEmpty){
-      return Center(child: Text("Empty list!!"));
+      //return Center(child: CircularProgressIndicator());
+      return AlertDialog(title: Text("empty list"),content: Text("no history of user"),
+        actions: [TextButton(
+          child: Text("OK"),
+    onPressed: () {Navigator.pop(context); })],
+      );
     }
 
     //to set heading of page as donations or requests
@@ -233,7 +240,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
                 child: new RectangleIndicator(
                     _backgroundPageController, menu.length, 6.0, Colors.grey[400],
                     kBackgroundColor))),
-        PageView.builder(
+        new PageView.builder(
           itemCount: menu.length,
           itemBuilder: (BuildContext context, int itemCount){
             return Container();
@@ -246,7 +253,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
             });
           },
         ),
-        NotificationListener<ScrollNotification>(
+        new NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification notification) {
             if (notification.depth == 0 &&
                 notification is ScrollUpdateNotification) {
@@ -261,10 +268,16 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
             }
             return false;
           },
-          child: PageView(
-            controller: _pageController,
-            children:_buildPages(),
-          ),
+          child: menu.length==0 ?
+               AlertDialog(title: Text("empty list"),content: Text("no history of user"),
+              actions: [TextButton(
+              child: Text("OK"),
+              onPressed: () {Navigator.pop(context); })],
+              )
+              :new PageView(
+                controller: _pageController,
+                children:_buildPages(),
+              ),
         ),
         Positioned.fill(
           top: 30.0,

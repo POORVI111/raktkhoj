@@ -6,7 +6,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:raktkhoj/Colors.dart';
 import 'package:raktkhoj/components/cached_image.dart';
+import 'package:raktkhoj/screens/doctor_oriented_pages/add_events.dart';
+import 'package:raktkhoj/screens/doctor_oriented_pages/doctor_info.dart';
 import 'package:raktkhoj/user_oriented_pages/be_a_donor.dart';
+import 'package:raktkhoj/user_oriented_pages/my_donations.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 
 class ExtraPage extends StatefulWidget {
@@ -66,7 +69,7 @@ class _ExtraPageState extends State<ExtraPage> {
                   children: <Widget>[
                     Container(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 15, bottom: 0, top: 0),
+                        padding: const EdgeInsets.only(left: 15, bottom: 0, top: 0,right: 30),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
@@ -124,10 +127,10 @@ class _ExtraPageState extends State<ExtraPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: 110,
-                            height: 110,
+                          padding: const EdgeInsets.all(4.0),
+                          child: Container(
+                            width: 100,
+                            height: 100,
                             child: Center(
                               child: Card(
                                 elevation: 8,
@@ -151,7 +154,7 @@ class _ExtraPageState extends State<ExtraPage> {
                                               right: 20),
                                           child: Text(
                                             'Be a Donor',
-                                            style: TextStyle(fontSize: 16),
+                                            style: TextStyle(fontSize: 14),
                                           ),
                                         ),
                                         Icon(
@@ -166,10 +169,10 @@ class _ExtraPageState extends State<ExtraPage> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            width: 110,
-                            height: 110,
+                          padding: const EdgeInsets.all(4.0),
+                          child: Container(
+                            width: 100,
+                            height: 100,
                             child: Center(
                               child: Card(
                                   elevation: 8,
@@ -193,7 +196,7 @@ class _ExtraPageState extends State<ExtraPage> {
                                               right: 20),
                                           child: Text(
                                             'Profile',
-                                            style: TextStyle(fontSize: 16),
+                                            style: TextStyle(fontSize: 14),
                                           ),
                                         ),
                                         Icon(Icons.person)
@@ -205,6 +208,175 @@ class _ExtraPageState extends State<ExtraPage> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 20,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            child: Center(
+                              child: Card(
+                                elevation: 8,
+                                child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(context,MaterialPageRoute(
+                                        builder: (context) => MenuPager(type: "donations",),
+                                      ));
+
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8.0,
+                                              bottom: 8.0,
+                                              left: 10,
+                                              right: 10),
+                                          child: Text(
+                                            'Donation\n history',
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.history,
+                                        ),
+
+                                      ],
+                                    )),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            child: Center(
+                              child: Card(
+                                  elevation: 8,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MenuPager(type: "requests",)));
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8.0,
+                                              bottom: 8.0,
+                                              left: 10,
+                                              right: 10),
+                                          child: Text(
+                                            'Requests\nHistory',
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                        ),
+                                        Icon( Icons.subject,)
+                                      ],
+                                    ),
+                                  )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            child: Center(
+                              child: Card(
+                                elevation: 8,
+                                child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) => DoctorInfo()));
+
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8.0,
+                                              bottom: 8.0,
+                                              left: 10,
+                                              right: 10),
+                                          child: Text(
+                                            'Doctors\n Hub',
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.volunteer_activism,
+                                          //color: kMainRed,
+                                        ),
+
+                                      ],
+                                    )),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            child: Center(
+                              child: Card(
+                                  elevation: 8,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AddEvents()));
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 8.0,
+                                              bottom: 8.0,
+                                              left: 10,
+                                              right: 10),
+                                          child: Text(
+                                            'Add Events',
+                                            style: TextStyle(fontSize: 14),
+                                          ),
+                                        ),
+                                        Icon(Icons.event),
+                                      ],
+                                    ),
+                                  )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
 
                   ],
                 ),

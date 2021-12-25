@@ -153,10 +153,18 @@ class _DoctorsListState extends State<DoctorsList>
         .size
         .height;
 
+    menu=menu.length==0 ? []:menu;
+
     //checking if list is empty
     if(menu.isEmpty){
-      return Center(child: Text("Empty list!!"));
+    //return Center(child: CircularProgressIndicator());
+    return AlertDialog(title: Text("empty list"),content: Text("no history of user"),
+    actions: [TextButton(
+    child: Text("OK"),
+    onPressed: () {Navigator.pop(context); })],
+    );
     }
+
 
     //to set heading of page as donations or requests
     String heading="Contact doctors in emergency";
@@ -207,7 +215,13 @@ class _DoctorsListState extends State<DoctorsList>
             }
             return false;
           },
-          child: new PageView(
+          child:menu.length==0 ?
+            AlertDialog(title: Text("empty list"),content: Text("no history of user"),
+            actions: [TextButton(
+            child: Text("OK"),
+            onPressed: () {Navigator.pop(context); })],
+            )
+        : new PageView(
             controller: _pageController,
             children:_buildPages(),
           ),
