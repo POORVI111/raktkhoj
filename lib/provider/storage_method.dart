@@ -85,13 +85,13 @@ class StorageMethods {
   }) async {
 
     // Set some loading value to db and show it to user
-    imageUploadProvider.setToLoading();
+    // imageUploadProvider.setToLoading();
 
     // Get url from the image bucket
     String url = await uploadImageToStorage(image);
 
     // Hide loading
-    imageUploadProvider.setToIdle();
+    // imageUploadProvider.setToIdle();
     return url;
     //FirebaseFirestore.instance.collection("User Details").doc(userId).
     //update({"ProfilePhoto":url});

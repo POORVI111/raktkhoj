@@ -34,7 +34,11 @@ class LoginButton extends StatelessWidget {
           if (user != null) {
             print("Success");
             print(userEmail+userPassword);
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PageGuide()));
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => PageGuide()),
+                  (Route<dynamic> route) => false,
+            );
 
           }
 

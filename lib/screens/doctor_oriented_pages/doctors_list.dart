@@ -172,8 +172,8 @@ class _DoctorsListState extends State<DoctorsList>
         //new CustomAppBar(),
         new AppBar(
           title:  Text(heading),
-          actions: [
-          ],),
+          centerTitle: true,
+          automaticallyImplyLeading: false,),
         new Align(alignment: Alignment.bottomCenter,
             child: new Padding(padding: const EdgeInsets.only(bottom: 50.0),
                 child: new RectangleIndicator(

@@ -105,8 +105,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
                   child: IconButton(
                     icon:Icon(Icons.close),
-                    onPressed: (){ //returning null to disable the button
-                      animationController.reverse();
+                    onPressed: () async { //returning null to disable the button
+                     // await animationController.reverse(from: 0.0);
+                      await animationController.reverse();
+                     // Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
                       setState(() {
                         isLogin = true;
                       });

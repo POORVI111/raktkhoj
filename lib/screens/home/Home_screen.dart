@@ -7,6 +7,7 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/components/ripple_indicator.dart';
 import 'package:raktkhoj/screens/Chat/chat_list_screen.dart';
 import 'package:raktkhoj/screens/admin.dart';
+import 'package:raktkhoj/screens/doctor_oriented_pages/add_events.dart';
 import 'package:raktkhoj/screens/doctor_oriented_pages/doctors_list.dart';
 import 'package:raktkhoj/screens/home/map_view.dart';
 import 'package:raktkhoj/screens/nearby_hospitals/nearby_hospital_screen.dart';
@@ -326,6 +327,19 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.push(context,
                    MaterialPageRoute(builder: (context) =>DoctorsList()));
+              },
+            ),
+
+
+            ListTile(
+              title: Text("Add events"),
+              leading: Icon(
+                FontAwesomeIcons.userNurse,
+                color: kMainRed,
+              ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) =>AddEvents()));
               },
             ),
 

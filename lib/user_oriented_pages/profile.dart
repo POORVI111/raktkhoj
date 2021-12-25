@@ -72,9 +72,7 @@ class _ProfileState extends State<Profile> {
     userid=loggedInUser.uid;
 
     //demo data
-    name="XYZ_user";
-    req="1";
-    donations="0";
+    name="Raktkhoj User";
     dob="23/12/2001";
     btype="B+";
     mc="normal";
@@ -109,6 +107,11 @@ class _ProfileState extends State<Profile> {
       });
       //name=value.data()["Name"].toString();
     });
+    firestoreInstance.collection('Blood Request Details').where('donorUid',isEqualTo: userid).get().then((value) =>
+    donations=value.size);
+    firestoreInstance.collection('Blood Request Details').where('raiserUid',isEqualTo: userid).get().then((value) =>
+    req=value.size);
+
 
 
 
@@ -303,7 +306,7 @@ class _ProfileState extends State<Profile> {
                                 border: Border.all(color:Colors.white),
                                 borderRadius: BorderRadius.all(Radius.circular(10)),
                               ),
-                              child: Center(child: Text('${req!='null'?req:'0'} Requests',style: GoogleFonts.montserrat(
+                              child: Center(child: Text('${req!=null?req:'0'} Requests',style: GoogleFonts.montserrat(
                                   fontSize: 12,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500),)),
@@ -317,7 +320,7 @@ class _ProfileState extends State<Profile> {
                                 border: Border.all(color:Colors.white),
                                 borderRadius: BorderRadius.all(Radius.circular(10)),
                               ),
-                              child: Center(child: Text('${donations!='null'?donations:'0'} Donations',style: GoogleFonts.montserrat(
+                              child: Center(child: Text('${donations!=null?donations:'0'} Donations',style: GoogleFonts.montserrat(
                                   fontSize: 12,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w500),)),

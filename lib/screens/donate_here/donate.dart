@@ -29,6 +29,7 @@ class _DonateState extends State<Donate> {
   double bannerHeight, listHeight, listPaddingTop;
   double cardContainerHeight, cardContainerTopPadding;
   //String name="";
+  var  totalCount,donatedCount,availableCount,donatedPercentage,activePercentage;
   int selectedSort;
   var location;
   GeoPoint lesserGeopoint;
@@ -49,13 +50,13 @@ class _DonateState extends State<Donate> {
   void initState()  {
     super.initState();
     var firebaseUser =  FirebaseAuth.instance.currentUser;
-     _firestore.collection("User Details").doc(firebaseUser.uid).get().then((value) {
+    _firestore.collection("User Details").doc(firebaseUser.uid).get().then((value) {
       this.setState(() {
         location = value.data()['location'];
       });
     });
     selectedSort=0;
-
+    getRequestsCount();
     getDocuments();
     scrollController.addListener(() {
       if (scrollController.position.atEdge) {
@@ -72,7 +73,7 @@ class _DonateState extends State<Donate> {
 
 
 
-    //geo nearby points
+  //geo nearby points
   void getGeoPoint() async{
     int distance=200;
     // ~1 mile of lat and lon in degrees
@@ -86,6 +87,32 @@ class _DonateState extends State<Donate> {
     greaterGeopoint = GeoPoint(greaterLat, greaterLon);
   }
 
+  //show request count in card
+  getRequestsCount() async{
+
+    await FirebaseFirestore.instance.collection("Blood Request Details").get().
+    then((value) => this.setState(() {
+      totalCount=value.size;}));
+
+    await FirebaseFirestore.instance.collection("Blood Request Details")
+        .where('donorUid', isNotEqualTo:'').get().
+    then((value) => this.setState(() {
+      donatedCount=value.size;}));
+
+    await FirebaseFirestore.instance.collection("Blood Request Details")
+        .where('permission',isEqualTo:true)
+        .where('donorUid', isEqualTo:'').get().
+    then((value) => this.setState(() {
+      availableCount=value.size;}));
+
+    setState(() {
+      donatedPercentage= (donatedCount*100/totalCount).floor();
+      activePercentage= (availableCount*100/totalCount).floor();
+    });
+
+
+    // print( 'donatedCount $donatedCount totalCount $totalCount');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,12 +144,12 @@ class _DonateState extends State<Donate> {
   Widget searchButton(BuildContext context)
   {
 
-           IconButton(icon: Icon(Icons.search),color:kMainRed,
-           onPressed:() async{
-               Navigator.of(context).push(MaterialPageRoute(
-               builder: (_) => SearchRequest(),
-               ));
-}         );
+    IconButton(icon: Icon(Icons.search),color:kMainRed,
+        onPressed:() async{
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => SearchRequest(),
+          ));
+        }         );
   }
 
   Container bodyBloodRequestList(BuildContext context) {
@@ -146,23 +173,23 @@ class _DonateState extends State<Donate> {
   Widget requestLazy(BuildContext context){
     return  listDocument.length != 0
         ? RefreshIndicator(
-            child: ListView.builder(
-              physics: AlwaysScrollableScrollPhysics(),
-              controller: scrollController,
-              itemCount: listDocument.length+1,
-              itemBuilder: (context, index) {
-                if(index==listDocument.length)
-                  return Center(
-                    child: SizedBox(
-                      height: 30,
-                        width: 30,
-                        child: CircularProgressIndicator()),
-                  );
-                return RequestItem(listDocument[index], context);
-              },
-            ),
-            onRefresh: getDocuments,
-        )// Refresh entire list
+      child: ListView.builder(
+        physics: AlwaysScrollableScrollPhysics(),
+        controller: scrollController,
+        itemCount: listDocument.length+1,
+        itemBuilder: (context, index) {
+          if(index==listDocument.length)
+            return Center(
+              child: SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: CircularProgressIndicator()),
+            );
+          return RequestItem(listDocument[index], context);
+        },
+      ),
+      onRefresh: getDocuments,
+    )// Refresh entire list
         : Center(child:CircularProgressIndicator() ,);
   }
 
@@ -241,198 +268,198 @@ class _DonateState extends State<Donate> {
             padding: const EdgeInsets.symmetric(
                 vertical: 10.0, horizontal: 5),
             child: Container(
-                height: 160,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width ,
-                decoration: BoxDecoration(
-                    color: kBackgroundColor,
-                    borderRadius:
-                    BorderRadius.circular(15),
-                    border: Border.all(
-                        color: kMainRed,
-                        width: 1.2),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black
-                            .withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: Offset(0, 4),
-                      )
-                    ]),
-                    child: Row(
-                          children: <Widget>[
-                            Container(
-                              width: 55,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment
-                                    .center,
-                                mainAxisAlignment: MainAxisAlignment
-                                    .center,
-                                children: <Widget>[
-                                  Icon(Icons.bloodtype_sharp,color: kMainRed,),
-                                  Text(
-                                    _req.bloodGroup,
-                                    style: TextStyle(
-                                        fontSize: 22,
-                                        color: kMainRed,
-                                        fontWeight:
-                                        FontWeight.bold,
-                                        fontFamily:
-                                        'nunito'),
-                                  ),
-                                  Padding(
-                                    padding:
-                                    const EdgeInsets.only(
-                                        left: 5),
-                                    child: Text(
-                                      'Type',
-                                      style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.black,
-                                          fontFamily:
-                                          'nunito'),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                                height: 40,
-                                child: VerticalDivider(
-                                  color: Colors.black,
-                                  thickness: 1,
-                                )),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Expanded(child:
-                            Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              mainAxisAlignment:
-                              MainAxisAlignment.center,
-                              children: <Widget>[
-
-                                SizedBox(height: 8),
-                                //                                     SizedBox(height: 12,),
-
-                                Row(
-                                    children : <Widget>[
-                                      Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,size: 12,),
-                                      SizedBox(width: 3,),
-                                      Text(
-                                        'Name: ${_req.patientName}',
-                                        style: TextStyle(
-                                            fontSize: 12.5,
-                                            fontFamily: 'nunito',
-                                            color: Colors.black),
-                                      ),
-                                    ]
-                   
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                    children : <Widget>[
-                                      Icon(FontAwesomeIcons.prescriptionBottle,color: kMainRed,size: 12,),
-                                      SizedBox(width: 3,),
-                                      Text(
-                                        'Quantity:  ${_req
-                                            .qty
-                                            .toString()} L',
-                                        style: TextStyle(
-                                            fontSize: 12.5,
-                                            fontFamily: 'nunito',
-                                            color: Colors.black),
-                                      ),
-                                    ]
-                                ),
-                                SizedBox(height: 5,),
-                                Row(
-                                    children : <Widget>[
-                                      Icon(FontAwesomeIcons.clock,color: kMainRed,size: 12,),
-                                      SizedBox(width: 3,),
-                                      Text(
-                                        'Due Date: ${_req.dueDate
-                                            .toString()}',
-                                        style: TextStyle(
-                                            fontSize: 12.5,
-                                            fontFamily: 'nunito',
-                                            color: kMainRed),
-                                      ),
-                                    ]
-                                ),
-                                Expanded(child:
-                                Row(
-                                    children : <Widget>[
-                                      Icon(FontAwesomeIcons.mapMarkedAlt,color: kMainRed, size: 12),
-                                      SizedBox(width:3,),
-                                      Expanded(child:
-                                      Text(
-                                      '${_req.address}',
-                                       overflow: TextOverflow.ellipsis,
-                                       // maxLines: 2,
-                                      //softWrap: false,
-                                      style: TextStyle(
-                                      fontSize: 12.5,
-                                      fontFamily: 'nunito',
-                                      color: Colors.black),
-
-                                      ),
-                                      ),
-                                    ]
-                                ),
-                                ),
-
-                                  Row(
-                                      children:<Widget> [
-                                        Icon(FontAwesomeIcons.ambulance,color: kMainRed,size: 15,),
-                                        SizedBox(width: 5),
-                                        Text('${_req.condition
-                                            .toString()}',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 13,
-                                              fontFamily: 'nunito',
-                                              color: kMainRed),
-
-
-                                        ),
-                                      ]
-                                  ),
-
-
-
-                                Row(
-                                  children:[
-                                    SizedBox(width:175),
-                                    IconButton(onPressed: (){
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (_) => SingleRequestScreen(request: _req),
-                                      ));
-                                    }, icon:
-                                        Icon(Icons.east_outlined,color: kMainRed,)),],
-                                ),
-
-
-                              ],
-                            ),
-                            ),
-
-                          ],
+              height: 160,
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width ,
+              decoration: BoxDecoration(
+                  color: kBackgroundColor,
+                  borderRadius:
+                  BorderRadius.circular(15),
+                  border: Border.all(
+                      color: kMainRed,
+                      width: 1.2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black
+                          .withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
+                    )
+                  ]),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: 55,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment
+                          .center,
+                      mainAxisAlignment: MainAxisAlignment
+                          .center,
+                      children: <Widget>[
+                        Icon(Icons.bloodtype_sharp,color: kMainRed,),
+                        Text(
+                          _req.bloodGroup,
+                          style: TextStyle(
+                              fontSize: 22,
+                              color: kMainRed,
+                              fontWeight:
+                              FontWeight.bold,
+                              fontFamily:
+                              'nunito'),
                         ),
-
-
+                        Padding(
+                          padding:
+                          const EdgeInsets.only(
+                              left: 5),
+                          child: Text(
+                            'Type',
+                            style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.black,
+                                fontFamily:
+                                'nunito'),
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                  SizedBox(
+                      height: 40,
+                      child: VerticalDivider(
+                        color: Colors.black,
+                        thickness: 1,
+                      )),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Expanded(child:
+                  Column(
+                    crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                    mainAxisAlignment:
+                    MainAxisAlignment.center,
+                    children: <Widget>[
+
+                      SizedBox(height: 8),
+                      //                                     SizedBox(height: 12,),
+
+                      Row(
+                          children : <Widget>[
+                            Icon(FontAwesomeIcons.hospitalUser,color: kMainRed,size: 12,),
+                            SizedBox(width: 3,),
+                            Text(
+                              'Name: ${_req.patientName}',
+                              style: TextStyle(
+                                  fontSize: 12.5,
+                                  fontFamily: 'nunito',
+                                  color: Colors.black),
+                            ),
+                          ]
+
+                      ),
+                      SizedBox(height: 5,),
+                      Row(
+                          children : <Widget>[
+                            Icon(FontAwesomeIcons.prescriptionBottle,color: kMainRed,size: 12,),
+                            SizedBox(width: 3,),
+                            Text(
+                              'Quantity:  ${_req
+                                  .qty
+                                  .toString()} L',
+                              style: TextStyle(
+                                  fontSize: 12.5,
+                                  fontFamily: 'nunito',
+                                  color: Colors.black),
+                            ),
+                          ]
+                      ),
+                      SizedBox(height: 5,),
+                      Row(
+                          children : <Widget>[
+                            Icon(FontAwesomeIcons.clock,color: kMainRed,size: 12,),
+                            SizedBox(width: 3,),
+                            Text(
+                              'Due Date: ${_req.dueDate
+                                  .toString()}',
+                              style: TextStyle(
+                                  fontSize: 12.5,
+                                  fontFamily: 'nunito',
+                                  color: kMainRed),
+                            ),
+                          ]
+                      ),
+                      Expanded(child:
+                      Row(
+                          children : <Widget>[
+                            Icon(FontAwesomeIcons.mapMarkedAlt,color: kMainRed, size: 12),
+                            SizedBox(width:3,),
+                            Expanded(child:
+                            Text(
+                              '${_req.address}',
+                              overflow: TextOverflow.ellipsis,
+                              // maxLines: 2,
+                              //softWrap: false,
+                              style: TextStyle(
+                                  fontSize: 12.5,
+                                  fontFamily: 'nunito',
+                                  color: Colors.black),
+
+                            ),
+                            ),
+                          ]
+                      ),
+                      ),
+
+                      Row(
+                          children:<Widget> [
+                            Icon(FontAwesomeIcons.ambulance,color: kMainRed,size: 15,),
+                            SizedBox(width: 5),
+                            Text('${_req.condition
+                                .toString()}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13,
+                                  fontFamily: 'nunito',
+                                  color: kMainRed),
+
+
+                            ),
+                          ]
+                      ),
+
+
+
+                      Row(
+                        children:[
+                          SizedBox(width:175),
+                          IconButton(onPressed: (){
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => SingleRequestScreen(request: _req),
+                            ));
+                          }, icon:
+                          Icon(Icons.east_outlined,color: kMainRed,)),],
+                      ),
+
+
+                    ],
+                  ),
+                  ),
+
+                ],
+              ),
+
+
             ),
           ),
+        ),
 
       ],
     );
-      // }
+    // }
 
-     // );
+    // );
   }
 
   //would show emergency conditions
@@ -473,11 +500,11 @@ class _DonateState extends State<Donate> {
 
   Container topBanner(BuildContext context) {
     return Container(
-      height: bannerHeight,
-      alignment: Alignment.topCenter,
-      decoration: BoxDecoration(
-        color: kMainRed,
-      )
+        height: bannerHeight,
+        alignment: Alignment.topCenter,
+        decoration: BoxDecoration(
+          color: kMainRed,
+        )
     );
   }
 
@@ -486,10 +513,10 @@ class _DonateState extends State<Donate> {
   //again ui ui ui......
   Container bannerContainer() {
     return
-          Container(
-            alignment: Alignment.topCenter,
-            padding: EdgeInsets.only(top: 50.0, right: 10.0, left: 20.0),
-            child: Row(
+      Container(
+          alignment: Alignment.topCenter,
+          padding: EdgeInsets.only(top: 50.0, right: 10.0, left: 20.0),
+          child: Row(
               children:[
                 SizedBox(width: 70,),
                 Text(
@@ -505,7 +532,7 @@ class _DonateState extends State<Donate> {
                       ));
                     }         )
               ]
-            ));
+          ));
 
 
   }
@@ -514,41 +541,50 @@ class _DonateState extends State<Donate> {
   //conatiner for ui enhancement
   Container cardContainer(BuildContext context) {
     return Container(
-      alignment: Alignment.topCenter,
-      padding: new EdgeInsets.only(
-          top: cardContainerTopPadding, right: 20.0, left: 20.0),
-      child: Container(
-        height: cardContainerHeight,
-        width: MediaQuery.of(context).size.width,
+        alignment: Alignment.topCenter,
+        padding: new EdgeInsets.only(
+            top: cardContainerTopPadding, right: 20.0, left: 20.0),
         child: Container(
-          child: Card(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                PercentageWidget(
-                  size: 120.0,
-                  title: 'Available',
-                  count: 126,
-                  percentage: 22,
-                  countLeft: true,
-                ),
-                PercentageWidget(
-                  size: 120.0,
-                  title: 'Requests',
-                  count: 248,
-                  percentage: 56,
-                  countLeft: false,
-                ),
-                SizedBox(
-                  height: 60.0,
-                )
-              ],
+          height: cardContainerHeight,
+          width: MediaQuery.of(context).size.width,
+          child: Container(
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: (donatedPercentage!=null && activePercentage!=null)?Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  PercentageWidget(
+                    size: 120.0,
+                    title: 'Available',
+                    count: donatedCount,
+                    //==null? 0:donatedCount,
+                    percentage: activePercentage,
+                    //==null?0:activePercentage,
+                    countLeft: true,
+                  ),
+                  PercentageWidget(
+                    size: 120.0,
+                    title: 'Requests',
+                    count: totalCount,
+                    //==null?0:totalCount,
+                    percentage: donatedPercentage,
+                    //==null?0:donatedPercentage,
+                    countLeft: false,
+                  ),
+                  SizedBox(
+                    height: 60.0,
+                  )
+                ],
+              ):Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  CircularProgressIndicator()
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        )
     );
   }
 
@@ -565,7 +601,7 @@ class _DonateState extends State<Donate> {
           children: [
             ChoiceChip(
               selectedColor:
-                  kMainRed,
+              kMainRed,
               //Theme.of(context).accentColor,
               elevation: 10,
               onSelected: (value) {
@@ -599,7 +635,7 @@ class _DonateState extends State<Donate> {
             SizedBox(width: 5),
             ChoiceChip(
               selectedColor:
-                  kMainRed,
+              kMainRed,
               //Theme.of(context).accentColor,
               elevation: 10,
               onSelected: (value) {
@@ -610,7 +646,7 @@ class _DonateState extends State<Donate> {
               },
               label: Text('A+',
                   style: TextStyle(
-                      color:kDarkerGrey,)),
+                    color:kDarkerGrey,)),
               selected: selectedSort == 1,
             ),
 
@@ -732,10 +768,10 @@ class _DonateState extends State<Donate> {
   // Fetch first 15 documents
   Future<void> getDocuments() async {
 
-      listDocument = List();
-      var collection = getQuery().limit(5);
-      print('getDocuments');
-      fetchDocuments(collection);
+    listDocument = List();
+    var collection = getQuery().limit(5);
+    // print('getDocuments');
+    fetchDocuments(collection);
 
 
   }
@@ -744,7 +780,7 @@ class _DonateState extends State<Donate> {
   Future<void> getDocumentsNext() async {
     // Get the last visible document
     var lastVisible = collectionState.docs[collectionState.docs.length-1];
-    print('listDocument legnth: ${collectionState.size} last: $lastVisible');
+    // print('listDocument legnth: ${collectionState.size} last: $lastVisible');
 
     var collection = getQuery().startAfterDocument(lastVisible).limit(2);
 
@@ -753,15 +789,15 @@ class _DonateState extends State<Donate> {
 
   fetchDocuments(Query collection){
 
-      collection.get().then((value) {
-        collectionState = value; // store collection state to set where to start next
-        value.docs.forEach((element) {
-          print('getDocuments ${element.data()}');
-          setState(() {
-            listDocument.add(element);
-          });
+    collection.get().then((value) {
+      collectionState = value; // store collection state to set where to start next
+      value.docs.forEach((element) {
+        // print('getDocuments ${element.data()}');
+        setState(() {
+          listDocument.add(element);
         });
       });
+    });
 
 
   }
@@ -778,7 +814,7 @@ class _DonateState extends State<Donate> {
       7->O+
       8->o-
   */
-      //.where('bloodGroup',isEqualTo: "A+")
+  //.where('bloodGroup',isEqualTo: "A+")
 
   Query getQuery() {
     switch (selectedSort) {
@@ -854,16 +890,16 @@ class _DonateState extends State<Donate> {
             .orderBy('dueDate');
         break;
       case 9:
-            getGeoPoint();
+        getGeoPoint();
         return FirebaseFirestore.instance
             .collection("Blood Request Details").where('patientCondition',whereIn: requestConditonList)
             .where('active',isEqualTo:true)
             .where('permission', isEqualTo: true)
             .where('location',isGreaterThan:lesserGeopoint)
             .where('location', isLessThan:greaterGeopoint);
-            //.orderBy('dueDate');
+        //.orderBy('dueDate');
         break;
-        
+
     }
     debugPrint('Unexpected sorting selected');
     return null;
@@ -872,6 +908,10 @@ class _DonateState extends State<Donate> {
 
 
 }
+
+
+
+
 
 
 

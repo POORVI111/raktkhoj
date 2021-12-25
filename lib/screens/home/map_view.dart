@@ -183,7 +183,7 @@ class _MapViewState extends State<MapView> {
     setState(() {
       // adding a new marker to map
       markers[markerId] = marker;
-      print('markerid $markerId');
+      // print('markerid $markerId');
     });
   }
 

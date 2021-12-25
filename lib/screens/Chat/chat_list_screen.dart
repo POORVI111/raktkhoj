@@ -5,12 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/components/contact_list.dart';
-import 'package:raktkhoj/main.dart';
 import 'package:raktkhoj/model/contact.dart';
 import 'package:raktkhoj/provider/chat_method.dart';
 import 'package:raktkhoj/screens/Chat/search_screen.dart';
 import 'package:raktkhoj/screens/Chat/chat_bot.dart';
-
 import '../../Colors.dart';
 
 
