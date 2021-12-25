@@ -11,6 +11,7 @@ class UserModel {
   bool Doctor;
   bool AdminVerified;
   String DoctorVerificationReport;
+  int Donations;
 
 
 
@@ -23,7 +24,8 @@ class UserModel {
     this.Description,
     this.Doctor,
     this.AdminVerified,
-    this.DoctorVerificationReport
+    this.DoctorVerificationReport,
+    this.Donations
     });
 
   Map<String,dynamic> toMap(UserModel user) {
@@ -37,6 +39,7 @@ class UserModel {
     data['Doctor'] = user.Doctor;
     data['AdminVerified'] = user.AdminVerified;
     data['DoctorVerificationReport'] = user.DoctorVerificationReport;
+    data['Donations']=user.Donations;
     return data;
   }
 
@@ -51,5 +54,6 @@ class UserModel {
     this.Doctor = mapData['Doctor'];
     this.AdminVerified = mapData['AdminVerified'];
     this.DoctorVerificationReport = mapData['DoctorVerificationReport'];
+    this.Donations=mapData['Donations'];
   }
 }

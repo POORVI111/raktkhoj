@@ -73,6 +73,7 @@ class RegisterButton extends StatelessWidget {
                     'Doctor':null,
                     'AdminVerified':null,
                     'DoctorVerificationReport':null,
+                    'Donations':0,
                 });
               });
             }

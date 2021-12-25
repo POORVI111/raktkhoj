@@ -634,7 +634,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                             FirebaseFirestore.instance.collection("Blood Request Details").doc(widget.request.reqid)
                               .update({"donorUid" : currentUser.uid , "active" : false});
                             FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid)
-                                .update({"Last Donation":DateTime.now()});
+                                .update({"Last Donation":DateTime.now(),"Donations":FieldValue.increment(1)});
                             to_show="DONATED";
                       }else{
                         //to show blood group incompatibility error

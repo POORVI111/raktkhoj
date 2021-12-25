@@ -183,26 +183,28 @@ class _HomePageState extends State<HomePage> {
                                     }),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SizedBox(
-                                  width: 100,
-                                  height: 50,
-                                  child: RaisedButton(
-                                      color: kMainRed,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(30)),
-                                      child: Center(
-                                        child: Text(
-                                          "Ok".tr,
-                                          style:
-                                          TextStyle(color: Colors.white),
+                                padding: const EdgeInsets.all(1.0),
+                                child: SafeArea(
+                                  child: SizedBox(
+                                    width: 100,
+                                    height: 50,
+                                    child: RaisedButton(
+                                        color: kMainRed,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(30)),
+                                        child: Center(
+                                          child: Text(
+                                            "Ok".tr,
+                                            style:
+                                            TextStyle(color: Colors.white),
+                                          ),
                                         ),
-                                      ),
-                                      onPressed: () {
-                                        //_changelanguage(language);
-                                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> PageGuide()));
-                                      }),
+                                        onPressed: () {
+                                          //_changelanguage(language);
+                                        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> PageGuide()));
+                                        }),
+                                  ),
                                 ),
                               )
                             ]));

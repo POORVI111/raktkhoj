@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -96,7 +98,7 @@ class _AdditionalState extends State<Additional> {
     List<UserModel> userList = <UserModel>[];
 
     QuerySnapshot querySnapshot =
-    await _firestore.collection("User Details").get();
+    await _firestore.collection("User Details").orderBy('Donations',descending: true).limit(5).get();
     for (var i = 0; i < querySnapshot.docs.length; i++) {
 
         userList.add(UserModel.fromMap(querySnapshot.docs[i].data()));
@@ -110,7 +112,7 @@ class _AdditionalState extends State<Additional> {
     List<EventModel> eventList = <EventModel>[];
 
     QuerySnapshot querySnapshot =
-    await _firestore.collection("Event Details").get();
+    await _firestore.collection("Event Details").orderBy('eventid',descending: true).get();
     for (var i = 0; i < querySnapshot.docs.length; i++) {
 
         eventList.add(EventModel.fromMap(querySnapshot.docs[i].data()));
@@ -124,13 +126,18 @@ class _AdditionalState extends State<Additional> {
     List<PostModel> postList = <PostModel>[];
 
     QuerySnapshot querySnapshot =
-    await _firestore.collection("Post Details").get();
+    await _firestore.collection("Post Details").orderBy('time',descending: true).get();
     for (var i = 0; i < querySnapshot.docs.length; i++) {
 
       postList.add(PostModel.fromMap(querySnapshot.docs[i].data()));
 
     }
+
+
+
     return postList;
+
+
   }
   
   
@@ -183,7 +190,9 @@ class _AdditionalState extends State<Additional> {
     });
 
 
-  }
+    }
+
+
 
 
   searchEvents()
@@ -748,98 +757,14 @@ class _AdditionalState extends State<Additional> {
       ),
       actions: [
 
-        new IconButton(icon: Icon(Icons.search , color: Colors.white,), onPressed: (){}),
-        new IconButton(icon: Icon(Icons.chat , color: Colors.white,), onPressed: (){}),
+        //new IconButton(icon: Icon(Icons.search , color: Colors.white,), onPressed: (){}),
+        new IconButton(icon: Icon(Icons.chat , color: Colors.white,), onPressed: (){
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) =>ChatListPage()));
+        }),
 
         //adding multi language feature
-        IconButton(
-          icon: Icon(
-            FontAwesomeIcons.globe,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            showModalBottomSheet(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20))),
-                context: context,
-                builder: (BuildContext context) {
-                  return Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 1.5,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Please Select Your Language",
-                                  style: TextStyle(
-                                      color: kMainRed,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15)),
-                            ),
-                            Text("कृपया अपनी भाषा चुनें",
-                                style: TextStyle(
-                                    color: kMainRed,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15)),
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height /
-                                  2.5,
-                              child: ListView.builder(
-                                  itemCount: _languages.length,
-                                  itemBuilder: (context, index) {
-                                    return Column(
-                                      children: [
-                                        ListTile(
-                                          focusColor: Colors.blue,
-                                          hoverColor: Colors.blue,
-                                          onTap: () {
-                                            setState(()  {
-                                              language = _languages[index];
-                                              LocalizationService().changeLocale(language);
-                                              language = LocalizationService().getCurrentLang();
-                                            });
-                                          },
-                                          title: Center(
-                                              child: Text(_languages[index],
-                                                style:  TextStyle(color: language== _languages[index] ? kMainRed: Colors.black),
-                                              )),
-                                        ),
-                                        Divider()
-                                      ],
-                                    );
-                                  }),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SizedBox(
-                                width: 100,
-                                height: 50,
-                                child: RaisedButton(
-                                    color: kMainRed,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(30)),
-                                    child: Center(
-                                      child: Text(
-                                        "Ok".tr,
-                                        style:
-                                        TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      //_changelanguage(language);
-                                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> PageGuide()));
-                                    }),
-                              ),
-                            )
-                          ]));
-                });
-          },
-        ),
+
       ],
     ),
 
