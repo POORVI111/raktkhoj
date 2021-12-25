@@ -1,6 +1,8 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:raktkhoj/screens/Chat/pick_up/pick_up_layout.dart';
 import 'package:raktkhoj/screens/donate_here/donate.dart';
 import 'package:raktkhoj/screens/home/Home_screen.dart';
 import 'package:raktkhoj/user_oriented_pages/additional.dart';
@@ -8,6 +10,7 @@ import 'package:raktkhoj/user_oriented_pages/extra.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 
 import '../Colors.dart';
+import '../main.dart';
 import '../screens/info.dart';
 
 
@@ -17,16 +20,21 @@ class PageGuide extends StatefulWidget {
 
   @override
   _PageGuideState createState() => _PageGuideState();
+
 }
 
 class _PageGuideState extends State<PageGuide> {
   int index=1;
-
+  String userid;
   final HomePage _listHomePage=HomePage();
   final ExtraPage _listProfilePage=new ExtraPage();
   final Donate _listDonatePage=new Donate();
   final Additional _listInfoPage= new Additional();
 
+  @override
+  void initState() {
+    super.initState();
+  }
  //code to check , which page to be shown as home page
   //deafult page for now is home_page
   Widget _showPage=new HomePage();
@@ -57,7 +65,10 @@ class _PageGuideState extends State<PageGuide> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PickupLayout(
+        uid: FirebaseAuth.instance.currentUser.uid,
+        scaffold: Scaffold(
+        body: Scaffold(
       backgroundColor: Color(0xffffffff),
       bottomNavigationBar: CurvedNavigationBar(
         index: index,
@@ -81,7 +92,8 @@ class _PageGuideState extends State<PageGuide> {
       body: Container(
         child: _showPage,
       ),
-    );
+    )
+    ));
   }
 }
 

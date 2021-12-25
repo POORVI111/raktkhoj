@@ -10,8 +10,10 @@ class CallMethods {
   final CollectionReference callCollection =
   FirebaseFirestore.instance.collection("Video Calls");
 
-  Stream<DocumentSnapshot> callStream({String uid}) =>
-      callCollection.doc(uid).snapshots();
+  Stream<DocumentSnapshot> callStream({String uid}) {
+    return callCollection.doc(uid).snapshots();
+  }
+
 
   Future<bool> makeCall({Call call}) async {
     try {

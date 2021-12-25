@@ -167,13 +167,13 @@ class _DoctorCardState extends State<DoctorCard> {
                   children: <Widget>[
                     RaisedButton(
                       onPressed: () async =>
-                      // await CallUtils.cameraAndMicrophonePermissionsGranted()
-                      //     ? CallUtils.dial(
-                      //   from: sender,
-                      //   to: widget.doctor,
-                      //   context: context,
-                      // )
-                      //     :
+                      await CallUtils.cameraAndMicrophonePermissionsGranted()
+                          ? CallUtils.dial(
+                        from: sender,
+                        to: widget.doctor,
+                        context: context,
+                      )
+                          :
                       {},
                       textColor: Colors.white,
                       padding: EdgeInsets.only(left: 5.0, right: 5.0),

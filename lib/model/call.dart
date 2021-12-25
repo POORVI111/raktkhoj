@@ -1,3 +1,6 @@
+/*
+  video call model
+ */
 class Call {
   String callerId;
   String callerName;
