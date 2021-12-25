@@ -21,7 +21,7 @@ class _TopDonorsListState extends State<TopDonorsList>
 
   @override
   void initState() {
-    //animationController = AnimationController(
+       //animationController = AnimationController(
       //  duration: const Duration(milliseconds: 2000), vsync: this);
     super.initState();
   }
@@ -37,18 +37,33 @@ class _TopDonorsListState extends State<TopDonorsList>
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16, bottom: 16),
+      child: Container(
+        height: 134,
+        width: double.infinity,
+
+        child: topDonors(context),
+      ),
+
+    );
+
+  }
+}
 
   Widget topDonors(BuildContext context){
     print(FirebaseFirestore.instance.collection("User Details").snapshots().length);
     return StreamBuilder(
           //proper query yet has to be written
+
         stream: FirebaseFirestore.instance
-            .collection("User Details").snapshots(),
+            .collection('User Details').snapshots(),
 
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
           if (snapshot.data == null) {
-
             return Center(child: CircularProgressIndicator());
           }
 
@@ -112,7 +127,7 @@ class _TopDonorsListState extends State<TopDonorsList>
                             const BorderRadius.all(Radius.circular(16.0)),
                             child: AspectRatio(
                                 aspectRatio: 1.0,
-                                child: CachedImage(_donor.profilePhoto , height: 70,width: 60,)),
+                                child: CachedImage(_donor.profilePhoto , height: 60,width: 50,)),
                           )
                         ],
                       ),
@@ -173,19 +188,7 @@ class _TopDonorsListState extends State<TopDonorsList>
 
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16, bottom: 16),
-      child: Container(
-        height: 134,
-        width: double.infinity,
-        child:topDonors(context),
-      ),
-    );
 
-  }
-}
 
 /*class DonorView extends StatelessWidget {
   const DonorView(

@@ -212,23 +212,28 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
     }
 
     //stack to show rest of data
-    return new Stack(
+    return Stack(
       children: <Widget>[
 
-        new Positioned.fill(bottom: screenHeight / 2,
+        Positioned.fill(bottom: screenHeight / 2,
             child: new Container(
                 decoration: new BoxDecoration(color: _backColor))),
         //new CustomAppBar(),
-        new AppBar(
+        AppBar(
           title:  Text(heading),
-          actions: [
-          ],),
-        new Align(alignment: Alignment.bottomCenter,
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          // leading: IconButton(
+          //   icon: Icon(Icons.arrow_back, color: Colors.white),
+          //   onPressed: () {Navigator.of(context).pop();},
+          // ),
+          ),
+        Align(alignment: Alignment.bottomCenter,
             child: new Padding(padding: const EdgeInsets.only(bottom: 50.0),
                 child: new RectangleIndicator(
                     _backgroundPageController, menu.length, 6.0, Colors.grey[400],
                     kBackgroundColor))),
-        new PageView.builder(
+        PageView.builder(
           itemCount: menu.length,
           itemBuilder: (BuildContext context, int itemCount){
             return Container();
@@ -241,7 +246,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
             });
           },
         ),
-        new NotificationListener<ScrollNotification>(
+        NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification notification) {
             if (notification.depth == 0 &&
                 notification is ScrollUpdateNotification) {
@@ -256,7 +261,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
             }
             return false;
           },
-          child: new PageView(
+          child: PageView(
             controller: _pageController,
             children:_buildPages(),
           ),

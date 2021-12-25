@@ -393,25 +393,25 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                         ),
                         Row(
                           children: <Widget>[
-                            SizedBox(width: 5,),
+                            SizedBox(width: 15,),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
-                              /*child: Icon(
+                              child: Icon(
                                 FontAwesomeIcons.mapMarkedAlt,
                                 color: Color(0xFFBC002D),
                                 size: 22,
-                              ),*/
-                              child: IconButton(
-                                  icon: Icon(Icons.directions),
-                                  color: Colors.green
-                                  ,
-                                  onPressed:() async {
-                                    await Navigator.push(context,MaterialPageRoute(
-                                        builder: (context) =>
-                                            RequestDirection(location: widget.request.location, address: widget.request.address)));
-                                  }
-
                               ),
+                              // child: IconButton(
+                              //     icon: Icon(Icons.directions),
+                              //     color: Colors.green
+                              //     ,
+                              //     onPressed:() async {
+                              //       await Navigator.push(context,MaterialPageRoute(
+                              //           builder: (context) =>
+                              //               RequestDirection(location: widget.request.location, address: widget.request.address)));
+                              //     }
+                              //
+                              // ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
@@ -437,7 +437,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                                         ),
                                       ],
                                     ),
-                                    /*Padding(
+                                    Padding(
                                       padding: const EdgeInsets.only(right: 2),
                                       child: IconButton(
                                           icon: Icon(Icons.directions),
@@ -450,7 +450,7 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                                             }
 
                                       ),
-                                    ),*/
+                                    ),
                                   ],
                                 ),
                               ),

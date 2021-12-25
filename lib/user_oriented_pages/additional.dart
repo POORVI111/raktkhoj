@@ -1034,6 +1034,7 @@ class _AdditionalState extends State<Additional> {
       ),
       floatingActionButton: FloatingActionButton(onPressed: () { Navigator.push(
         context,
+
         MaterialPageRoute(builder: (context) => AddTips()),
       ); },
         backgroundColor: kMainRed,

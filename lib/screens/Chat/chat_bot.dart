@@ -16,12 +16,11 @@ class ChatBot extends StatefulWidget {
 
 class _ChatBotState extends State<ChatBot> {
 
-   DialogFlowtter dialogFlowtter;
 
   TextEditingController textFieldController = TextEditingController();
   FocusNode textFieldFocus = FocusNode();
 
-
+  DialogFlowtter dialogFlowtter;
   UserModel sender;
   String _currentUserId;
   bool isWriting = false;
@@ -86,7 +85,7 @@ class _ChatBotState extends State<ChatBot> {
      Map<String, dynamic> map=snapshot.data();
      String text= map['message'];
      bool isUserMessage=map['isUserMessage'];
-     print('text $text');
+    // print('text $text');
 
      return Container(
        margin: EdgeInsets.symmetric(vertical: 15),
@@ -285,4 +284,6 @@ void dispose() {
   dialogFlowtter.dispose();
   super.dispose();
 }
+
+
 }
