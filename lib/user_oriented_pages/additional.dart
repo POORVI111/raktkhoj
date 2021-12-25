@@ -479,8 +479,8 @@ class _AdditionalState extends State<Additional> {
                               color: kMainRed,
                             ),*/
                             borderRadius: BorderRadius.all(
-                                Radius.circular(10.0)),
-                              boxShadow: [BoxShadow(blurRadius: 10,color: kBackgroundColor,offset: Offset(1,3))],
+                                Radius.circular(20.0)),
+                              boxShadow: [BoxShadow(blurRadius: 2,color: kLightGrey)],
 
                           ),
                           child: Card(
@@ -488,7 +488,7 @@ class _AdditionalState extends State<Additional> {
                                 padding: const EdgeInsets.all(12.0),
                                 child: Column(children: <Widget>[
                                   Container(
-                                    decoration: BoxDecoration(
+                                    /*decoration: BoxDecoration(
 
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(8.0)),
@@ -498,7 +498,7 @@ class _AdditionalState extends State<Additional> {
                                       ),
                                       //boxShadow: [BoxShadow(blurRadius: 1,color: kBackgroundColor,offset: Offset(1,3))],
 
-                                    ),
+                                    ),*/
 
                                     child: Row(
                                         children: <Widget>[
@@ -523,6 +523,12 @@ class _AdditionalState extends State<Additional> {
                                               ]))
                                     ]),
                                   ),
+                                  SizedBox(
+                                      //width: 70,
+                                      child: Divider(
+                                        color: Colors.black,
+                                        thickness: 1,
+                                      )),
                                   Padding(
                                     padding: const EdgeInsets.all(8),
                                     child: Expanded(

@@ -462,6 +462,7 @@ class _DoctorInfoState extends State<DoctorInfo>
                                             FirebaseFirestore.instance.collection(
                                                 "User Details").doc(currentUser.uid).
                                             update({'Doctor': true,
+                                              'AdminVerified':false,
                                             'Degree':_degree,
                                             'Description':_description,
                                             'DoctorVerificationReport':_docURL}).then((result) async {

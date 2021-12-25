@@ -1,5 +1,6 @@
 //import 'package:blooddonation/percentage_widget.dart';
 //import 'package:blooddonation/recent_update_list_widget.dart';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ import 'package:raktkhoj/model/user.dart';
 import 'package:raktkhoj/screens/donate_here/percentage_widget.dart';
 import 'package:raktkhoj/screens/donate_here/search_request.dart';
 import 'package:raktkhoj/screens/donate_here/single_request_screen.dart';
+import 'package:flutter/rendering.dart';
+import 'package:rxdart/rxdart.dart';
+
 
 
 class Donate extends StatefulWidget {
@@ -33,6 +37,12 @@ class _DonateState extends State<Donate> {
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  var scrollController = ScrollController();
+
+
+
+
+
   String query = "";
   TextEditingController searchController = TextEditingController();
   @override
@@ -45,7 +55,22 @@ class _DonateState extends State<Donate> {
       });
     });
     selectedSort=0;
-    }
+
+    getDocuments();
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge) {
+        if (scrollController.position.pixels == 0)
+          print('ListView scroll at top');
+        else {
+          print('ListView scroll at bottom');
+          getDocumentsNext(); // Load next documents
+        }
+      }
+    });
+
+  }
+
+
 
     //geo nearby points
   void getGeoPoint() async{
@@ -111,10 +136,34 @@ class _DonateState extends State<Donate> {
           //searchButton(context),
           getScrollView(),
           rowRecentUpdates(),
-          Expanded(child: requests(context))
+          Expanded(child: requestLazy(context))
         ],
       ),
     );
+  }
+
+
+  Widget requestLazy(BuildContext context){
+    return  listDocument.length != 0
+        ? RefreshIndicator(
+            child: ListView.builder(
+              physics: AlwaysScrollableScrollPhysics(),
+              controller: scrollController,
+              itemCount: listDocument.length+1,
+              itemBuilder: (context, index) {
+                if(index==listDocument.length)
+                  return Center(
+                    child: SizedBox(
+                      height: 30,
+                        width: 30,
+                        child: CircularProgressIndicator()),
+                  );
+                return RequestItem(listDocument[index], context);
+              },
+            ),
+            onRefresh: getDocuments,
+        )// Refresh entire list
+        : Center(child:CircularProgressIndicator() ,);
   }
 
 
@@ -366,21 +415,7 @@ class _DonateState extends State<Donate> {
                                         Icon(Icons.east_outlined,color: kMainRed,)),],
                                 ),
 
-                                //                                      Row(
-                                //                                        //mainAxisAlignment: MainAxisAlignment.end,
-                                //                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                //                                        children: [
-                                //                                          SizedBox(width: 80,),
-                                //                                          Text(
-                                //                                            'Status: ${lists[index]["Status"].toString()}',
-                                //                                            style: TextStyle(
-                                //                                              fontWeight: FontWeight.w700,
-                                //                                                fontSize: 12.5,
-                                //                                                fontFamily: 'nunito',
-                                //                                                color: kMainRed),
-                                //                                          ),
-                                //                                        ],
-                                //                                      ),
+
                               ],
                             ),
                             ),
@@ -536,6 +571,7 @@ class _DonateState extends State<Donate> {
               onSelected: (value) {
                 setState(() {
                   selectedSort = 0;
+                  getDocuments();
                 });
               },
               label: Text('All',
@@ -552,6 +588,7 @@ class _DonateState extends State<Donate> {
               onSelected: (value) {
                 setState(() {
                   selectedSort = 9;
+                  getDocuments();
                 });
               },
               label: Text('Nearby',
@@ -568,6 +605,7 @@ class _DonateState extends State<Donate> {
               onSelected: (value) {
                 setState(() {
                   selectedSort = 1;
+                  getDocuments();
                 });
               },
               label: Text('A+',
@@ -584,6 +622,7 @@ class _DonateState extends State<Donate> {
               onSelected: (value) {
                 setState(() {
                   selectedSort = 2;
+                  getDocuments();
                 });
               },
               label: Text('A-',
@@ -599,6 +638,7 @@ class _DonateState extends State<Donate> {
               onSelected: (value) {
                 setState(() {
                   selectedSort = 3;
+                  getDocuments();
                 });
               },
               label: Text('B+',
@@ -614,6 +654,7 @@ class _DonateState extends State<Donate> {
               onSelected: (value) {
                 setState(() {
                   selectedSort = 4;
+                  getDocuments();
                 });
               },
               label: Text('B-',
@@ -629,6 +670,7 @@ class _DonateState extends State<Donate> {
               onSelected: (value) {
                 setState(() {
                   selectedSort = 5;
+                  getDocuments();
                 });
               },
               label: Text('AB+',
@@ -643,6 +685,7 @@ class _DonateState extends State<Donate> {
               onSelected: (value) {
                 setState(() {
                   selectedSort = 6;
+                  getDocuments();
                 });
               },
               label: Text('AB-',
@@ -657,6 +700,7 @@ class _DonateState extends State<Donate> {
               onSelected: (value) {
                 setState(() {
                   selectedSort = 7;
+                  getDocuments();
                 });
               },
               label: Text('O+',
@@ -671,6 +715,7 @@ class _DonateState extends State<Donate> {
               onSelected: (value) {
                 setState(() {
                   selectedSort = 8;
+                  getDocuments();
                 });
               },
               label: Text('O-',
@@ -680,6 +725,45 @@ class _DonateState extends State<Donate> {
             ),
           ],
         ));
+  }
+
+  List<DocumentSnapshot> listDocument;
+  QuerySnapshot collectionState;
+  // Fetch first 15 documents
+  Future<void> getDocuments() async {
+
+      listDocument = List();
+      var collection = getQuery().limit(5);
+      print('getDocuments');
+      fetchDocuments(collection);
+
+
+  }
+
+  // Fetch next 5 documents starting from the last document fetched earlier
+  Future<void> getDocumentsNext() async {
+    // Get the last visible document
+    var lastVisible = collectionState.docs[collectionState.docs.length-1];
+    print('listDocument legnth: ${collectionState.size} last: $lastVisible');
+
+    var collection = getQuery().startAfterDocument(lastVisible).limit(2);
+
+    fetchDocuments(collection);
+  }
+
+  fetchDocuments(Query collection){
+
+      collection.get().then((value) {
+        collectionState = value; // store collection state to set where to start next
+        value.docs.forEach((element) {
+          print('getDocuments ${element.data()}');
+          setState(() {
+            listDocument.add(element);
+          });
+        });
+      });
+
+
   }
 
   //get queries according to blood Group selected..
@@ -785,7 +869,11 @@ class _DonateState extends State<Donate> {
     return null;
   }
 
+
+
 }
+
+
 
 
 

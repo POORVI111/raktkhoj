@@ -70,7 +70,7 @@ class _AdminState extends State<Admin> {
 
       if(x!=null&&x.Doctor!=null){
         if(querySnapshot.docs[i]['Doctor']&&querySnapshot.docs[i]['Doctor']==true
-        /*&&querySnapshot.docs[i]['AdminVerified']==false*/){
+        &&querySnapshot.docs[i]['AdminVerified']==false){
           doctorList.add(UserModel.fromMap(querySnapshot.docs[i].data()));
         }
       }

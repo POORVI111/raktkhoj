@@ -47,6 +47,7 @@ class _DoctorsListState extends State<DoctorsList>
     User curr=FirebaseAuth.instance.currentUser;
 
     //to check if a user is a doctor or not
+    //to check doctor is admin verified or not
 
 
       QuerySnapshot querySnapshot =
@@ -55,7 +56,9 @@ class _DoctorsListState extends State<DoctorsList>
         UserModel x=UserModel.fromMap(querySnapshot.docs[i].data());
 
         if(x!=null&&x.Doctor!=null){
-          if(querySnapshot.docs[i]['Doctor']&&querySnapshot.docs[i]['Doctor']==true){
+          if(querySnapshot.docs[i]['Doctor']&&querySnapshot.docs[i]['Doctor']==true
+              &&querySnapshot.docs[i]['AdminVerified']==true)
+          {
             doctorList.add(UserModel.fromMap(querySnapshot.docs[i].data()));
           }
         }
