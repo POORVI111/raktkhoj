@@ -393,47 +393,66 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                         ),
                         Row(
                           children: <Widget>[
-                            SizedBox(width: 15,),
+                            SizedBox(width: 5,),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
-                              child: Icon(
+                              /*child: Icon(
                                 FontAwesomeIcons.mapMarkedAlt,
                                 color: Color(0xFFBC002D),
                                 size: 22,
+                              ),*/
+                              child: IconButton(
+                                  icon: Icon(Icons.directions),
+                                  color: Colors.green
+                                  ,
+                                  onPressed:() async {
+                                    await Navigator.push(context,MaterialPageRoute(
+                                        builder: (context) =>
+                                            RequestDirection(location: widget.request.location, address: widget.request.address)));
+                                  }
+
                               ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
-                              child: Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Location',
-                                        style: kLabelTextStyle,
-                                      ),
-                                      SizedBox(height: 3,),
-                                      Text(widget.request.address.toString(),
-                                        style: kNumberTextStyle,
-                                      ),
-                                    ],
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: IconButton(
-                                        icon: Icon(Icons.directions),
-                                        color: Colors.green
-                                            ,
-                                        onPressed:() async {
-                                          await Navigator.push(context,MaterialPageRoute(
-                                              builder: (context) =>
-                                                  RequestDirection(location: widget.request.location, address: widget.request.address)));
-                                          }
-
+                              child: SafeArea(
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Location',
+                                          style: kLabelTextStyle,
+                                        ),
+                                        SizedBox(height: 3,),
+                                        SizedBox(
+                                          width: 200,
+                                          child: Text(widget.request.address.toString(),
+                                            style: kNumberTextStyle,
+                                            softWrap: false,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
+                                    /*Padding(
+                                      padding: const EdgeInsets.only(right: 2),
+                                      child: IconButton(
+                                          icon: Icon(Icons.directions),
+                                          color: Colors.green
+                                              ,
+                                          onPressed:() async {
+                                            await Navigator.push(context,MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RequestDirection(location: widget.request.location, address: widget.request.address)));
+                                            }
+
+                                      ),
+                                    ),*/
+                                  ],
+                                ),
                               ),
                             ),
 
