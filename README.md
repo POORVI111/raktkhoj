@@ -20,67 +20,6 @@ Raktkhoj is a flutter application which aims to provide a network for blood dono
 ## ✔️ App Flow
 
 Here's a app flow [link](https://drive.google.com/file/d/1zVeUsRNSRSV-oRMszbZFhLlIn2QypDOF/view?usp=sharing) 
-  
-## ✔️ Features✨
-
-- Secure with **Authentication**🔐
-  
-  The app is secured with Email and Password Authentication.
-
--  Home Page➕
-    
-    The home page of the app allows you to do the following things.
-
-    - At the top there's  a **language section** where the user can change the app language
-    - User can raise a **blood request**.
-       - On taping request blood, user has to enter the details like blood group, due date, patient name along with valid medical report.
-    - User can see all the blood requests shown by the markers in the map on home page.
-    
-     
-- Blood Request🩸
-
-   All the permitted blood requests can be viewed here.
-
-    - Each blood request contains description of request.
-    - At the top there's a search bar, where user can search a particular request based on patient name or address.
-    - User can sort the request based on blood type, patient condition etc.
-    - User can see the available and total requests
-
-   On tapping a particular request, user will be directed to particular request page where
-       
-    - Potential donor can donate by tapping on donate button.
-    - User can chat, call or sms the request raiser.
-    - User can view request location on the google map.
-    - Share the request on different platforms.
-    - Request raiser can cancel the request.
-
-- Chats💬
-
-    - User can send messages, images to other users on the app.
-    - Search user based on name or email.
-
-- Nearby Hospital 🏥
-     
-     - List of all the nearby hospitals within certain radius.
-     - Direction from user's address to hospital address.
-     
-- Admin Panel
-        
-    -  Admin can approve/disapprove the requests.
-    -  Notifications to request raiser when admin accepts the request.
-    -  Notification to admin when a request is raised.
-
-- Profile section🧑
-
-    There's a dedicated profile section which allows the user to see other users profile. They can also **edit there profile** section too. They profile section contains
-
-    - Information like Name, Profile pic, DOB, Blood Type, Medical Condition, Contact etc.
-    - Donation History and Request Raised
-       - On tapping user can view history of all the request accepted/raised.
-    - FAQs 
-       - Blood donation information is given here. 
-    - Edit Profile
-
 
 ## ✔️ Tech Stack
 
@@ -91,6 +30,72 @@ Here's a app flow [link](https://drive.google.com/file/d/1zVeUsRNSRSV-oRMszbZFhL
   <img width="250" height="120" src="https://user-images.githubusercontent.com/68559217/146030913-bd6af18d-7ec7-4fb9-a53d-1a12bc0a170e.png">
   <img width="250" height="120" src="https://user-images.githubusercontent.com/68559217/146030864-ecabfd9d-158c-480e-b3b0-ef9fb7becbb4.png">
 </p>
+  
+## ✔️ Features✨
+
+- **Authentication**🔐
+  
+  - The app is secured with Email and Password Authentication.
+
+-  **Home Page**➕
+
+    - At the top there's  a **language section** where the user can change the app language
+    - User can raise a **blood request**.
+    - User can see all the blood requests shown by the markers in the map on home page.
+    
+     
+- **Blood Request**🩸
+
+   All the permitted blood requests can be viewed here.
+
+    - Each blood request contains description of request.
+    - Sort & Search request based on various parameters.
+
+   On tapping a particular request, user will be directed to particular request page where
+       
+    - Potential donor can donate by tapping on donate button.
+    - User can chat, call or sms the request raiser.
+    - User can view request location on the google map.
+    - Share the request on different platforms.
+    - Request raiser can cancel the request.
+
+- **Information** ℹ️
+    
+    - **Top donors** can be viewed here.
+    - List of all the scheduled **events**(user will join as viewer and event organiser as broadcaster).
+    - Add Tips & Tips posted by doctors will be shown.
+  
+- **Profile section**🧑
+
+    - View personal information and edit profile
+    - See Previous Donations and Requests
+    - Verify to be a doctor, enable/disable notification for donating.
+    - Schedule events
+ 
+ - **Chats**💬
+
+    - User can send messages, images, **video call** to other users on the app.
+    - Search user based on name or email.
+    - Chat with **Raktkhoj Bot**
+ 
+ - **Emergency**👨‍⚕️
+    - List of all **verified doctors** to be contacted in emergency.
+    - Chat/video call
+
+  - **Nearby Hospital** 🏥
+     
+     - List of all the nearby hospitals within certain radius alongwith their directions.
+     
+ - **Admin Panel**🔒
+        
+    -  Admin can approve/disapprove the requests and doctor verification.
+    -  Notifications to request raiser when admin accepts the request.
+    -  Notification to admin when a request is raised.
+
+ 
+  
+
+
 
 ### ✔️ Team : Aergia
 **Members:**<br />
