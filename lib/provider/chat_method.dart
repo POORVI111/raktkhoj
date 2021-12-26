@@ -1,3 +1,7 @@
+/*
+ firebase fetching and storing chats
+ */
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:raktkhoj/model/contact.dart';
 import 'package:raktkhoj/model/message.dart';

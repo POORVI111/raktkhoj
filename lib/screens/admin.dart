@@ -10,7 +10,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:raktkhoj/Colors.dart';
+import 'package:raktkhoj/colors.dart';
 import 'package:raktkhoj/components/cached_image.dart';
 import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/model/user.dart';

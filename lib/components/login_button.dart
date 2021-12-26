@@ -2,12 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:raktkhoj/screens/Login.dart';
+import 'package:raktkhoj/screens/login.dart';
 import 'package:raktkhoj/screens/home/Home_screen.dart';
-import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
+import 'package:raktkhoj/screens/page_guide.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 
-import '../Colors.dart';
+import '../colors.dart';
 //import '../page_guide.dart';
 
 class LoginButton extends StatelessWidget {

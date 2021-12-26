@@ -8,8 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:raktkhoj/provider/call_method.dart';
 import 'package:raktkhoj/screens/Chat/video_call_screen.dart';
-import 'model/call.dart';
-import 'model/user.dart';
+import '../model/call.dart';
+import '../model/user.dart';
 
 
 class CallUtils {

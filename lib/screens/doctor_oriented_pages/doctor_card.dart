@@ -4,9 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:raktkhoj/model/user.dart';
 import 'package:raktkhoj/screens/Chat/chat_screen.dart';
 
-import '../../Colors.dart';
-import '../../Constants.dart';
-import '../../call_utils.dart';
+import '../../colors.dart';
+import '../../constants.dart';
+import '../../provider/call_utils.dart';
 import '../../main.dart';
 
 class DoctorCard extends StatefulWidget {

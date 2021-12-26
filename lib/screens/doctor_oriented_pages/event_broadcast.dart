@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
-import '../../Constants.dart';
+import '../../constants.dart';
 
 class BroadcastPage extends StatefulWidget {
   final String meetName;

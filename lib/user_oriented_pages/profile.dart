@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:raktkhoj/Constants.dart';
-import 'package:raktkhoj/Colors.dart';
+import 'package:raktkhoj/constants.dart';
+import 'package:raktkhoj/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:raktkhoj/components/cached_image.dart';
@@ -20,7 +20,6 @@ import 'package:raktkhoj/screens/splash_screen.dart';
 
 import 'package:raktkhoj/user_oriented_pages/faq.dart';
 import 'package:raktkhoj/user_oriented_pages/my_donations.dart';
-import 'package:raktkhoj/user_oriented_pages/routes.dart';
 
 
 var _firebaseref = FirebaseDatabase().reference().child('User');

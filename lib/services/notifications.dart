@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:raktkhoj/Constants.dart';
+import 'package:raktkhoj/constants.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 Future<Response> sendNotification(List<String> tokenIdList, String contents, String heading) async{

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:raktkhoj/Colors.dart';
+import 'package:raktkhoj/colors.dart';
 
 import 'input_container.dart';
 

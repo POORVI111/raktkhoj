@@ -8,7 +8,7 @@ import 'package:raktkhoj/components/ripple_indicator.dart';
 import 'package:raktkhoj/screens/nearby_hospitals/find_nearby_hospitals.dart';
 import 'package:raktkhoj/services/network_helper.dart';
 
-import '../../Colors.dart';
+import '../../colors.dart';
 
 class RequestDirection extends StatefulWidget {
   final  location;

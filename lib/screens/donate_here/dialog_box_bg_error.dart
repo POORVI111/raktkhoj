@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:raktkhoj/Colors.dart';
-import 'package:raktkhoj/Constants.dart';
+import 'package:raktkhoj/colors.dart';
+import 'package:raktkhoj/constants.dart';
 import 'package:raktkhoj/components/cached_image.dart';
 
 class CustomDialogBox extends StatefulWidget {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
-import '../../Colors.dart';
+import '../../colors.dart';
 import 'find_nearby_hospitals.dart';
 
 class NearbyHospitalPage extends StatefulWidget {

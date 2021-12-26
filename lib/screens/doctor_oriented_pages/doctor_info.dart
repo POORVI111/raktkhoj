@@ -14,7 +14,7 @@ import 'package:raktkhoj/components/cached_image.dart';
 import 'package:raktkhoj/provider/storage_method.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 
-import '../../Colors.dart';
+import '../../colors.dart';
 
 import 'dart:async';
 

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:raktkhoj/Colors.dart';
+import 'package:raktkhoj/colors.dart';
 import 'package:raktkhoj/components/cached_image.dart';
 import 'package:raktkhoj/model/event.dart';
 

@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:raktkhoj/model/call.dart';
 import 'package:raktkhoj/provider/call_method.dart';
 
-import '../../Constants.dart';
+import '../../constants.dart';
 
 class CallScreen extends StatefulWidget {
   final Call call;

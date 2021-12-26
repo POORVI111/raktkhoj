@@ -8,7 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/components/input_container.dart';
 import 'package:raktkhoj/components/register_button.dart';
-import '../Colors.dart';
+import '../colors.dart';
 import '../components/login_button.dart';
 
 class LoginScreen extends StatefulWidget {

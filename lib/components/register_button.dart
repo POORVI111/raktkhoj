@@ -4,8 +4,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:raktkhoj/Colors.dart';
-import 'package:raktkhoj/screens/Login.dart';
+import 'package:raktkhoj/colors.dart';
+import 'package:raktkhoj/screens/login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/cupertino.dart';
 

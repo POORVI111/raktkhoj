@@ -1,3 +1,6 @@
+/*
+ nearby hospitals model
+ */
 class Hospital {
   String name, freeformAddress, id;
   double score, dist, lat, lng;

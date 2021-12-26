@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
-import 'package:raktkhoj/Colors.dart';
+import 'package:raktkhoj/colors.dart';
 
-import 'package:raktkhoj/model/background_colors.dart';
+import 'package:raktkhoj/components/background_colors.dart';
 
 import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/components/animated_circle.dart';
