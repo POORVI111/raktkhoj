@@ -1,3 +1,6 @@
+/*
+custom alert dialog
+ */
 import 'package:flutter/material.dart';
 class CustomDialogs {
   static void alertDialog(

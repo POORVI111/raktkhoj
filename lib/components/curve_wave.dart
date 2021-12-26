@@ -1,3 +1,6 @@
+/*
+ animate circles in curves
+ */
 import 'package:flutter/material.dart';
 import 'dart:math' as math show sin, pi;
 import 'package:flutter/animation.dart';
