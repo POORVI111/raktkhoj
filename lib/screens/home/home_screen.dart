@@ -1,3 +1,6 @@
+/*
+ home page with map view, request blood.
+ */
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -270,30 +273,6 @@ class _HomePageState extends State<HomePage> {
                       MaterialPageRoute(builder: (context) => Admin()));
                 },
               ),
-
-            //to enable/disable donor option
-           /* ListTile(
-              title: Text("Be a Donor".tr),
-              leading: Icon(
-                FontAwesomeIcons.handshake,
-                color: kMainRed,
-              ),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BeDonor()));
-              },
-            ),*/
-            /*ListTile(
-              title: Text("Blood Requests".tr),
-              leading: Icon(
-                FontAwesomeIcons.burn,
-                color: kMainRed,
-              ),
-              onTap: () {
-                //
-              },
-            ),*/
-
             //to check near by hospitals and their location on map
             ListTile(
               title: Text("Nearby Hospitals".tr),

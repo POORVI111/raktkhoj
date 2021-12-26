@@ -1,4 +1,4 @@
-// English Translations
+// Hindi Translations
 const Map<String, String> hiIN = {
   'Home':'घर',
   "SUBMIT" :'ठीक है',

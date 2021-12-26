@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:raktkhoj/screens/Chat/pick_up/pick_up_layout.dart';
 import 'package:raktkhoj/screens/donate_here/donate.dart';
-import 'package:raktkhoj/screens/home/Home_screen.dart';
+import 'package:raktkhoj/screens/home/home_screen.dart';
 import 'package:raktkhoj/screens/additional/additional.dart';
 import 'package:raktkhoj/user_oriented_pages/extra.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';

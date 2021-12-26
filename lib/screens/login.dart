@@ -1,10 +1,11 @@
-//import 'dart:html';
+/*
+login register screen animated together
+ */
 
 import 'package:dropdownfield/dropdownfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/components/input_container.dart';
 import 'package:raktkhoj/components/register_button.dart';

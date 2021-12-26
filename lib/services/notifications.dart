@@ -1,8 +1,13 @@
+/*
+mail and push notifications
+ */
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:raktkhoj/constants.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
+
+//push notifications to user
 Future<Response> sendNotification(List<String> tokenIdList, String contents, String heading) async{
 
   return await post(
@@ -33,6 +38,7 @@ Future<Response> sendNotification(List<String> tokenIdList, String contents, Str
 
 
 }
+//email to particular user
   sendEmail(String adminMail, String requestlink, String text, String heading) async {
     String username = 'raktkhojad@gmail.com';
     String password = 'raktkhojadmin';
@@ -61,6 +67,7 @@ Future<Response> sendNotification(List<String> tokenIdList, String contents, Str
     }
   }
 
+  //broadcast mails to all donors
 sendccEmails(List<String> donorMails, String requestlink, String text, String heading) async {
   String username = 'raktkhojad@gmail.com';
   String password = 'raktkhojadmin';
