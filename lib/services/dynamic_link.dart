@@ -12,9 +12,10 @@ import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/screens/donate_here/single_request_screen.dart';
 
 class DynamicLinksService {
+
+  //create link
   static Future<String> createDynamicLink(String parameter) async {
-    // PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    // print(packageInfo.packageName);
+
     String uriPrefix = "https://raktkhoj.page.link";
 
     final DynamicLinkParameters parameters = DynamicLinkParameters(
@@ -24,12 +25,6 @@ class DynamicLinksService {
           packageName: 'com.example.raktkhoj',
           minimumVersion: 0,
         ));
-    //   socialMetaTagParameters: SocialMetaTagParameters(
-    //       title: 'Example of a Dynamic Link',
-    //       description: 'This link works whether app is installed or not!',
-    //       imageUrl: Uri.parse(
-    //           "https://images.pexels.com/photos/3841338/pexels-photo-3841338.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")),
-    // );
 
 
 
@@ -40,6 +35,7 @@ class DynamicLinksService {
     return shortUrl.toString();
   }
 
+  //initialise on tapping dynamic link
   Future<void> initDynamicLinks() async {
     final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
 
@@ -54,6 +50,7 @@ class DynamicLinksService {
     });
   }
 
+  //after detecting dynamic link
   Future<void> _handleDynamicLink(PendingDynamicLinkData data) async {
     final Uri deepLink = data?.link;
 

@@ -15,7 +15,7 @@ import 'package:raktkhoj/components/cached_image.dart';
 import 'package:raktkhoj/components/image_upload_provider.dart';
 import 'package:raktkhoj/provider/storage_method.dart';
 import 'package:raktkhoj/screens/doctor_oriented_pages/doctor_info.dart';
-import 'package:raktkhoj/screens/home/Home_screen.dart';
+import 'package:raktkhoj/screens/home/home_screen.dart';
 import 'package:raktkhoj/screens/splash_screen.dart';
 
 import 'package:raktkhoj/user_oriented_pages/faq.dart';

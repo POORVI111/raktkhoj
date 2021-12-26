@@ -1,3 +1,6 @@
+/*
+display google maps with request markers along with option to raise blood
+ */
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -16,7 +19,7 @@ import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import '../../components/custom_dialogs.dart';
 import '../../components/ripple_indicator.dart';
 
-// contains map with request markers along with option to raise blood
+
 class MapView extends StatefulWidget {
   @override
   _MapViewState createState() => _MapViewState();

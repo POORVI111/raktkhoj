@@ -40,6 +40,8 @@ class CallUtils {
       );
     }
   }
+
+  //camera and audio permission for video call
 static Future<bool> cameraAndMicrophonePermissionsGranted() async {
 
   PermissionStatus cameraPermissionStatus = await _getCameraPermission();

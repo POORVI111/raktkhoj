@@ -47,37 +47,9 @@ class _PickupScreenState extends State<PickupScreen>
   void dispose() {
     _controller.dispose();
     print("=======DISPOSE=========");
-    // print(isCallMissed);
-    // if (isCallMissed) {
-    //   addCallLogsToDb(callStatus: CALL_STATUS_MISSED);
-    // }
     super.dispose();
   }
 
-  // // add call logs to db
-  // addCallLogsToDb({@required String callStatus}) {
-  //   Log log = Log(
-  //       callerName: widget.call.callerName,
-  //       callerPic: widget.call.callerPic,
-  //       receiverName: widget.call.receiverName,
-  //       receiverPic: widget.call.receiverPic,
-  //       timestamp: DateTime.now().toString(),
-  //       callStatus: callStatus);
-  //
-  //   Firestore.instance
-  //       .collection("Users")
-  //       .document(widget.call.receiverId)
-  //       .collection("callLogs")
-  //       .document(log.timestamp)
-  //       .setData({
-  //     "callerName": log.callerName,
-  //     "callerPic": log.callerPic,
-  //     "receiverName": log.receiverName,
-  //     "receiverPic": log.receiverPic,
-  //     "timestamp": log.timestamp,
-  //     "callStatus": log.callStatus
-  //   });
-  // }
 
   Widget _button() {
     return Center(
