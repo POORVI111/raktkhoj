@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:raktkhoj/components/image_upload_provider.dart';
 import 'package:raktkhoj/provider/storage_method.dart';
 import 'package:raktkhoj/user_oriented_pages/additional.dart';
+import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 
 import '../../Colors.dart';
@@ -331,7 +332,7 @@ class _AddEventsState extends State<AddEvents>
                                                 padding: const EdgeInsets.all(8.0),
                                                 child: TextFormField(
                                                   decoration: InputDecoration(
-                                                    hintText: 'Timings'.tr,
+                                                    hintText: 'Starting time'.tr,
                                                     icon: Icon(
                                                       FontAwesomeIcons.mobile,
                                                       color: kMainRed,

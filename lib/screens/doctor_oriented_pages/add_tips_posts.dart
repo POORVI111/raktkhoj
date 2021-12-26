@@ -169,7 +169,7 @@ class _AddTipsState extends State<AddTips> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(username,
+                        Text(username==null?'--':username,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18.0)),

@@ -17,6 +17,7 @@ import 'package:raktkhoj/provider/pdf_api.dart';
 import 'package:raktkhoj/provider/pdf_viewer_page.dart';
 import 'package:raktkhoj/screens/Chat/chat_screen.dart';
 import 'package:raktkhoj/screens/donate_here/dialog_box_bg_error.dart';
+import 'package:raktkhoj/screens/donate_here/donate.dart';
 import 'package:raktkhoj/screens/donate_here/request_direction.dart';
 import 'package:raktkhoj/services/dynamic_link.dart';
 import 'package:raktkhoj/services/notifications.dart';
@@ -636,6 +637,9 @@ class _SingleRequestScreenState extends State<SingleRequestScreen> {
                             FirebaseFirestore.instance.collection("User Details").doc(currentUser.uid)
                                 .update({"Last Donation":DateTime.now(),"Donations":FieldValue.increment(1)});
                             to_show="DONATED";
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => Donate(),
+                        ));
                       }else{
                         //to show blood group incompatibility error
                         //print(donorBloodGroup);

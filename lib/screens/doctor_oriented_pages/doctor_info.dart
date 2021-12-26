@@ -210,7 +210,7 @@ class _DoctorInfoState extends State<DoctorInfo>
     }
     );
 
-    final fileName = file != null ? basename(file.path) : '<< Add a valid medical report';
+    final fileName = file != null ? basename(file.path) : '<< Add a valid certificate';
 
 
 

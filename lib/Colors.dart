@@ -1,3 +1,5 @@
+//colors are given name
+//these speicifce colors are used throughout the app to provide consistent color theme
 import 'package:flutter/material.dart';
 const kMainRed=Color(0xffE53033);
 const kLightGrey=Color(0xfff5f6f8);

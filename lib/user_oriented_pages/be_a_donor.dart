@@ -1,3 +1,4 @@
+//this page gives option to users to enable notifications whenever anew nearby request is added
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class _BeDonorState extends State<BeDonor>
     super.initState();
   }
 
+  //set data of animation
   Future<void> setData() async {
     animationController?.forward();
     await Future<dynamic>.delayed(const Duration(milliseconds: 200));

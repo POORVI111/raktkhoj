@@ -1,3 +1,4 @@
+//prfoile page of user
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -61,6 +62,8 @@ class _ProfileState extends State<Profile> {
   final StorageMethods _storageMethods = StorageMethods();
   User loggedInUser;
   bool isActive = false;
+
+  //initialising some  variables and lists
   @override
   void initState()  {
 
@@ -125,7 +128,7 @@ class _ProfileState extends State<Profile> {
     isActive = false;
   }
 
- //finction ot get dob of user in string form
+ //function ot get dob of user in string form
   String getDOB(){
     final firestoreInstance =  FirebaseFirestore.instance;
 
@@ -204,6 +207,7 @@ class _ProfileState extends State<Profile> {
   }
 
 
+  //build goes here
   @override
   Widget build(BuildContext context) {
     _imageUploadProvider = Provider.of<ImageUploadProvider>(context);
@@ -1546,6 +1550,8 @@ class _ProfileState extends State<Profile> {
 }
 
 
+
+//icon button
 class RoundIconButton extends StatelessWidget {
   RoundIconButton({@required this.icon, @required this.onPressed});
 

@@ -1,3 +1,6 @@
+//conatins constants which are used throughout the app
+
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

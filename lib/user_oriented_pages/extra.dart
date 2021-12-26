@@ -1,3 +1,5 @@
+//page to show different options to user
+//to enable certain features and head towards profile thorugh this page
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

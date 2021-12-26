@@ -1,3 +1,5 @@
+//informative page or guide for users
+
 import 'package:flutter/material.dart';
 
 class FAQ extends StatefulWidget {

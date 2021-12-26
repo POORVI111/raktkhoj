@@ -1,4 +1,5 @@
-
+//additional featire page
+//here would show top donors , events scheduled , and tips
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -252,14 +253,18 @@ class _AdditionalState extends State<Additional> {
                                           Padding(
                                             padding:
                                             const EdgeInsets.only(top: 16),
-                                            child: Text(
-                                              searchedEvent.Name,
-                                              textAlign: TextAlign.right,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 16,
-                                                letterSpacing: 0.27,
-                                                color: kDarkerGrey,
+                                            child: Expanded(
+                                              child: Text(
+                                                searchedEvent.Name,
+                                                textAlign: TextAlign.right,
+                                                maxLines: 2,
+                                                softWrap: false,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16,
+                                                  letterSpacing: 0.27,
+                                                  color: kDarkerGrey,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -305,14 +310,18 @@ class _AdditionalState extends State<Additional> {
                                                 //SizedBox(width: 5,),
                                                 Icon(Icons.timelapse , size: 18,),
 
-                                                Text(
-                                                  searchedEvent.time,
-                                                  textAlign: TextAlign.left,
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 13,
-                                                    letterSpacing: 0.27,
-                                                    color: kBackgroundColor,
+                                                Expanded(
+                                                  child: Text(
+                                                    searchedEvent.time,
+                                                    textAlign: TextAlign.left,
+                                                    maxLines: 2,
+                                                    softWrap: false,
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 13,
+                                                      letterSpacing: 0.27,
+                                                      color: kBackgroundColor,
+                                                    ),
                                                   ),
                                                 ),
                                                 /*Container(

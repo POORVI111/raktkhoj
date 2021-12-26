@@ -1,6 +1,5 @@
-//import 'package:blooddonation/percentage_widget.dart';
-//import 'package:blooddonation/recent_update_list_widget.dart';
-
+//admin page
+//to verify requests and doctors
 
 import 'dart:io';
 
@@ -160,6 +159,7 @@ class _AdminState extends State<Admin> {
   }
 
 
+  //to set option for viewing doctors or requests list
   Row rowRecentUpdates() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -198,6 +198,7 @@ class _AdminState extends State<Admin> {
     );
   }
 
+  //body of admin page
   Container bodyBloodRequestList(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -948,6 +949,7 @@ class _AdminState extends State<Admin> {
 
 
 
+  //top banner for ui
   Container topBanner(BuildContext context) {
     return Container(
         height: bannerHeight,
@@ -958,7 +960,7 @@ class _AdminState extends State<Admin> {
     );
   }
 
-  //a container to create teh banners
+  //a container to create the banners
   //decoration part
   Container bannerContainer() {
     return

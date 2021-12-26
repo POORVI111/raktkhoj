@@ -115,7 +115,7 @@ class _PickupScreenState extends State<PickupScreen>
                 ),
                 errorWidget: (context, url, error) => Material(
                   child: Image.asset(
-                    "images/img_not_available.jpeg",
+                    'images/logo.png',
                     width: 180.0,
                     height: 180.0,
                     fit: BoxFit.cover,

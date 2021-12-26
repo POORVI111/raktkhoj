@@ -1,3 +1,4 @@
+/*main page */
 import 'dart:async';
 import 'dart:io';
 
@@ -42,11 +43,14 @@ void main() async {
 
 final _auth = FirebaseAuth.instance;
 
+//fetch data of current user
 Future<User> getCurrentUser() async {
   User currentUser;
   currentUser = (await _auth.currentUser);
   return currentUser;
 }
+
+//here goes the app
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _MyApp();
@@ -65,6 +69,7 @@ class _MyApp extends State<MyApp> {
   }
 
 
+  //show dialog for network error
   void _showDialog() {
     // dialog implementation
     //showDialog(

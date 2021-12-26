@@ -1,3 +1,4 @@
+//this page would show list of donations and successful requests histor of user
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -47,6 +48,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
   bool firstEntry = true;
   User currentUser;
 
+  //fetch information of all donations
   Future<List<RequestModel>> fetchAllDonations()  async {
     List<RequestModel> requestList = <RequestModel>[];
 
@@ -171,6 +173,7 @@ class _MenuPagerState extends State<MenuPager> with TickerProviderStateMixin {
     );
   }
 
+  //for showing list in form of pages
   Iterable<Widget> _buildPages() {
     final List<Widget> pages = <Widget>[];
     for (int index = 0; index < menu.length; index++) {
