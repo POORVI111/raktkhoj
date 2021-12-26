@@ -1,3 +1,4 @@
+//indicator for horizontal list views
 import 'package:flutter/material.dart';
 
 class RectangleIndicator extends StatefulWidget {
