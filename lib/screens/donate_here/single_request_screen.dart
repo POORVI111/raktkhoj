@@ -10,7 +10,7 @@ import 'package:http/http.dart';
 import 'package:open_file/open_file.dart';
 
 import 'package:path_provider/path_provider.dart';
-import 'package:raktkhoj/Colors.dart';
+import 'package:raktkhoj/colors.dart';
 import 'package:raktkhoj/model/request.dart';
 import 'package:raktkhoj/model/user.dart';
 import 'package:raktkhoj/provider/pdf_api.dart';
@@ -26,7 +26,7 @@ import 'package:share/share.dart';
 //import 'package:syncfusion_flutter_pdf/pdf.dart';
 //import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:unicorndial/unicorndial.dart';
-import '../../Constants.dart';
+import '../../constants.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 

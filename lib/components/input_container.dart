@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Colors.dart';
+import '../colors.dart';
 class InputContainer extends StatelessWidget {
   const InputContainer({Key key,
     this.child}) : super(key: key);

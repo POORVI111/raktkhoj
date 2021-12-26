@@ -3,9 +3,6 @@
 //import 'dart:core';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:raktkhoj/user_oriented_pages/profile.dart';
-
 class RequestModel{
     String reqid;
     String patientName;

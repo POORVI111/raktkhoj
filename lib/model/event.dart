@@ -1,3 +1,6 @@
+/*
+model for events scheduled
+ */
 import 'dart:core';
 
 

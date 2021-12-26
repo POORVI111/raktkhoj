@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:raktkhoj/components/animated_circle.dart';
 import 'package:raktkhoj/components/rectangle_indicator.dart';
 import 'package:raktkhoj/components/shadows.dart';
-import 'package:raktkhoj/model/background_colors.dart';
+import 'package:raktkhoj/components/background_colors.dart';
 import 'package:raktkhoj/model/user.dart';
 import 'dart:math' as math;
 
-import '../../Colors.dart';
+import '../../colors.dart';
 import 'doctor_card.dart';
 import 'doctor_image.dart';
 import 'dart:convert';

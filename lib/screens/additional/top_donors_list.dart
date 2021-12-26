@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:raktkhoj/components/cached_image.dart';
 import 'package:raktkhoj/model/user.dart';
 
-import '../Colors.dart';
+import '../../colors.dart';
 
 class TopDonorsList extends StatefulWidget {
 

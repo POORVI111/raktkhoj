@@ -1,3 +1,7 @@
+/*
+  generate dynamic link for particular screen
+ */
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 

@@ -6,13 +6,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:raktkhoj/call_utils.dart';
 import 'package:raktkhoj/components/circle_painter.dart';
+import 'package:raktkhoj/provider/call_utils.dart';
 import 'package:raktkhoj/components/curve_wave.dart';
 import 'package:raktkhoj/model/call.dart';
 import 'package:raktkhoj/provider/call_method.dart';
 
-import '../../../Colors.dart';
+import '../../../colors.dart';
 import '../video_call_screen.dart';
 
 class PickupScreen extends StatefulWidget {

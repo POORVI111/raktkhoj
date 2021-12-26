@@ -9,7 +9,7 @@ import 'package:raktkhoj/model/contact.dart';
 import 'package:raktkhoj/provider/chat_method.dart';
 import 'package:raktkhoj/screens/Chat/search_screen.dart';
 import 'package:raktkhoj/screens/Chat/chat_bot.dart';
-import '../../Colors.dart';
+import '../../colors.dart';
 
 
 class ChatListPage extends StatefulWidget {

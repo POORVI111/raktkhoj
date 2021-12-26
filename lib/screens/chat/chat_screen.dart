@@ -6,16 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:raktkhoj/Colors.dart';
+import 'package:raktkhoj/colors.dart';
 import 'package:raktkhoj/components/cached_image.dart';
 import 'package:raktkhoj/components/image_upload_provider.dart';
 import 'package:raktkhoj/model/message.dart';
 import 'package:raktkhoj/model/user.dart';
+import 'package:raktkhoj/provider/call_utils.dart';
 import 'package:raktkhoj/provider/chat_method.dart';
 import 'package:raktkhoj/provider/storage_method.dart';
 
-import '../../call_utils.dart';
 import '../../main.dart';
+
 
 //screen to display one on one chat
 

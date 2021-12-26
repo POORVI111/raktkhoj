@@ -11,11 +11,11 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:raktkhoj/components/image_upload_provider.dart';
 import 'package:raktkhoj/provider/storage_method.dart';
-import 'package:raktkhoj/user_oriented_pages/additional.dart';
-import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
+import 'package:raktkhoj/screens/additional/additional.dart';
+import 'package:raktkhoj/screens/page_guide.dart';
 import 'package:raktkhoj/user_oriented_pages/profile.dart';
 
-import '../../Colors.dart';
+import '../../colors.dart';
 
 class AddEvents extends StatefulWidget {
 
@@ -168,7 +168,7 @@ class _AddEventsState extends State<AddEvents>
                   formkey.currentState.reset();
                   Navigator.pop(context);
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => Additional()));
+                      MaterialPageRoute(builder: (context) => PageGuide()));
                 },
                 child: Icon(
                   Icons.arrow_forward,

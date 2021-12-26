@@ -1,3 +1,6 @@
+/*
+ tips post model
+ */
 class PostModel{
   String content;
   String creator;

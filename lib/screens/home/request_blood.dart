@@ -16,9 +16,9 @@ import 'package:path/path.dart';
 import 'package:raktkhoj/provider/storage_method.dart';
 import 'package:raktkhoj/services/dynamic_link.dart';
 import 'package:raktkhoj/services/notifications.dart';
-import 'package:raktkhoj/user_oriented_pages/page_guide.dart';
+import 'package:raktkhoj/screens/page_guide.dart';
 
-import '../../Colors.dart';
+import '../../colors.dart';
 import 'Home_screen.dart';
 
 class RequestBlood extends StatefulWidget {

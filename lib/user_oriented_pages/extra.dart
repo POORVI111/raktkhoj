@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:raktkhoj/Colors.dart';
+import 'package:raktkhoj/colors.dart';
 import 'package:raktkhoj/components/cached_image.dart';
 import 'package:raktkhoj/screens/doctor_oriented_pages/add_events.dart';
 import 'package:raktkhoj/screens/doctor_oriented_pages/doctor_info.dart';

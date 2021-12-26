@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:raktkhoj/Colors.dart';
+import 'package:raktkhoj/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'Login.dart';
+import 'login.dart';
 
 
 class OnBoarding extends StatefulWidget {

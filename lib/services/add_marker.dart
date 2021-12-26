@@ -1,3 +1,6 @@
+/*
+ add marker in google maps.
+ */
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:raktkhoj/model/hospitals.dart';
 
