@@ -43,6 +43,7 @@ dependencies:
   path_provider: ^2.0.8
   open_file: ^3.2.1
 
+
   # display PDF
   flutter_pdfview: ^1.0.4
 
@@ -95,6 +96,7 @@ dependencies:
   mailer: ^5.0.2
   flutter_ringtone_player: ^3.1.1
   dialog_flowtter: ^0.3.1
+  permission_handler:
   agora_rtc_engine: ^4.0.7
 
   #flutter_quill: ^1.6.4

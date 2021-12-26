@@ -390,13 +390,13 @@ class _ChatScreenState extends State<ChatScreen> {
             Icons.video_call,
           ),
           onPressed: () async =>
-          // await CallUtils.cameraAndMicrophonePermissionsGranted()
-          //     ? CallUtils.dial(
-          //   from: sender,
-          //   to: widget.receiver,
-          //   context: context,
-          // )
-          //     :
+          await CallUtils.cameraAndMicrophonePermissionsGranted()
+              ? CallUtils.dial(
+            from: sender,
+            to: widget.receiver,
+            context: context,
+          )
+              :
               {},
         ),
         IconButton(

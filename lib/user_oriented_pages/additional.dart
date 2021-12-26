@@ -19,6 +19,7 @@ import 'package:raktkhoj/screens/admin.dart';
 import 'package:raktkhoj/screens/doctor_oriented_pages/add_events.dart';
 import 'package:raktkhoj/screens/doctor_oriented_pages/add_tips_posts.dart';
 import 'package:raktkhoj/screens/doctor_oriented_pages/doctors_list.dart';
+import 'package:raktkhoj/screens/doctor_oriented_pages/event_broadcast.dart';
 import 'package:raktkhoj/screens/nearby_hospitals/nearby_hospital_screen.dart';
 import 'package:raktkhoj/screens/splash_screen.dart';
 import 'package:raktkhoj/services/localization_service.dart';
@@ -342,7 +343,10 @@ class _AdditionalState extends State<Additional> {
 
                                               children: <Widget>[
                                                 SizedBox(width: 48,),
-                                                Text(
+                                               // FlatButton(
+                                               //   height: 3.0,
+                                               //  child:
+                                                  Text(
                                                   "Join",
                                                   textAlign:
                                                   TextAlign.right,
@@ -394,6 +398,20 @@ class _AdditionalState extends State<Additional> {
                   ],
                 ),
               ),
+              onTap: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          BroadcastPage(
+                              isBroadcaster: searchedEvent.organiserUid==currentUser.uid?true:false,
+                              userName: searchedEvent
+                                  .Name,
+                              meetName: searchedEvent
+                                  .eventid),
+                    ),
+                  );
+                },
             );
 
             /*return Padding(padding: const EdgeInsets.all(2.0),
