@@ -1,3 +1,6 @@
+/*
+   users in contact of current user
+ */
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +12,7 @@ import 'package:raktkhoj/screens/Chat/chat_screen.dart';
 import 'cached_image.dart';
 import 'last_message_container.dart';
 
-/*
-   users in contact of current user
- */
+
 class ContactList extends StatelessWidget {
   final Contact contact;
 
