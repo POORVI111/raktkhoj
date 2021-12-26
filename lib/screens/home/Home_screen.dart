@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:raktkhoj/components/ripple_indicator.dart';
+import 'package:raktkhoj/screens/Chat/chat_bot.dart';
 import 'package:raktkhoj/screens/Chat/chat_list_screen.dart';
 import 'package:raktkhoj/screens/admin.dart';
 import 'package:raktkhoj/screens/doctor_oriented_pages/add_events.dart';
@@ -244,7 +245,7 @@ class _HomePageState extends State<HomePage> {
             ),
 
             //option to go back to home
-            ListTile(
+           /* ListTile(
               title: Text("Home".tr),
               leading: Icon(
                 FontAwesomeIcons.home,
@@ -254,7 +255,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => PageGuide()));
               },
-            ),
+            ),*/
 
             //to enter admin zone
             if(admin==currentUser.uid)
@@ -271,7 +272,7 @@ class _HomePageState extends State<HomePage> {
               ),
 
             //to enable/disable donor option
-            ListTile(
+           /* ListTile(
               title: Text("Be a Donor".tr),
               leading: Icon(
                 FontAwesomeIcons.handshake,
@@ -281,8 +282,8 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => BeDonor()));
               },
-            ),
-            ListTile(
+            ),*/
+            /*ListTile(
               title: Text("Blood Requests".tr),
               leading: Icon(
                 FontAwesomeIcons.burn,
@@ -291,7 +292,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 //
               },
-            ),
+            ),*/
 
             //to check near by hospitals and their location on map
             ListTile(
@@ -321,7 +322,7 @@ class _HomePageState extends State<HomePage> {
 
             //to interact with doctors in emergency conditions
             ListTile(
-              title: Text("Doctors".tr),
+              title: Text("Emergency".tr),
               leading: Icon(
                 FontAwesomeIcons.userNurse,
                 color: kMainRed,
@@ -331,9 +332,23 @@ class _HomePageState extends State<HomePage> {
                    MaterialPageRoute(builder: (context) =>DoctorsList()));
               },
             ),
-
-
+            //chatbot
             ListTile(
+              title: Text("Chatbot".tr),
+              leading: Icon(
+                FontAwesomeIcons.robot,
+                color: kMainRed,
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChatBot()),);
+
+              },
+            ),
+
+
+            /*ListTile(
               title: Text("Add events"),
               leading: Icon(
                 FontAwesomeIcons.userNurse,
@@ -343,7 +358,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) =>AddEvents()));
               },
-            ),
+            ),*/
 
             //logout functionality
             ListTile(

@@ -153,9 +153,17 @@ class _DoctorsListState extends State<DoctorsList>
         .size
         .height;
 
-    menu=menu.length==0 ? []:menu;
+    menu=menu==null ? []:menu;
 
     //checking if list is empty
+    if(menu==null){
+    //return Center(child: CircularProgressIndicator());
+    return AlertDialog(title: Text("empty list"),content: Text("no history of user"),
+    actions: [TextButton(
+    child: Text("OK"),
+    onPressed: () {Navigator.pop(context); })],
+    );
+    }
     if(menu.isEmpty){
     //return Center(child: CircularProgressIndicator());
     return AlertDialog(title: Text("empty list"),content: Text("no history of user"),
@@ -216,7 +224,7 @@ class _DoctorsListState extends State<DoctorsList>
             return false;
           },
           child:menu.length==0 ?
-            AlertDialog(title: Text("empty list"),content: Text("no history of user"),
+            AlertDialog(title: Text("loading"),content: Text("slow network"),
             actions: [TextButton(
             child: Text("OK"),
             onPressed: () {Navigator.pop(context); })],

@@ -237,7 +237,8 @@ class _AdminState extends State<Admin> {
     else
     {
 
-      if(doctorList.length==0)
+      doctorList==null?[]:doctorList;
+      if(doctorList==null)
       {
         return Column(
           children: <Widget>[
