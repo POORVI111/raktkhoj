@@ -81,7 +81,6 @@ Working Demo of App: [Demo Video](https://drive.google.com/file/d/1cNwjH7Ikv9ru7
     - Add Tips & Tips posted by doctors will be shown.
 
    <p >
-     <img width="180" height="350" src="https://user-images.githubusercontent.com/68559217/147449920-70d4b342-a3a9-4e8b-8ca1-690c2debd9ad.jpg">&emsp;
      <img width="180" height="350" src="https://user-images.githubusercontent.com/68559217/147449927-8bacbffa-775d-46c6-b091-4252cab9639e.jpg">&emsp;
      </p>
   
@@ -108,10 +107,8 @@ Working Demo of App: [Demo Video](https://drive.google.com/file/d/1cNwjH7Ikv9ru7
     - Chat with **Raktkhoj Bot**
 
     <p >
-     <img width="180" height="350" src="https://user-images.githubusercontent.com/68559217/147450554-93a44970-7aec-4c15-a371-eeffb0389b46.jpg">
      <img width="180" height="350" src="https://user-images.githubusercontent.com/68559217/147450545-fb10c401-0ae9-40ce-823f-938c130c3571.jpg">
      <img width="180" height="350" src="https://user-images.githubusercontent.com/68559217/147450549-8beee571-9ca1-4f0d-a021-0fcbe4b26b37.jpg">
-     <img width="180" height="350" src="https://user-images.githubusercontent.com/68559217/147450552-c6a98c38-0ed1-48d4-9880-bb97bf3e5b73.jpg">
      <img width="180" height="350" src="https://user-images.githubusercontent.com/68559217/147450556-a5cc4eb6-60da-4294-9aad-2a444545a08b.jpg">
     </p>
  
@@ -135,7 +132,6 @@ Working Demo of App: [Demo Video](https://drive.google.com/file/d/1cNwjH7Ikv9ru7
     -  Notification to admin when a request is raised.
 
 <p >
-     <img width="180" height="350" src="https://user-images.githubusercontent.com/68559217/147451058-a005404d-e016-4b83-adef-4f9a32b3a99e.jpg">&emsp;
      <img width="180" height="350" src="https://user-images.githubusercontent.com/68559217/147451059-783eb132-b724-40b0-b032-9592cda549e0.jpg">&emsp;
     </p>
 
